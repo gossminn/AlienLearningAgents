@@ -74,19 +74,6 @@ namespace LearningEngine
             // Child learns, says something back
             var child1 = child0.Learn(parent1.CurrentSentence);
             child1.SaySomething();
-
-            // Parent produces another 10 sentences, child learns
-            var childn = child1;
-            var parentn = parent1;
-            for (int i = 0; i < 10; i++)
-            {
-                Debug.Log("");
-                parentn = parentn.SaySomething();
-                childn = childn.Learn(parentn.CurrentSentence);
-                var childSent = childn.SaySomething();
-                var feedback = parentn.ProvideFeedback(childSent);
-                childn = childn.EvaluateFeedback(feedback, childSent);
-            }
         }
 
         public static void LambdaTest()

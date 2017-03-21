@@ -41,7 +41,7 @@ namespace LearningEngine
             return Parse(input, rules, 0);
         }
 
-        public ParseResult Parse(ImmutableList<string > input, RuleSet _, int n)
+        public ParseResult Parse(ImmutableList<string> input, RuleSet _, int n)
         {
             Predicate<TermNode> match = x => x.GetFlatString() == input[n];
 
@@ -58,7 +58,7 @@ namespace LearningEngine
             var leftEntry = "<left>" + _left.ToString() + "</left>";
             var rightEntries = "<right>"
                 + String.Join(",", _right.Select(x => x.GetFlatString()).ToArray())
-                + "</right";
+                + "</right>";
             return "<rule>" + leftEntry + rightEntries + "</rule>";
         }
     }

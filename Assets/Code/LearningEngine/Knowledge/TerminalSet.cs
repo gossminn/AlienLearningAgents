@@ -10,6 +10,10 @@ namespace LearningEngine
     {
         // TermNodes are stored in an immutable collection type
         private readonly ImmutableHashSet<TermNode> _terminals;
+        public IEnumerable<TermNode> Collection
+        {
+            get { return _terminals.AsEnumerable(); }
+        }
 
         // Constructor is private, public interface through factory methods
         private TerminalSet(ImmutableHashSet<TermNode> terminals)

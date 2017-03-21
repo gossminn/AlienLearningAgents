@@ -11,6 +11,7 @@ namespace LearningEngine
         private readonly SyntaxCat _rootCategory;
         private readonly ImmutableHashSet<SyntaxCat> _otherCategories;
         public SyntaxCat Root { get { return _rootCategory; } }
+        public ImmutableHashSet<SyntaxCat> NonRoots { get { return _otherCategories; } }
 
         // Constructor is private, public interface through factory methods
         private CategorySet(SyntaxCat rootCat, ImmutableHashSet<SyntaxCat> otherCats)
@@ -48,7 +49,7 @@ namespace LearningEngine
         {
             var rootEntry = "<cat type=root>" + _rootCategory.ToString() + "</cat>";
             var otherEntries = String.Join("", _otherCategories
-                .Select(x => "<cat type=nonroot>" + x.ToString() + "</cat").ToArray());
+                .Select(x => "<cat type=nonroot>" + x.ToString() + "</cat>").ToArray());
             return "<syntaxCats>" + rootEntry + otherEntries + "</syntaxCats>";
         }
     }

@@ -57,5 +57,12 @@ namespace LearningEngine
                 .Aggregate(_memory, (acc, next) => acc.Dequeue())
                 .Peek();
         }
+
+        public string ToXMLString()
+        {
+            var sentences = _memory.Aggregate("",
+                (acc, next) => acc + "<sentence>" + next + "</sentence>");
+            return "<memory>" + sentences + "</memory>";
+        }
     }
 }
