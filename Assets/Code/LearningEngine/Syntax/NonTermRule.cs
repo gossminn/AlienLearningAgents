@@ -105,7 +105,7 @@ namespace LearningEngine
             var leftEntry = "<left>" + _left.ToString() + "</left>";
             var rightEntry = "<right>" + _right1.ToString() + "," 
                 + _right2.ToString() + "</right>";
-            return "<rule>" + leftEntry + rightEntry + "</rule>";
+            return "<NonTermRule>" + leftEntry + rightEntry + "</NonTermRule>";
         }
     }
 }

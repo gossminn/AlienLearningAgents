@@ -8,47 +8,50 @@ namespace LearningEngine
     class CategorySet
     {
         // Separately store the root category (e.g. 'S') and the other categories
-        private readonly SyntaxCat _rootCategory;
-        private readonly ImmutableHashSet<SyntaxCat> _otherCategories;
-        public SyntaxCat Root { get { return _rootCategory; } }
-        public ImmutableHashSet<SyntaxCat> NonRoots { get { return _otherCategories; } }
+        private readonly SyntaxCat _root;
+        public SyntaxCat Root { get { return _root; } }
+
+        // Dictionary of context-word pairs
+        private readonly ImmutableDictionary<SyntaxCat, ContextsWordsPair> _categories;
+        public ImmutableDictionary<SyntaxCat, ContextsWordsPair> Categories { get { return _categories; } }
 
         // Constructor is private, public interface through factory methods
-        private CategorySet(SyntaxCat rootCat, ImmutableHashSet<SyntaxCat> otherCats)
+        private CategorySet(SyntaxCat root, ImmutableDictionary<SyntaxCat, ContextsWordsPair> categories)
         {
-            _rootCategory = rootCat;
-            _otherCategories = otherCats;
+            _root = root;
+            _categories = categories;
         }
 
         // Factory method: create empty CategorySet
         public static CategorySet CreateEmpty()
         {
-            return new CategorySet(SyntaxCat.EmptyCat, ImmutableHashSet<SyntaxCat>.Empty);
+            return new CategorySet(SyntaxCat.EmptyCat, 
+                ImmutableDictionary<SyntaxCat, ContextsWordsPair>.Empty);
         }
 
         // Factory method: add or replace the root category of an existing CategorySet
         public CategorySet SetRootCat(SyntaxCat rootCat)
         {
-            return new CategorySet(rootCat, _otherCategories);
+            return new CategorySet(rootCat, _categories);
         }
 
         // Factory method: add a non-root category to an existing CategorySet
         public CategorySet AddCategory(SyntaxCat category)
         {
-            return new CategorySet(_rootCategory, _otherCategories.Add(category));
+            return new CategorySet(_root, _categories.Add(category, ContextsWordsPair.Empty()));
         }
 
         // Factory method: remove a non-root category from an existing CategorySet
         public CategorySet RemoveCategory(SyntaxCat category)
         {
-            return new CategorySet(_rootCategory, _otherCategories.Remove(category));
+            return new CategorySet(_root, _categories.Remove(category));
         }
 
         // Get XML representation of the ruleset
         public string GetXMLString()
         {
-            var rootEntry = "<cat type=root>" + _rootCategory.ToString() + "</cat>";
-            var otherEntries = String.Join("", _otherCategories
+            var rootEntry = "<cat type=root>" + _root.ToString() + "</cat>";
+            var otherEntries = String.Join("", _categories
                 .Select(x => "<cat type=nonroot>" + x.ToString() + "</cat>").ToArray());
             return "<syntaxCats>" + rootEntry + otherEntries + "</syntaxCats>";
         }

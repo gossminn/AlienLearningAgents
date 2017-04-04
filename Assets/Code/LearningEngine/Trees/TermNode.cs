@@ -26,7 +26,7 @@
         public string GetXMLString()
         {
             return "<" + _synCat + " value=" + _semantics.Value 
-                + ">" + _writtenForm + "</{_synCat}>";
+                + ">" + _writtenForm + "</" + _synCat + ">";
         }
     }
 }

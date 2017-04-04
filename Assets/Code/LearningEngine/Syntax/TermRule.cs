@@ -59,7 +59,7 @@ namespace LearningEngine
             var rightEntries = "<right>"
                 + String.Join(",", _right.Select(x => x.GetFlatString()).ToArray())
                 + "</right>";
-            return "<rule>" + leftEntry + rightEntries + "</rule>";
+            return "<TermRule>" + leftEntry + rightEntries + "</TermRule>";
         }
     }
 }

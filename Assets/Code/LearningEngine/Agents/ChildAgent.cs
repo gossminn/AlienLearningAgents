@@ -12,8 +12,8 @@ namespace LearningEngine
         private readonly SentenceMemory _memory;
 
         // Current sentence
-        private readonly string _currentSent;
-        public string CurrentSentence { get { return _currentSent; } }
+        private readonly string _current;
+        public string CurrentSentence { get { return _current; } }
             
         // Constructor
         private ChildAgent(
@@ -21,7 +21,7 @@ namespace LearningEngine
             : base(knowledge)
         {
             _memory = memory;
-            _currentSent = sentence;
+            _current = sentence;
 
             Debug.Log(_memory.ToXMLString() + GetXMLString());
         }
@@ -38,17 +38,17 @@ namespace LearningEngine
         public ChildAgent Learn(string input)
         {
             // Add input to memory
-            var memory = _memory.Add(input);
+            var memory0 = _memory.Add(input);
 
             // Update terminals and categories
             var knowledge0 = TerminalLearning.UpdateTerminals(
-                _knowledge, memory, input);
+                _knowledge, memory0, input);
 
             // Update syntax rules
             var knowledge1 = NonTerminalLearning.UpdateNonTerms(
-                knowledge0, memory, input);
+                knowledge0, memory0, input);
 
-            return new ChildAgent(knowledge1, _currentSent, memory);
+            return new ChildAgent(knowledge1, _current, memory0);
         }
 
         // Evaluate feedback
@@ -57,11 +57,11 @@ namespace LearningEngine
         {
             if (feedback == Feedback.Happy)
             {
-                return new ChildAgent(_knowledge, _currentSent, _memory);
+                return new ChildAgent(_knowledge, _current, _memory);
             }
 
-            var memory = _memory.Remove(_currentSent);
-            return new ChildAgent(_knowledge, _currentSent, memory);
+            var memory = _memory.Remove(_current);
+            return new ChildAgent(_knowledge, _current, memory);
         }
 
         // Produce sentence

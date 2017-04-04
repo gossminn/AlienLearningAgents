@@ -8,7 +8,16 @@ namespace LearningEngine
     class SemValue
     {
         private readonly string _value;
-        public string Value { get {return _value; } }
+        public string Value
+        { get
+            {
+                if (_value == "")
+                {
+                    return "NONE";
+                }
+                return _value;
+            }
+        }
 
         public SemValue(string value)
         {
