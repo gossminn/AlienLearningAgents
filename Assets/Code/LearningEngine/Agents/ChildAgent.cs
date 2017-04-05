@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Linq;
+using AlienDebug;
 
 namespace LearningEngine
 {
@@ -22,7 +23,7 @@ namespace LearningEngine
         {
             _memory = memory;
             _current = sentence;
-            Debug.Log(_memory.ToXMLString() + GetXMLString());
+            DebugHelpers.WriteToFile(_memory.ToXMLString() + GetXMLString());
         }
 
         // Factory method: create empty instance
@@ -39,7 +40,7 @@ namespace LearningEngine
             var memory1 = _memory.Memorize(input);
 
             // Learn categories
-            var categories1 = _knowledge.Categories.ProcessSentence(input);
+            var categories1 = _knowledge.Categories.ProcessInput(input);
             var knowledge1 = _knowledge.UpdateCategories(categories1);
 
             //// Update syntax rules
