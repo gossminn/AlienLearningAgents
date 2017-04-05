@@ -65,6 +65,19 @@ namespace LearningEngine
             return new CategoryKnowledge(leftContext, rightContext, words);
         }
 
+        // Test for equivalence
+        public static bool AreEquivalent(CategoryKnowledge cat1, CategoryKnowledge cat2)
+        {
+            // Same words?
+            var wordsAreEqual = cat1.Words.SequenceEqual(cat2.Words);
+
+            // Same contexts?
+            var leftContextsEqual = cat1.LeftContext.SequenceEqual(cat2.LeftContext);
+            var rightContextsEqual = cat1.RightContext.SequenceEqual(cat2.RightContext);
+
+            return wordsAreEqual && leftContextsEqual && rightContextsEqual;
+        }
+
         // Get XML representation
         public string GetXMLString()
         {

@@ -3,21 +3,28 @@
     // Data type for storing the linguistic knowledge of an agent
     class KnowledgeSet
     {
-        // Fields
-        private readonly CategorySet _categories;
-        private readonly RuleSet _rules;
-        private readonly TerminalSet _terminals;
+        // 'Raw' (ungeneralized) syntactic categories
+        private readonly CategorySet _rawCategories;
+        public CategorySet RawCategories { get { return _rawCategories; } }
 
-        // Getters
-        public CategorySet Categories { get { return _categories; } }
+        // Generalized syntactic categories
+        private readonly CategorySet _generalizedCategories;
+        public CategorySet GeneralizedCategories { get { return _generalizedCategories; } }
+
+        // Rewrite rules
+        private readonly RuleSet _rules;
         public RuleSet Rules { get { return _rules; } }
+
+        // Terminal nodes (vocabulary)
+        private readonly TerminalSet _terminals;        
         public TerminalSet Terminals { get { return _terminals; } }
 
         // Constructor
-        private KnowledgeSet(
-            CategorySet categories, RuleSet rules, TerminalSet terminals)
+        private KnowledgeSet(CategorySet rawCategories, CategorySet generalizedCategories, 
+            RuleSet rules, TerminalSet terminals)
         {
-            _categories = categories;
+            _rawCategories = rawCategories;
+            _generalizedCategories = generalizedCategories;
             _rules = rules;
             _terminals = terminals;
         }
@@ -27,24 +34,30 @@
         {
             return new KnowledgeSet(
                 CategorySet.CreateEmpty(),
+                CategorySet.CreateEmpty(),
                 RuleSet.CreateEmpty(),
                 TerminalSet.CreateEmpty());
         }
 
         // Replace current CategorySet by a new one
-        public KnowledgeSet UpdateCategories(CategorySet categories)
+        public KnowledgeSet UpdateRawCategories(CategorySet rawCategories)
         {
-            return new KnowledgeSet(categories, _rules, _terminals);
+            return new KnowledgeSet(rawCategories, _generalizedCategories, _rules, _terminals);
+        }
+
+        public KnowledgeSet UpdateGeneralizedCategories(CategorySet generalizedCategories)
+        {
+            return new KnowledgeSet(_rawCategories, generalizedCategories, _rules, _terminals);
         }
 
         public KnowledgeSet UpdateRules(RuleSet rules)
         {
-            return new KnowledgeSet(_categories, rules, _terminals);
+            return new KnowledgeSet(_rawCategories, _generalizedCategories, rules, _terminals);
         }
 
         public KnowledgeSet UpdateTerminals(TerminalSet terminals)
         {
-            return new KnowledgeSet(_categories, _rules, terminals);
+            return new KnowledgeSet(_rawCategories, _generalizedCategories, _rules, terminals);
         }
     }
 }

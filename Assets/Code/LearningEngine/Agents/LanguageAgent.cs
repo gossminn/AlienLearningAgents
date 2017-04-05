@@ -15,7 +15,8 @@
         // Print knowledge representation as XML
         public string GetXMLString()
         {
-            return _knowledge.Categories.GetXMLString() + 
+            return _knowledge.RawCategories.GetXMLString() +
+                _knowledge.GeneralizedCategories.GetXMLString() + 
                 _knowledge.Rules.GetXMLString() + 
                 _knowledge.Terminals.GetXMLString();
         }

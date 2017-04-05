@@ -23,7 +23,9 @@ namespace LearningEngine
         {
             _memory = memory;
             _current = sentence;
-            DebugHelpers.WriteToFile(_memory.ToXMLString() + GetXMLString());
+            DebugHelpers.WriteXMLFile(_memory.ToXMLString() + GetXMLString());
+            DebugHelpers.WriteCatNumbers(knowledge.RawCategories.Count, 
+                knowledge.GeneralizedCategories.Count);
         }
 
         // Factory method: create empty instance
@@ -37,17 +39,20 @@ namespace LearningEngine
         public ChildAgent Learn(string input)
         {
             // Add input to memory
-            var memory1 = _memory.Memorize(input);
+            var memory = _memory.Memorize(input);
 
             // Learn categories
-            var categories1 = _knowledge.Categories.ProcessInput(input);
-            var knowledge1 = _knowledge.UpdateCategories(categories1);
+            var rawCategories = _knowledge.RawCategories.ProcessInput(input);
+            var generalizedCategories = rawCategories.Generalize();
+            var knowledge = _knowledge
+                .UpdateRawCategories(rawCategories)
+                .UpdateGeneralizedCategories(generalizedCategories);
 
             //// Update syntax rules
             //var knowledge1 = NonTerminalLearning.UpdateNonTerms(
             //    knowledge0, memory0, input);
 
-            return new ChildAgent(knowledge1, _current, memory1);
+            return new ChildAgent(knowledge, _current, memory);
         }
 
         // Evaluate feedback

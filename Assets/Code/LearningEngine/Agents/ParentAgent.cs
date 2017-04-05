@@ -20,7 +20,7 @@ namespace LearningEngine
             KnowledgeSet knowledge, ImmutableList<ITreeNode> sentences, 
             ITreeNode currentSent) : base(knowledge)
         {
-            var rootNode = knowledge.Categories.Root;
+            var rootNode = knowledge.RawCategories.Root;
             var rootRule = knowledge.Rules.FindWithLeftSide(rootNode);
 
             _sentences = sentences.IsEmpty
@@ -35,7 +35,7 @@ namespace LearningEngine
         {
             return new ParentAgent(
                 KnowledgeSet.Initialize()
-                    .UpdateCategories(categories)
+                    .UpdateRawCategories(categories)
                     .UpdateRules(rules)
                     .UpdateTerminals(terminals),
                 ImmutableList<ITreeNode>.Empty, new EmptyNode());

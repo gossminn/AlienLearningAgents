@@ -17,6 +17,9 @@ namespace LearningEngine
         public ImmutableDictionary<CategoryLabel, CategoryKnowledge> Categories
             { get { return _categories; } }
 
+        // Number of categories
+        public int Count { get { return _categories.Count; } }
+
         // Constructor is private, public interface through factory methods
         private CategorySet(CategoryLabel root, ImmutableDictionary<CategoryLabel, CategoryKnowledge> categories)
         {

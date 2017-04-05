@@ -22,10 +22,10 @@ namespace LearningEngine
 
             var nonTermCats = Enumerable.Range(0, n - 2)
                 .Select(x => CategoryLabel.Create(NodeType.NonTerminal))
-                .ToImmutableList().Insert(0, knowledge.Categories.Root);
+                .ToImmutableList().Insert(0, knowledge.RawCategories.Root);
 
             var categories = nonTermCats
-                .Aggregate(knowledge.Categories,
+                .Aggregate(knowledge.RawCategories,
                 (acc, next) => acc.AddCategory(next));
 
             var rules = Enumerable.Range(0, n - 2)
@@ -41,7 +41,7 @@ namespace LearningEngine
                     (acc, next) => acc.AddRule(next));
 
             return knowledge
-                .UpdateCategories(categories)
+                .UpdateRawCategories(categories)
                 .UpdateRules(rules);
 
         }

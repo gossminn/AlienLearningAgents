@@ -3,10 +3,11 @@ using System.Linq;
 
 namespace LearningEngine
 {
-
-    // Learning algorithms for acquiring syntactic categories
+    // Learning algorithm for acquiring (raw) syntactic categories
     static class CategorySetLearning
     {
+        // Helper for keeping two pairs of categories together
+   
         // Adapt overall CategorySet based on new input
         public static CategorySet ProcessInput(this CategorySet categories0, string sentence)
         {
@@ -45,5 +46,6 @@ namespace LearningEngine
 
             return categories0.AddCategory(CategoryLabel.Create(NodeType.Terminal), newCategory);
         }
+
     }
 }
