@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 namespace LearningEngine
 {
@@ -16,13 +17,11 @@ namespace LearningEngine
         public string CurrentSentence { get { return _current; } }
             
         // Constructor
-        private ChildAgent(
-            KnowledgeSet knowledge, string sentence, SentenceMemory memory) 
-            : base(knowledge)
+        private ChildAgent( KnowledgeSet knowledge, string sentence, 
+            SentenceMemory memory) : base(knowledge)
         {
             _memory = memory;
             _current = sentence;
-
             Debug.Log(_memory.ToXMLString() + GetXMLString());
         }
 
@@ -34,21 +33,20 @@ namespace LearningEngine
         }
 
         // Learn from input
-        // Simplistic version: just store sentence in memory, update categories
         public ChildAgent Learn(string input)
         {
             // Add input to memory
-            var memory0 = _memory.Add(input);
+            var memory1 = _memory.Memorize(input);
 
-            // Update terminals and categories
-            var knowledge0 = TerminalLearning.UpdateTerminals(
-                _knowledge, memory0, input);
+            // Learn categories
+            var categories1 = _knowledge.Categories.ProcessSentence(input);
+            var knowledge1 = _knowledge.UpdateCategories(categories1);
 
-            // Update syntax rules
-            var knowledge1 = NonTerminalLearning.UpdateNonTerms(
-                knowledge0, memory0, input);
+            //// Update syntax rules
+            //var knowledge1 = NonTerminalLearning.UpdateNonTerms(
+            //    knowledge0, memory0, input);
 
-            return new ChildAgent(knowledge1, _current, memory0);
+            return new ChildAgent(knowledge1, _current, memory1);
         }
 
         // Evaluate feedback
@@ -60,7 +58,7 @@ namespace LearningEngine
                 return new ChildAgent(_knowledge, _current, _memory);
             }
 
-            var memory = _memory.Remove(_current);
+            var memory = _memory.Forget(_current);
             return new ChildAgent(_knowledge, _current, memory);
         }
 
@@ -68,9 +66,10 @@ namespace LearningEngine
         // Simplistic version: just produce random sentence from memory
         public ChildAgent SaySomething()
         {
-            var num = _random.Next(_memory.Size);
-            var sentence = _memory.GetNthElement(num);
-            //Debug.Log("Child says:" + sentence); // TODO: remove print after testing
+            var n = _random.Next(_memory.Size);
+            var sentence = n == 0
+                ? _memory.Sentences.First()
+                : _memory.Sentences.Take(n).Last();
             return new ChildAgent(_knowledge, sentence, _memory);
         }        
     }

@@ -21,7 +21,7 @@ namespace LearningEngine
                 .ToImmutableList();
 
             var nonTermCats = Enumerable.Range(0, n - 2)
-                .Select(x => SyntaxCat.Create(CatType.NonTerminal))
+                .Select(x => CategoryLabel.Create(NodeType.NonTerminal))
                 .ToImmutableList().Insert(0, knowledge.Categories.Root);
 
             var categories = nonTermCats

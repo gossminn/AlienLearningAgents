@@ -8,7 +8,7 @@ namespace LearningEngine
         ParseResult Parse(ImmutableList<string> input, RuleSet rules);
         ParseResult Parse(ImmutableList<string> input, RuleSet rules, int n); // recursive helper
         IEnumerable<ITreeNode> GenerateAll(RuleSet rules);
-        SyntaxCat Left { get; }
+        CategoryLabel Left { get; }
         string GetXMLString();
     }
 }

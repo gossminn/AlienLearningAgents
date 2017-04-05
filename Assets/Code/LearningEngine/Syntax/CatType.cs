@@ -1,4 +1,4 @@
 ﻿namespace LearningEngine
 {
-    enum CatType { Terminal, NonTerminal }
+    enum NodeType { Terminal, NonTerminal }
 }

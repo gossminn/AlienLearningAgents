@@ -8,12 +8,12 @@ namespace LearningEngine
         public static void EnglishTest()
         {
             // Categories
-            var sentCat = SyntaxCat.Create(CatType.NonTerminal);
-            var npCat = SyntaxCat.Create(CatType.NonTerminal);
-            var vpCat = SyntaxCat.Create(CatType.NonTerminal);
-            var detCat = SyntaxCat.Create(CatType.Terminal);
-            var nCat = SyntaxCat.Create(CatType.Terminal);
-            var vCat = SyntaxCat.Create(CatType.Terminal);
+            var sentCat = CategoryLabel.Create(NodeType.NonTerminal);
+            var npCat = CategoryLabel.Create(NodeType.NonTerminal);
+            var vpCat = CategoryLabel.Create(NodeType.NonTerminal);
+            var detCat = CategoryLabel.Create(NodeType.Terminal);
+            var nCat = CategoryLabel.Create(NodeType.Terminal);
+            var vCat = CategoryLabel.Create(NodeType.Terminal);
 
             // Terminals 
             var theNode = new TermNode(detCat, "the", "");

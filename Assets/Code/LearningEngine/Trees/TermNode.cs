@@ -3,15 +3,15 @@
     class TermNode : ITreeNode
     {
         // Syntactic category and written form
-        private readonly SyntaxCat _synCat;
+        private readonly CategoryLabel _synCat;
         private readonly string _writtenForm;
-        public SyntaxCat Category { get { return _synCat; } }
+        public CategoryLabel Category { get { return _synCat; } }
 
         // Semantics
         private readonly SemValue _semantics;
         public SemValue Semantics { get { return _semantics; } }
 
-        public TermNode(SyntaxCat synCat, string writtenForm, string lambdaString)
+        public TermNode(CategoryLabel synCat, string writtenForm, string lambdaString)
         {
             _synCat = synCat;
             _writtenForm = writtenForm;

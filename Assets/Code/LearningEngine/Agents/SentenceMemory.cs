@@ -7,43 +7,48 @@ namespace LearningEngine
     // Helper class for storing the sentences a ChildAgent has memorized
     class SentenceMemory
     {
+        // Maximum memory size
         private const int _maxSize = 10;
+
+        // Sentences are stored in queue
         private readonly ImmutableQueue<string> _sentences;
         public IEnumerable<string> Sentences { get { return _sentences.AsEnumerable(); } }
 
-        private readonly int _size;
-        public int Size { get { return _size; } }
+        // Property for getting the size of the queue
+        public int Size { get { return _sentences.Count(); } }
 
-        private SentenceMemory(ImmutableQueue<string> memory, int size)
+        private SentenceMemory(ImmutableQueue<string> memory)
         {
             _sentences = memory;
-            _size = size;
         }
 
+        // Initialize the memory
         public static SentenceMemory Initialize()
         {
-            return new SentenceMemory(ImmutableQueue<string>.Empty, 0);
+            return new SentenceMemory(ImmutableQueue<string>.Empty);
         }
 
-        public SentenceMemory Add(string sentence)
+        // Add a sentence to memory
+        public SentenceMemory Memorize(string sentence)
         {
             // Queue not filled yet: add sentence and increment size
-            if (_size < _maxSize)
+            if (Size < _maxSize)
             {
-                return new SentenceMemory(_sentences.Enqueue(sentence), _size + 1);
+                return new SentenceMemory(_sentences.Enqueue(sentence));
             }
 
             // Queue has maximum size: remove first element + add sentence
-            return new SentenceMemory(_sentences.Dequeue().Enqueue(sentence), _size);
+            return new SentenceMemory(_sentences.Dequeue().Enqueue(sentence));
         }
 
-        public SentenceMemory Remove(string sentence)
+        // Remove a sentence from memory
+        public SentenceMemory Forget(string sentence)
         {
             var removed = _sentences.Where(x => x != sentence);
             var removedQueue = removed.Aggregate(
                 ImmutableQueue<string>.Empty,
                 (acc, next) => acc.Enqueue(next));
-            return new SentenceMemory(removedQueue, _size - 1);
+            return new SentenceMemory(removedQueue);
         }
 
         // Get the nth element from the front of the queue

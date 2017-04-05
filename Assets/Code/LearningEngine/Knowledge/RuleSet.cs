@@ -45,7 +45,7 @@ namespace LearningEngine
         }
 
         // Method for getting rules from the set based on the 'left-handed' SyntaxCat
-        public ISyntaxRule FindWithLeftSide(SyntaxCat cat)
+        public ISyntaxRule FindWithLeftSide(CategoryLabel cat)
         {
             return _rules.Single(x => x.Left == cat);
         }

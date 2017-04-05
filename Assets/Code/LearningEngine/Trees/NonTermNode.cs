@@ -3,7 +3,7 @@
     class NonTermNode : ITreeNode
     {
         // Syntactic type
-        private readonly SyntaxCat _synCat;
+        private readonly CategoryLabel _synCat;
 
         // Semantic value
         private readonly SemValue _semantics;
@@ -14,7 +14,7 @@
         ITreeNode _right;
 
         // Constructor
-        public NonTermNode(SyntaxCat synCat, ITreeNode left, ITreeNode right, FunctorLoc functor)
+        public NonTermNode(CategoryLabel synCat, ITreeNode left, ITreeNode right, FunctorLoc functor)
         {
             _synCat = synCat;
             _left = left;

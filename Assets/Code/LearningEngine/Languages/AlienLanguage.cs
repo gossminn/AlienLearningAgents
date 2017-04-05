@@ -7,12 +7,12 @@ namespace LearningEngine
         public static ParentAgent MakeParentAgent()
         {
             // Categories
-            var sentCat = SyntaxCat.Create(CatType.NonTerminal);
-            var npCat = SyntaxCat.Create(CatType.NonTerminal);
-            var vpCat = SyntaxCat.Create(CatType.NonTerminal);
-            var nrootCat = SyntaxCat.Create(CatType.Terminal);
-            var nmodCat = SyntaxCat.Create(CatType.Terminal);
-            var vCat = SyntaxCat.Create(CatType.Terminal);
+            var sentCat = CategoryLabel.Create(NodeType.NonTerminal);
+            var npCat = CategoryLabel.Create(NodeType.NonTerminal);
+            var vpCat = CategoryLabel.Create(NodeType.NonTerminal);
+            var nrootCat = CategoryLabel.Create(NodeType.Terminal);
+            var nmodCat = CategoryLabel.Create(NodeType.Terminal);
+            var vCat = CategoryLabel.Create(NodeType.Terminal);
 
             var categorySet = CategorySet.CreateEmpty()
                 .SetRootCat(sentCat)

@@ -31,6 +31,7 @@
                 TerminalSet.CreateEmpty());
         }
 
+        // Replace current CategorySet by a new one
         public KnowledgeSet UpdateCategories(CategorySet categories)
         {
             return new KnowledgeSet(categories, _rules, _terminals);

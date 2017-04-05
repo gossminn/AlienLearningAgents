@@ -8,16 +8,16 @@ namespace LearningEngine
 
     class NonTermRule : ISyntaxRule
     {
-        private readonly SyntaxCat _left;
-        private readonly SyntaxCat _right1;
-        private readonly SyntaxCat _right2;
+        private readonly CategoryLabel _left;
+        private readonly CategoryLabel _right1;
+        private readonly CategoryLabel _right2;
         private readonly FunctorLoc _functor;
-        public SyntaxCat Left { get { return _left; } }
-        public SyntaxCat Right1 { get { return _right1; } }
-        public SyntaxCat Right2 { get { return _right2; } }
+        public CategoryLabel Left { get { return _left; } }
+        public CategoryLabel Right1 { get { return _right1; } }
+        public CategoryLabel Right2 { get { return _right2; } }
 
         // Private constructor
-        private NonTermRule(SyntaxCat left, SyntaxCat right1, SyntaxCat right2, FunctorLoc functor)
+        private NonTermRule(CategoryLabel left, CategoryLabel right1, CategoryLabel right2, FunctorLoc functor)
         {
             _left = left;
             _right1 = right1;
@@ -26,13 +26,13 @@ namespace LearningEngine
         }
 
         // Factory methods for unary and binary rules
-        public static NonTermRule CreateUnary(SyntaxCat left, SyntaxCat right)
+        public static NonTermRule CreateUnary(CategoryLabel left, CategoryLabel right)
         {
-            return new NonTermRule(left, right, SyntaxCat.EmptyCat, FunctorLoc.Left);
+            return new NonTermRule(left, right, CategoryLabel.EmptyCat, FunctorLoc.Left);
         }
 
         public static NonTermRule CreateBinary
-            (SyntaxCat left, SyntaxCat right1, SyntaxCat right2, FunctorLoc functor)
+            (CategoryLabel left, CategoryLabel right1, CategoryLabel right2, FunctorLoc functor)
         {
             return new NonTermRule(left, right1, right2, functor);
         }
@@ -55,7 +55,7 @@ namespace LearningEngine
             }
 
             // If rule is unary: return success
-            if (_right2 == SyntaxCat.EmptyCat)
+            if (_right2 == CategoryLabel.EmptyCat)
             {
                 return ParseResult.MakeSuccess(
                     new NonTermNode(_left, result1.Tree, new EmptyNode(), _functor),
@@ -83,7 +83,7 @@ namespace LearningEngine
         public IEnumerable<ITreeNode> GenerateAll(RuleSet rules)
         {
             // If rule is unary: return all possible values for right1
-            if (_right2 == SyntaxCat.EmptyCat)
+            if (_right2 == CategoryLabel.EmptyCat)
             {
                 return rules.FindWithLeftSide(_right1)
                     .GenerateAll(rules)

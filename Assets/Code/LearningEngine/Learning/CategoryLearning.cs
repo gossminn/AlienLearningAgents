@@ -4,75 +4,70 @@ using System.Linq;
 
 namespace LearningEngine
 {
-
-    // Static class with extension methods for CategorySet
+    // Learning algorithms for acquiring syntactic categories
     static class CategorySetLearning
     {
-        // Get the words that are to the left of each occurance of the word in a sentence
-        static ImmutableHashSet<string> GetLeftContext(this string sentence, string word)
+        // Adapt overall CategorySet based on new input
+        public static CategorySet ProcessSentence(this CategorySet categories0, string sentence)
         {
-            // Make array of words
-            var words = sentence.Split().ToImmutableArray();
+            // Get context for each word
+            var contexts = WordContext.GetContexts(sentence);
 
-            // Function for getting word that is to the left of a given index ("#" = word boundary)
-            Func<int, string> leftOf = index => index == 0 ? "#" : words[index - 1];
-            
-            // Loop over indexes of words in sentence
-            return Enumerable.Range(0, words.Length).Aggregate(
-                // Start with empty list
-                ImmutableHashSet<string>.Empty,
-
-                // If target is at next index, add word to the left of that
-                (acc, next) => words[next] == word ? acc.Add(leftOf(next)) : acc
-            );
+            // For each word, update the CategorySet, return final result
+            return contexts.Aggregate(categories0, ProcessWord);
         }
 
-        // Get the words that are to the right of each occurance of the word in a sentence
-        static ImmutableHashSet<string> GetRightContext(this string sentence, string word)
+        // Helper function: make intermediate state of CategorySet based on single word
+        private static CategorySet ProcessWord(CategorySet categories0, WordContext context)
         {
-            // Make array of words
-            var words = sentence.Split().ToImmutableArray();
+            // Helper function: add both left and right context
+            Func<CategorySet, CategoryLabel, CategorySet> addContext =
+                (categories, label) => categories
+                    .UpdateLeftContext(label, context.Left)
+                    .UpdateRightContext(label, context.Right);
 
-            // Function for getting word that is to the right of a given index ("#" = word boundary)
-            Func<int, string> rightOf = index => index == words.Length - 1 ? "#" : words[index + 1];
+            // Helper function: add word
+            Func<CategorySet, CategoryLabel, CategorySet> addWord =
+                (categories, label) => categories
+                    .UpdateWord(label, context.Word);
 
-            // Loop over indexes of words in sentence
-            return Enumerable.Range(0, words.Length).Aggregate(
-                // Start with empty list
-                ImmutableHashSet<string>.Empty,
+            // Case 1: if word is known, add the context
+            var withWord = categories0.FindWord(context.Word);
+            if (withWord.Any())
+            {
+                // For each entry, yield CategorySet with updated contexts
+                return withWord.Aggregate(categories0, addContext);
+            }
 
-                // If target is at next index, add word to the right of that
-                (acc, next) => words[next] == word ? acc.Add(rightOf(next)) : acc
-            );
+            // Case 2: if context is known, add the word
+            var withLeftCtxt = categories0.FindLeftContext(context.Left);
+            var withRightCtxt = categories0.FindRightContext(context.Right);
+            var anyLeft = withLeftCtxt.Any();
+            var anyRight = withRightCtxt.Any();
+
+            if (anyLeft || anyRight)
+            {
+                // Add left contexts
+                var categories1 = anyLeft
+                    ? withLeftCtxt.Aggregate(categories0, addWord)
+                    : categories0;
+
+                // Add right contexts
+                var categories2 = anyRight
+                    ? withRightCtxt.Aggregate(categories1, addWord)
+                    : categories1;
+
+                return categories2;
+            }
+
+            // Case 3: otherwise, add new category
+            var newCategory = CategoryKnowledge.Empty()
+                .AddLeftContext(context.Left)
+                .AddRightContext(context.Right)
+                .AddWord(context.Word);
+
+            return categories0.AddCategory(CategoryLabel.Create(NodeType.Terminal), newCategory);
         }
 
-        public static CategorySet UpdateCategories(this CategorySet current, SentenceMemory memory)
-        {
-            // Check for match between to sets of context words
-            Func<ImmutableHashSet<string>, ImmutableHashSet<string>, bool> match = 
-                (context0, context1) => !context0.Intersect(context1).IsEmpty;
-
-            // Get contexts for everything in memory
-            var contexts = memory.Sentences.SelectMany(
-                sentence => sentence.Split().Select(
-                    y => new {
-                        Word = y,
-                        Left = sentence.GetLeftContext(y),
-                        Right = sentence.GetRightContext(y)
-                    }
-                ));
-
-            // Update left contexts
-            var categories0 = current.Categories
-                .Select(catEntry => 
-                    contexts.Where(context => 
-                        match(catEntry.Value.LeftContext, context.Left))
-                    .Aggregate(
-                        catEntry.Value.LeftContext, 
-                        (acc, next) => acc.AddRange(next.Left.AsEnumerable())
-                        )
-                );  
-
-        }
     }
 }

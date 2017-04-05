@@ -7,20 +7,20 @@ namespace LearningEngine
 {
     class TermRule : ISyntaxRule
     {
-        private readonly SyntaxCat _left;
+        private readonly CategoryLabel _left;
         private readonly ImmutableList<TermNode> _right;
-        public SyntaxCat Left { get { return _left; } }
+        public CategoryLabel Left { get { return _left; } }
         public ImmutableList<TermNode> Right { get { return _right; } }
 
         // Private constructor
-        private TermRule(SyntaxCat left, ImmutableList<TermNode> right)
+        private TermRule(CategoryLabel left, ImmutableList<TermNode> right)
         {
             _left = left;
             _right = right;
         }
 
         // Factory method for creating TermRule with empty right side
-        public static TermRule CreateEmpty(SyntaxCat left)
+        public static TermRule CreateEmpty(CategoryLabel left)
         {
             return new TermRule(left, ImmutableList<TermNode>.Empty);
         }
