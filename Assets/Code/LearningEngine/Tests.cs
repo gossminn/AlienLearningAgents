@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LearningEngine
 {
-    class Tests
+    internal class Tests
     {
         public static void EnglishTest()
         {
@@ -16,13 +16,13 @@ namespace LearningEngine
             var vCat = CategoryLabel.Create(NodeType.Terminal);
 
             // Terminals 
-            var theNode = new TermNode(detCat, "the", "");
-            var aNode = new TermNode(detCat, "a", "");
-            var catNode = new TermNode(nCat, "cat", "");
-            var dogNode = new TermNode(nCat, "dog", "");
-            var girlNode = new TermNode(nCat, "girl", "");
-            var seesNode = new TermNode(vCat, "sees", "");
-            var killsNode = new TermNode(vCat, "kills", "");
+            var theNode = TermNode.Create(detCat, "the", "");
+            var aNode = TermNode.Create(detCat, "a", "");
+            var catNode = TermNode.Create(nCat, "cat", "");
+            var dogNode = TermNode.Create(nCat, "dog", "");
+            var girlNode = TermNode.Create(nCat, "girl", "");
+            var seesNode = TermNode.Create(vCat, "sees", "");
+            var killsNode = TermNode.Create(vCat, "kills", "");
 
             // Try parsing a sentence given a set of rules
             var rules = RuleSet.CreateEmpty()
@@ -45,21 +45,15 @@ namespace LearningEngine
             var parsedInput2 = sentRule.Parse(sampleInput2, rules);
 
             if (parsedInput2.Success)
-            {
-                Debug.Log(parsedInput2.Tree.GetXMLString());
-            }
+                Debug.Log(parsedInput2.Tree.GetXmlString());
             else
-            {
                 Debug.Log("Parsing failure!");
-            }
 
             Debug.Log("");
 
             // Write all possible outputs
             foreach (var sent in sentRule.GenerateAll(rules))
-            {
-                Debug.Log(sent.GetXMLString());
-            }
+                Debug.Log(sent.GetXmlString());
         }
 
         public static void AlienTest()

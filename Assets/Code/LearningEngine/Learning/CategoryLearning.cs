@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace LearningEngine
 {
     // Learning algorithm for acquiring (raw) syntactic categories
-    static class CategorySetLearning
+    internal static class CategorySetLearning
     {
-        // Helper for keeping two pairs of categories together
-   
         // Adapt overall CategorySet based on new input
         public static CategorySet ProcessInput(this CategorySet categories0, string sentence)
         {
@@ -33,9 +32,10 @@ namespace LearningEngine
             var withBothCtxt = withLeftCtxt.Intersect(withRightCtxt);
 
             // If match: add word to context
-            if (withBothCtxt.Any())
+            var categoryLabels = withBothCtxt.ToImmutableList();
+            if (categoryLabels.Any())
             {
-                return withBothCtxt.Aggregate(categories0, addWord);
+                return categoryLabels.Aggregate(categories0, addWord);
             }
 
             // Otherwise: add as new category
@@ -46,6 +46,5 @@ namespace LearningEngine
 
             return categories0.AddCategory(CategoryLabel.Create(NodeType.Terminal), newCategory);
         }
-
     }
 }

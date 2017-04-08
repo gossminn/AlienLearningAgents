@@ -1,4 +1,8 @@
 ﻿namespace LearningEngine
 {
-    enum FunctorLoc { Left, Right };
+    internal enum FunctorLoc
+    {
+        Left,
+        Right
+    }
 }

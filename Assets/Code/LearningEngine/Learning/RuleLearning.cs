@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace LearningEngine
 {
-    static class NonTerminalLearning
+    internal static class NonTerminalLearning
     {
         public static KnowledgeSet UpdateNonTerms(
             KnowledgeSet knowledge, SentenceMemory memory, string sentence)
@@ -16,34 +16,33 @@ namespace LearningEngine
             var termNodes = words
                 .Select(x => knowledge
                     .Terminals.Collection
-                    .Where(y => y.GetFlatString() == x)
-                    .First())
+                    .First(y => y.GetFlatString() == x))
                 .ToImmutableList();
 
             var nonTermCats = Enumerable.Range(0, n - 2)
                 .Select(x => CategoryLabel.Create(NodeType.NonTerminal))
-                .ToImmutableList().Insert(0, knowledge.RawCategories.Root);
+                .ToImmutableList()
+                .Insert(0, knowledge.RawCategories.Root);
 
             var categories = nonTermCats
                 .Aggregate(knowledge.RawCategories,
-                (acc, next) => acc.AddCategory(next));
+                    (acc, next) => acc.AddCategory(next));
 
             var rules = Enumerable.Range(0, n - 2)
                 .Select(i => NonTermRule.CreateBinary(
-                    nonTermCats[i], termNodes[i].Category, 
+                    nonTermCats[i], termNodes[i].Category,
                     nonTermCats[i + 1], FunctorLoc.Left))
                 .ToImmutableList()
                 .Add(NonTermRule.CreateBinary(
                     nonTermCats[n - 2], termNodes[n - 2].Category,
                     termNodes[n - 1].Category, FunctorLoc.Left))
                 .AsEnumerable()
-                .Aggregate(knowledge.Rules, 
+                .Aggregate(knowledge.Rules,
                     (acc, next) => acc.AddRule(next));
 
             return knowledge
                 .UpdateRawCategories(categories)
                 .UpdateRules(rules);
-
         }
     }
 }

@@ -1,4 +1,8 @@
 ﻿namespace LearningEngine
 {
-    enum SemBaseType { Entity, TruthValue };
+    internal enum SemBaseType
+    {
+        Entity,
+        TruthValue
+    }
 }

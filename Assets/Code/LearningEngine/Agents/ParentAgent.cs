@@ -1,23 +1,22 @@
-﻿using System.Collections.Immutable;
-using UnityEngine;
+﻿using System;
+using System.Collections.Immutable;
 
 namespace LearningEngine
 {
-    class ParentAgent : LanguageAgent
+    internal class ParentAgent : LanguageAgent
     {
         // Random number generator
-        private static readonly System.Random _random = new System.Random();
+        private static readonly Random _random = new Random();
+
+        // Current sentence
+        private readonly ITreeNode _currentSent;
 
         // List of possible sentences
         private readonly ImmutableList<ITreeNode> _sentences;
 
-        // Current sentence
-        private readonly ITreeNode _currentSent;
-        public string CurrentSentence { get { return _currentSent.GetFlatString(); } }
-
         // Constructor is private, public access through factory methods
         private ParentAgent(
-            KnowledgeSet knowledge, ImmutableList<ITreeNode> sentences, 
+            KnowledgeSet knowledge, ImmutableList<ITreeNode> sentences,
             ITreeNode currentSent) : base(knowledge)
         {
             var rootNode = knowledge.RawCategories.Root;
@@ -29,6 +28,11 @@ namespace LearningEngine
             _currentSent = currentSent;
         }
 
+        public string CurrentSentence
+        {
+            get { return _currentSent.GetFlatString(); }
+        }
+
         // Factory method: create based on rules
         public static ParentAgent Create(
             CategorySet categories, RuleSet rules, TerminalSet terminals)
@@ -38,7 +42,7 @@ namespace LearningEngine
                     .UpdateRawCategories(categories)
                     .UpdateRules(rules)
                     .UpdateTerminals(terminals),
-                ImmutableList<ITreeNode>.Empty, new EmptyNode());
+                ImmutableList<ITreeNode>.Empty, EmptyNode.Create());
         }
 
         // 'Say' something
@@ -54,16 +58,9 @@ namespace LearningEngine
         public Feedback ProvideFeedback(string sentence)
         {
             if (_currentSent.GetFlatString() == sentence)
-            {
-                //Debug.Log("Parent is happy!"); // TODO: remove print
                 return Feedback.Happy;
-            }
 
-            else
-            {
-                //Debug.Log("Parent is angry!"); // TODO: remove print
-                return Feedback.Angry;
-            }
+            return Feedback.Angry;
         }
     }
 }

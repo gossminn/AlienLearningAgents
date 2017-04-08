@@ -1,4 +1,8 @@
 ﻿namespace LearningEngine
 {
-    enum NodeType { Terminal, NonTerminal }
+    internal enum NodeType
+    {
+        Terminal,
+        NonTerminal
+    }
 }

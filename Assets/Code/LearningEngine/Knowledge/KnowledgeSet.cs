@@ -1,32 +1,48 @@
 ﻿namespace LearningEngine
 {
     // Data type for storing the linguistic knowledge of an agent
-    class KnowledgeSet
+    internal class KnowledgeSet
     {
-        // 'Raw' (ungeneralized) syntactic categories
-        private readonly CategorySet _rawCategories;
-        public CategorySet RawCategories { get { return _rawCategories; } }
-
         // Generalized syntactic categories
         private readonly CategorySet _generalizedCategories;
-        public CategorySet GeneralizedCategories { get { return _generalizedCategories; } }
+
+        // 'Raw' (ungeneralized) syntactic categories
+        private readonly CategorySet _rawCategories;
 
         // Rewrite rules
         private readonly RuleSet _rules;
-        public RuleSet Rules { get { return _rules; } }
 
         // Terminal nodes (vocabulary)
-        private readonly TerminalSet _terminals;        
-        public TerminalSet Terminals { get { return _terminals; } }
+        private readonly TerminalSet _terminals;
 
         // Constructor
-        private KnowledgeSet(CategorySet rawCategories, CategorySet generalizedCategories, 
+        private KnowledgeSet(CategorySet rawCategories, CategorySet generalizedCategories,
             RuleSet rules, TerminalSet terminals)
         {
             _rawCategories = rawCategories;
             _generalizedCategories = generalizedCategories;
             _rules = rules;
             _terminals = terminals;
+        }
+
+        public CategorySet RawCategories
+        {
+            get { return _rawCategories; }
+        }
+
+        public CategorySet GeneralizedCategories
+        {
+            get { return _generalizedCategories; }
+        }
+
+        public RuleSet Rules
+        {
+            get { return _rules; }
+        }
+
+        public TerminalSet Terminals
+        {
+            get { return _terminals; }
         }
 
         // Factory methods

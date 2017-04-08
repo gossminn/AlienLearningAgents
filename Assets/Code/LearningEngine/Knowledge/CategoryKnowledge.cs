@@ -5,18 +5,15 @@ using System.Linq;
 namespace LearningEngine
 {
     // Class for storing knowledge (words plus contexts) about syntactic categories
-    class CategoryKnowledge
+    internal class CategoryKnowledge
     {
         // Allowed contexts: words on the left and on the right
         private readonly ImmutableHashSet<string> _leftContext;
-        public ImmutableHashSet<string> LeftContext { get { return _leftContext; } }
 
         private readonly ImmutableHashSet<string> _rightContext;
-        public ImmutableHashSet<string> RightContext { get { return _rightContext; } }
 
         // Words allowed in these contexts
         private readonly ImmutableHashSet<string> _words;
-        public ImmutableHashSet<string> Words { get { return _words; } }
 
         private CategoryKnowledge(ImmutableHashSet<string> leftContext,
             ImmutableHashSet<string> rightContext, ImmutableHashSet<string> words)
@@ -24,6 +21,21 @@ namespace LearningEngine
             _leftContext = leftContext;
             _rightContext = rightContext;
             _words = words;
+        }
+
+        public ImmutableHashSet<string> LeftContext
+        {
+            get { return _leftContext; }
+        }
+
+        public ImmutableHashSet<string> RightContext
+        {
+            get { return _rightContext; }
+        }
+
+        public ImmutableHashSet<string> Words
+        {
+            get { return _words; }
         }
 
         public static CategoryKnowledge Empty()
@@ -35,7 +47,7 @@ namespace LearningEngine
         // Add a word to the category
         public CategoryKnowledge AddWord(string word)
         {
-            return new CategoryKnowledge(_leftContext,_rightContext, _words.Add(word));
+            return new CategoryKnowledge(_leftContext, _rightContext, _words.Add(word));
         }
 
         // Add a left context to the category
@@ -54,7 +66,7 @@ namespace LearningEngine
         public CategoryKnowledge Merge(CategoryKnowledge other)
         {
             // Function for adding a word to a set of strings 
-            Func<ImmutableHashSet<string>, string, ImmutableHashSet<string>> addWord = 
+            Func<ImmutableHashSet<string>, string, ImmutableHashSet<string>> addWord =
                 (acc, next) => acc.Add(next);
 
             // Add words of other to the current instance
@@ -79,17 +91,17 @@ namespace LearningEngine
         }
 
         // Get XML representation
-        public string GetXMLString()
+        public string GetXmlString()
         {
-            var leftString = String.Join(",", LeftContext.ToArray());
-            var rightString = String.Join(",", RightContext.ToArray());
-            var wordString = String.Join(",", Words.ToArray());
+            var leftString = string.Join(",", LeftContext.ToArray());
+            var rightString = string.Join(",", RightContext.ToArray());
+            var wordString = string.Join(",", Words.ToArray());
 
-            return "<category>" + 
-                "<leftContext>" + leftString + "</leftContext>" + 
-                "<rightContext>" + rightString + "</rightContext>" +
-                "<words>" + wordString + "</words>" + 
-                "</category>";
+            return "<category>" +
+                   "<leftContext>" + leftString + "</leftContext>" +
+                   "<rightContext>" + rightString + "</rightContext>" +
+                   "<words>" + wordString + "</words>" +
+                   "</category>";
         }
     }
 }

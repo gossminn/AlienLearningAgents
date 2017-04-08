@@ -1,9 +1,9 @@
 ﻿namespace LearningEngine
 {
-    interface ITreeNode
+    internal interface ITreeNode
     {
-        string GetXMLString();
-        string GetFlatString();
         SemValue Semantics { get; }
+        string GetXmlString();
+        string GetFlatString();
     }
 }

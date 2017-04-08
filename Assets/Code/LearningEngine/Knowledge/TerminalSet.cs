@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
 namespace LearningEngine
 {
     // Data type for representing a set of TermNodes
-    class TerminalSet
+    internal class TerminalSet
     {
         // TermNodes are stored in an immutable collection type
         private readonly ImmutableHashSet<TermNode> _terminals;
-        public IEnumerable<TermNode> Collection
-        {
-            get { return _terminals.AsEnumerable(); }
-        }
 
         // Constructor is private, public interface through factory methods
         private TerminalSet(ImmutableHashSet<TermNode> terminals)
         {
             _terminals = terminals;
+        }
+
+        public IEnumerable<TermNode> Collection
+        {
+            get { return _terminals.AsEnumerable(); }
         }
 
         // Factory method: create an empty TerminalSet
@@ -50,16 +50,17 @@ namespace LearningEngine
             // For each category, yield a TermRule containing the TermNodes of that category
             return categories
                 .Select(x => _terminals
-                    .Where(y => y.Category == x).Aggregate(
-                        TermRule.CreateEmpty(x), 
+                    .Where(y => y.Category == x)
+                    .Aggregate(
+                        TermRule.CreateEmpty(x),
                         (acc, next) => acc.AddToRight(next))
                 );
         }
 
         // Get XML representation of the TerminalSet
-        public string GetXMLString()
+        public string GetXmlString()
         {
-            var entries = String.Join("", _terminals.Select(x => x.GetXMLString()).ToArray());
+            var entries = string.Join("", _terminals.Select(x => x.GetXmlString()).ToArray());
             return "<terminalNodes>" + entries + "</terminalNodes>";
         }
     }

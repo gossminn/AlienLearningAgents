@@ -5,12 +5,10 @@ using System.Linq;
 
 namespace LearningEngine
 {
-    class TermRule : ISyntaxRule
+    internal class TermRule : ISyntaxRule
     {
         private readonly CategoryLabel _left;
         private readonly ImmutableList<TermNode> _right;
-        public CategoryLabel Left { get { return _left; } }
-        public ImmutableList<TermNode> Right { get { return _right; } }
 
         // Private constructor
         private TermRule(CategoryLabel left, ImmutableList<TermNode> right)
@@ -19,16 +17,14 @@ namespace LearningEngine
             _right = right;
         }
 
-        // Factory method for creating TermRule with empty right side
-        public static TermRule CreateEmpty(CategoryLabel left)
+        public ImmutableList<TermNode> Right
         {
-            return new TermRule(left, ImmutableList<TermNode>.Empty);
+            get { return _right; }
         }
 
-        // Method for updating the right side of the rule
-        public TermRule AddToRight(TermNode right)
+        public CategoryLabel Left
         {
-            return new TermRule(_left, _right.Add(right));
+            get { return _left; }
         }
 
         public IEnumerable<ITreeNode> GenerateAll(RuleSet _)
@@ -46,20 +42,30 @@ namespace LearningEngine
             Predicate<TermNode> match = x => x.GetFlatString() == input[n];
 
             if (_right.Exists(match))
-            {
-                return ParseResult.MakeSuccess(_right.Find(match), n+1);
-            }
+                return ParseResult.MakeSuccess(_right.Find(match), n + 1);
 
             return ParseResult.MakeFailure();
         }
 
-        public string GetXMLString()
+        public string GetXmlString()
         {
-            var leftEntry = "<left>" + _left.ToString() + "</left>";
+            var leftEntry = "<left>" + _left + "</left>";
             var rightEntries = "<right>"
-                + String.Join(",", _right.Select(x => x.GetFlatString()).ToArray())
-                + "</right>";
+                               + string.Join(",", _right.Select(x => x.GetFlatString()).ToArray())
+                               + "</right>";
             return "<TermRule>" + leftEntry + rightEntries + "</TermRule>";
+        }
+
+        // Factory method for creating TermRule with empty right side
+        public static TermRule CreateEmpty(CategoryLabel left)
+        {
+            return new TermRule(left, ImmutableList<TermNode>.Empty);
+        }
+
+        // Method for updating the right side of the rule
+        public TermRule AddToRight(TermNode right)
+        {
+            return new TermRule(_left, _right.Add(right));
         }
     }
 }

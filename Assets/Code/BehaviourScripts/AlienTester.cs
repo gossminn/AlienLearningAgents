@@ -32,12 +32,12 @@ public class AlienTester : MonoBehaviour
     {
         childAgent = childAgent.Learn(parentAgent.CurrentSentence);
         childAgent = childAgent.SaySomething();
-        childText.text = childAgent.CurrentSentence;
+        childText.text = childAgent.Current;
     }
 
     private void EvaluateSent()
     {
-        var sentence = childAgent.CurrentSentence;
+        var sentence = childAgent.Current;
         var feedback = parentAgent.ProvideFeedback(sentence);
         parentText.text = feedback.ToString();
         childAgent = childAgent.EvaluateFeedback(feedback);

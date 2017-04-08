@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
 namespace LearningEngine
 {
-
-    class NonTermRule : ISyntaxRule
+    internal class NonTermRule : ISyntaxRule
     {
+        private readonly FunctorLoc _functor;
         private readonly CategoryLabel _left;
         private readonly CategoryLabel _right1;
         private readonly CategoryLabel _right2;
-        private readonly FunctorLoc _functor;
-        public CategoryLabel Left { get { return _left; } }
-        public CategoryLabel Right1 { get { return _right1; } }
-        public CategoryLabel Right2 { get { return _right2; } }
 
         // Private constructor
         private NonTermRule(CategoryLabel left, CategoryLabel right1, CategoryLabel right2, FunctorLoc functor)
@@ -25,16 +20,19 @@ namespace LearningEngine
             _functor = functor;
         }
 
-        // Factory methods for unary and binary rules
-        public static NonTermRule CreateUnary(CategoryLabel left, CategoryLabel right)
+        public CategoryLabel Right1
         {
-            return new NonTermRule(left, right, CategoryLabel.EmptyCat, FunctorLoc.Left);
+            get { return _right1; }
         }
 
-        public static NonTermRule CreateBinary
-            (CategoryLabel left, CategoryLabel right1, CategoryLabel right2, FunctorLoc functor)
+        public CategoryLabel Right2
         {
-            return new NonTermRule(left, right1, right2, functor);
+            get { return _right2; }
+        }
+
+        public CategoryLabel Left
+        {
+            get { return _left; }
         }
 
         public ParseResult Parse(ImmutableList<string> input, RuleSet rules)
@@ -50,18 +48,14 @@ namespace LearningEngine
 
             // If unsuccesful, return failure
             if (!result1.Success)
-            {
                 return ParseResult.MakeFailure();
-            }
 
             // If rule is unary: return success
             if (_right2 == CategoryLabel.EmptyCat)
-            {
                 return ParseResult.MakeSuccess(
-                    new NonTermNode(_left, result1.Tree, new EmptyNode(), _functor),
+                    NonTermNode.Create(_left, result1.Tree, EmptyNode.Create(), _functor),
                     result1.Index
                 );
-            }
 
             // Find rule for right2 and try to apply
             var rule2 = rules.FindWithLeftSide(_right2);
@@ -69,13 +63,11 @@ namespace LearningEngine
 
             // If unsuccesful, return failure
             if (!result2.Success)
-            {
                 return ParseResult.MakeFailure();
-            }
 
             // Return final result
             return ParseResult.MakeSuccess(
-                new NonTermNode(_left, result1.Tree, result2.Tree, _functor),
+                NonTermNode.Create(_left, result1.Tree, result2.Tree, _functor),
                 result2.Index
             );
         }
@@ -84,28 +76,39 @@ namespace LearningEngine
         {
             // If rule is unary: return all possible values for right1
             if (_right2 == CategoryLabel.EmptyCat)
-            {
                 return rules.FindWithLeftSide(_right1)
                     .GenerateAll(rules)
-                    .Select(child => new NonTermNode(_left, child, new EmptyNode(), _functor))
+                    .Select(child => NonTermNode.Create(_left, child, EmptyNode.Create(), _functor))
                     .Cast<ITreeNode>();
-            }
 
             // If rule is binary: return combinations of right1 and right2
             return rules.FindWithLeftSide(_right1)
                 .GenerateAll(rules)
                 .SelectMany(child1 => rules.FindWithLeftSide(_right2)
                     .GenerateAll(rules)
-                    .Select(child2 => new NonTermNode(_left, child1, child2, _functor))
-                ).Cast<ITreeNode>();
+                    .Select(child2 => NonTermNode.Create(_left, child1, child2, _functor))
+                )
+                .Cast<ITreeNode>();
         }
 
-        public string GetXMLString()
+        public string GetXmlString()
         {
-            var leftEntry = "<left>" + _left.ToString() + "</left>";
-            var rightEntry = "<right>" + _right1.ToString() + "," 
-                + _right2.ToString() + "</right>";
+            var leftEntry = "<left>" + _left + "</left>";
+            var rightEntry = "<right>" + _right1 + ","
+                             + _right2 + "</right>";
             return "<NonTermRule>" + leftEntry + rightEntry + "</NonTermRule>";
+        }
+
+        // Factory methods for unary and binary rules
+        public static NonTermRule CreateUnary(CategoryLabel left, CategoryLabel right)
+        {
+            return new NonTermRule(left, right, CategoryLabel.EmptyCat, FunctorLoc.Left);
+        }
+
+        public static NonTermRule CreateBinary
+            (CategoryLabel left, CategoryLabel right1, CategoryLabel right2, FunctorLoc functor)
+        {
+            return new NonTermRule(left, right1, right2, functor);
         }
     }
 }

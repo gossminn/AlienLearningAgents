@@ -6,19 +6,13 @@ using System.Linq;
 namespace LearningEngine
 {
     // Data type for representing a set of syntactic categories
-    class CategorySet
+    internal class CategorySet
     {
-        // Root category
-        private readonly CategoryLabel _root;
-        public CategoryLabel Root { get { return _root; } }
-
         // Dictionary of context-word pairs
         private readonly ImmutableDictionary<CategoryLabel, CategoryKnowledge> _categories;
-        public ImmutableDictionary<CategoryLabel, CategoryKnowledge> Categories
-            { get { return _categories; } }
 
-        // Number of categories
-        public int Count { get { return _categories.Count; } }
+        // Root category
+        private readonly CategoryLabel _root;
 
         // Constructor is private, public interface through factory methods
         private CategorySet(CategoryLabel root, ImmutableDictionary<CategoryLabel, CategoryKnowledge> categories)
@@ -27,10 +21,26 @@ namespace LearningEngine
             _categories = categories;
         }
 
+        public CategoryLabel Root
+        {
+            get { return _root; }
+        }
+
+        public ImmutableDictionary<CategoryLabel, CategoryKnowledge> Categories
+        {
+            get { return _categories; }
+        }
+
+        // Number of categories
+        public int Count
+        {
+            get { return _categories.Count; }
+        }
+
         // Factory method: create empty CategorySet
         public static CategorySet CreateEmpty()
         {
-            return new CategorySet(CategoryLabel.EmptyCat, 
+            return new CategorySet(CategoryLabel.EmptyCat,
                 ImmutableDictionary<CategoryLabel, CategoryKnowledge>.Empty);
         }
 
@@ -51,7 +61,6 @@ namespace LearningEngine
         {
             return new CategorySet(_root, _categories.Add(category, knowledge));
         }
-
 
 
         // Remove a non-root category from an existing CategorySet
@@ -112,11 +121,11 @@ namespace LearningEngine
         }
 
         // Find categories containing a given left context
-        public IEnumerable<CategoryLabel> 
+        public IEnumerable<CategoryLabel>
             FindLeftContext(string left)
         {
             // Helper function: does a category contain the context?
-            Predicate<CategoryKnowledge> hasLeftContext = 
+            Predicate<CategoryKnowledge> hasLeftContext =
                 category => category.LeftContext.Contains(left);
 
             // For each entry, if it has the desired context, yield its label
@@ -140,11 +149,12 @@ namespace LearningEngine
         }
 
         // Get XML representation of the ruleset
-        public string GetXMLString()
+        public string GetXmlString()
         {
-            var rootEntry = "<cat type=root>" + _root.ToString() + "</cat>";
-            var otherEntries = String.Join("", _categories
-                .Select(x => "<cat type=nonroot>" + x.Value.GetXMLString() + "</cat>").ToArray());
+            var rootEntry = "<cat type=root>" + _root + "</cat>";
+            var otherEntries = string.Join("", _categories
+                .Select(x => "<cat type=nonroot>" + x.Value.GetXmlString() + "</cat>")
+                .ToArray());
             return "<syntaxCats>" + rootEntry + otherEntries + "</syntaxCats>";
         }
     }

@@ -5,7 +5,7 @@ using System.Linq;
 namespace LearningEngine
 {
     // Datatype for representing a set of syntax rules
-    class RuleSet
+    internal class RuleSet
     {
         // Rules are stored in an immutable collection type
         private readonly ImmutableHashSet<ISyntaxRule> _rules;
@@ -51,9 +51,9 @@ namespace LearningEngine
         }
 
         // Get XML representation of the RuleSet
-        public string GetXMLString()
+        public string GetXmlString()
         {
-            var entries = String.Join("", _rules.Select(x => x.GetXMLString()).ToArray());
+            var entries = string.Join("", _rules.Select(x => x.GetXmlString()).ToArray());
             return "<syntaxRules>" + entries + "</syntaxRules>";
         }
     }

@@ -1,4 +1,9 @@
 ﻿namespace LearningEngine
 {
-    enum Feedback { Happy, Angry, Confused }
+    internal enum Feedback
+    {
+        Happy,
+        Angry,
+        Confused
+    }
 }

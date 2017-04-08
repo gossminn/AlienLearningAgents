@@ -1,32 +1,51 @@
 ﻿namespace LearningEngine
 {
-    class TermNode : ITreeNode
+    internal class TermNode : ITreeNode
     {
-        // Syntactic category and written form
-        private readonly CategoryLabel _synCat;
-        private readonly string _writtenForm;
-        public CategoryLabel Category { get { return _synCat; } }
-
         // Semantics
         private readonly SemValue _semantics;
-        public SemValue Semantics { get { return _semantics; } }
 
-        public TermNode(CategoryLabel synCat, string writtenForm, string lambdaString)
+        // Syntactic category
+        private readonly CategoryLabel _synCat;
+
+        // Written form
+        private readonly string _writtenForm;
+
+        // Private constructor
+        private TermNode(CategoryLabel synCat, string writtenForm, string lambdaString)
         {
             _synCat = synCat;
             _writtenForm = writtenForm;
             _semantics = new SemValue(lambdaString);
         }
 
+        public CategoryLabel Category
+        {
+            get { return _synCat; }
+        }
+
+        public SemValue Semantics
+        {
+            get { return _semantics; }
+        }
+
+        // Get as flat string
         public string GetFlatString()
         {
             return _writtenForm;
         }
 
-        public string GetXMLString()
+        // Generate XML representation
+        public string GetXmlString()
         {
-            return "<" + _synCat + " value=" + _semantics.Value 
-                + ">" + _writtenForm + "</" + _synCat + ">";
+            return "<" + _synCat + " value=" + _semantics.Value
+                   + ">" + _writtenForm + "</" + _synCat + ">";
+        }
+
+        // Factory method for creating new instances
+        public static TermNode Create(CategoryLabel synCat, string writtenForm, string lambdaString)
+        {
+            return new TermNode(synCat, writtenForm, lambdaString);
         }
     }
 }

@@ -5,21 +5,28 @@ using System.Linq;
 namespace LearningEngine
 {
     // Helper class for storing the sentences a ChildAgent has memorized
-    class SentenceMemory
+    internal class SentenceMemory
     {
         // Maximum memory size
         private const int _maxSize = 10;
 
         // Sentences are stored in queue
         private readonly ImmutableQueue<string> _sentences;
-        public IEnumerable<string> Sentences { get { return _sentences.AsEnumerable(); } }
-
-        // Property for getting the size of the queue
-        public int Size { get { return _sentences.Count(); } }
 
         private SentenceMemory(ImmutableQueue<string> memory)
         {
             _sentences = memory;
+        }
+
+        public IEnumerable<string> Sentences
+        {
+            get { return _sentences.AsEnumerable(); }
+        }
+
+        // Property for getting the size of the queue
+        public int Size
+        {
+            get { return _sentences.Count(); }
         }
 
         // Initialize the memory
@@ -33,9 +40,7 @@ namespace LearningEngine
         {
             // Queue not filled yet: add sentence and increment size
             if (Size < _maxSize)
-            {
                 return new SentenceMemory(_sentences.Enqueue(sentence));
-            }
 
             // Queue has maximum size: remove first element + add sentence
             return new SentenceMemory(_sentences.Dequeue().Enqueue(sentence));
@@ -56,9 +61,7 @@ namespace LearningEngine
         {
             // 0th element: return element at the queue
             if (n == 0)
-            {
                 return _sentences.Peek();
-            }
 
             // Otherwise: dequeue 10 times, then return element at the front
             return Enumerable.Range(0, n)
@@ -66,7 +69,7 @@ namespace LearningEngine
                 .Peek();
         }
 
-        public string ToXMLString()
+        public string ToXmlString()
         {
             var sentences = _sentences.Aggregate("",
                 (acc, next) => acc + "<sentence>" + next + "</sentence>");
