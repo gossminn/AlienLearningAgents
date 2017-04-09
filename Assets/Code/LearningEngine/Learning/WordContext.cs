@@ -5,19 +5,16 @@ using System.Linq;
 namespace LearningEngine
 {
     // Helper class for storing a single word and its context
-    class WordContext
+    internal class WordContext
     {
-        // The word itself
-        private readonly string _word;
-        public string Word { get { return _word; } }
-
         // Word that occured to the left of the word
         private readonly string _left;
-        public string Left { get { return _left; } }
 
         // Word that occured to the right of the word
         private readonly string _right;
-        public string Right { get { return _right; } }
+
+        // The word itself
+        private readonly string _word;
 
         // Private constructor
         private WordContext(string word, string left, string right)
@@ -25,6 +22,21 @@ namespace LearningEngine
             _word = word;
             _left = left;
             _right = right;
+        }
+
+        public string Word
+        {
+            get { return _word; }
+        }
+
+        public string Left
+        {
+            get { return _left; }
+        }
+
+        public string Right
+        {
+            get { return _right; }
         }
 
         // Factory method: create contexts for each word in a sentence
@@ -45,7 +57,7 @@ namespace LearningEngine
                     ImmutableArray<WordContext>.Empty,
                     (acc, next) => acc.Add(
                         new WordContext(words[next], leftOf(next), rightOf(next))
-                ));
+                    ));
         }
     }
 }

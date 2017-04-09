@@ -2,11 +2,11 @@
 
 namespace AlienDebug
 {
-    static class DebugHelpers
+    internal static class DebugHelpers
     {
-        public static void WriteXMLFile(string text)
+        public static void WriteXmlFile(string text)
         {
-            using (StreamWriter sw = new StreamWriter("AlienKnowledge.xml", false))
+            using (var sw = new StreamWriter("Output/AlienKnowledge.xml", false))
             {
                 sw.WriteLine(text);
             }
@@ -14,7 +14,7 @@ namespace AlienDebug
 
         public static void WriteCatNumbers(int raw, int generalized)
         {
-            using (StreamWriter sw = new StreamWriter("CategoryCount.txt", true))
+            using (var sw = new StreamWriter("Output/CategoryCount.txt", true))
             {
                 sw.WriteLine(raw + "\t" + generalized);
             }

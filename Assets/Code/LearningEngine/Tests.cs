@@ -7,7 +7,7 @@ namespace LearningEngine
     {
         public static void EnglishTest()
         {
-            // Categories
+            // TerminalCategories
             var sentCat = CategoryLabel.Create(NodeType.NonTerminal);
             var npCat = CategoryLabel.Create(NodeType.NonTerminal);
             var vpCat = CategoryLabel.Create(NodeType.NonTerminal);

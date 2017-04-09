@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -14,6 +15,11 @@ namespace LearningEngine
         private RuleSet(ImmutableHashSet<ISyntaxRule> rules)
         {
             _rules = rules;
+        }
+
+        public IEnumerable<ISyntaxRule> Rules
+        {
+            get { return _rules.AsEnumerable(); }
         }
 
         // Factory method: create an empty RuleSet
@@ -36,6 +42,12 @@ namespace LearningEngine
 
             // Otherwise: just add the rule
             return new RuleSet(_rules.Add(rule));
+        }
+
+        // Factor method: add multiple rules to an existing RuleSet
+        public RuleSet AddRules(IEnumerable<ISyntaxRule> rules)
+        {
+            return rules.Aggregate(this, (x, y) => x.AddRule(y));
         }
 
         // Factory method: remove a rule from an existing RuleSet

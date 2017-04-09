@@ -8,17 +8,20 @@ namespace LearningEngine
     // Data type for representing a set of syntactic categories
     internal class CategorySet
     {
-        // Dictionary of context-word pairs
-        private readonly ImmutableDictionary<CategoryLabel, CategoryKnowledge> _categories;
+        // Labels and contexts for terminals
+        private readonly ImmutableDictionary<CategoryLabel, WordDistributionSet> _terminalCategories;
+
+
+        // Labels and contexts for non-terminals
 
         // Root category
         private readonly CategoryLabel _root;
 
         // Constructor is private, public interface through factory methods
-        private CategorySet(CategoryLabel root, ImmutableDictionary<CategoryLabel, CategoryKnowledge> categories)
+        private CategorySet(CategoryLabel root, ImmutableDictionary<CategoryLabel, WordDistributionSet> terminalCategories)
         {
             _root = root;
-            _categories = categories;
+            _terminalCategories = terminalCategories;
         }
 
         public CategoryLabel Root
@@ -26,58 +29,58 @@ namespace LearningEngine
             get { return _root; }
         }
 
-        public ImmutableDictionary<CategoryLabel, CategoryKnowledge> Categories
+        public ImmutableDictionary<CategoryLabel, WordDistributionSet> TerminalCategories
         {
-            get { return _categories; }
+            get { return _terminalCategories; }
         }
 
-        // Number of categories
+        // Number of terminalCategories
         public int Count
         {
-            get { return _categories.Count; }
+            get { return _terminalCategories.Count; }
         }
 
         // Factory method: create empty CategorySet
         public static CategorySet CreateEmpty()
         {
             return new CategorySet(CategoryLabel.EmptyCat,
-                ImmutableDictionary<CategoryLabel, CategoryKnowledge>.Empty);
+                ImmutableDictionary<CategoryLabel, WordDistributionSet>.Empty);
         }
 
         // Add or replace the root category of an existing CategorySet
         public CategorySet SetRootCat(CategoryLabel rootCat)
         {
-            return new CategorySet(rootCat, _categories);
+            return new CategorySet(rootCat, _terminalCategories);
         }
 
         // Add a category to an existing CategorySet (with only a label)
         public CategorySet AddCategory(CategoryLabel category)
         {
-            return new CategorySet(_root, _categories.Add(category, CategoryKnowledge.Empty()));
+            return new CategorySet(_root, _terminalCategories.Add(category, WordDistributionSet.Empty()));
         }
 
         // Add a category to an existing CategorySet (with pre-made CategoryKnowlegde)
-        public CategorySet AddCategory(CategoryLabel category, CategoryKnowledge knowledge)
+        public CategorySet AddCategory(CategoryLabel category, WordDistributionSet knowledge)
         {
-            return new CategorySet(_root, _categories.Add(category, knowledge));
+            return new CategorySet(_root, _terminalCategories.Add(category, knowledge));
         }
 
 
         // Remove a non-root category from an existing CategorySet
         public CategorySet RemoveCategory(CategoryLabel category)
         {
-            return new CategorySet(_root, _categories.Remove(category));
+            return new CategorySet(_root, _terminalCategories.Remove(category));
         }
 
         // Add a left context to a category
         public CategorySet UpdateLeftContext(CategoryLabel category, string left)
         {
             // Add the context
-            var catKnowledge0 = _categories[category];
+            var catKnowledge0 = _terminalCategories[category];
             var catKnowledge1 = catKnowledge0.AddLeftContext(left);
 
             // Update the dictionary entry
-            var categories1 = _categories.SetItem(category, catKnowledge1);
+            var categories1 = _terminalCategories.SetItem(category, catKnowledge1);
 
             return new CategorySet(_root, categories1);
         }
@@ -86,11 +89,11 @@ namespace LearningEngine
         public CategorySet UpdateRightContext(CategoryLabel category, string right)
         {
             // Add the context
-            var catKnowledge0 = _categories[category];
+            var catKnowledge0 = _terminalCategories[category];
             var catKnowledge1 = catKnowledge0.AddRightContext(right);
 
             // Update the dictionary entry
-            var categories1 = _categories.SetItem(category, catKnowledge1);
+            var categories1 = _terminalCategories.SetItem(category, catKnowledge1);
 
             return new CategorySet(_root, categories1);
         }
@@ -98,52 +101,52 @@ namespace LearningEngine
         // Add a word to a category
         public CategorySet UpdateWord(CategoryLabel category, string word)
         {
-            // Add word to CategoryKnowledge corresponding to given CategoryLabel
-            var catKnowledge0 = _categories[category];
+            // Add word to WordDistributionSet corresponding to given CategoryLabel
+            var catKnowledge0 = _terminalCategories[category];
             var catKnowledge1 = catKnowledge0.AddWord(word);
 
-            // Update entry with new version of CategoryKnowledge
-            var categories1 = _categories.SetItem(category, catKnowledge1);
+            // Update entry with new version of WordDistributionSet
+            var categories1 = _terminalCategories.SetItem(category, catKnowledge1);
 
             return new CategorySet(_root, categories1);
         }
 
-        // Find categories containing a given word
+        // Find terminalCategories containing a given word
         public IEnumerable<CategoryLabel> FindWord(string word)
         {
             // Helper function: does a category contain the word?
-            Predicate<CategoryKnowledge> hasWord = category => category.Words.Contains(word);
+            Predicate<WordDistributionSet> hasWord = category => category.Words.Contains(word);
 
             // For each entry, if it has the word, yield its label
-            return _categories
+            return _terminalCategories
                 .Where(entry => hasWord(entry.Value))
                 .Select(pair => pair.Key);
         }
 
-        // Find categories containing a given left context
+        // Find terminalCategories containing a given left context
         public IEnumerable<CategoryLabel>
             FindLeftContext(string left)
         {
             // Helper function: does a category contain the context?
-            Predicate<CategoryKnowledge> hasLeftContext =
+            Predicate<WordDistributionSet> hasLeftContext =
                 category => category.LeftContext.Contains(left);
 
             // For each entry, if it has the desired context, yield its label
-            return _categories
+            return _terminalCategories
                 .Where(entry => hasLeftContext(entry.Value))
                 .Select(pair => pair.Key);
         }
 
-        // Find categories containing a given right context
+        // Find terminalCategories containing a given right context
         public IEnumerable<CategoryLabel>
             FindRightContext(string right)
         {
             // Helper function: does a category contain the context? 
-            Predicate<CategoryKnowledge> hasRightContext =
+            Predicate<WordDistributionSet> hasRightContext =
                 category => category.RightContext.Contains(right);
 
             // For each entry, if it has the desired context, yield its label
-            return _categories
+            return _terminalCategories
                 .Where(entry => hasRightContext(entry.Value))
                 .Select(pair => pair.Key);
         }
@@ -152,7 +155,7 @@ namespace LearningEngine
         public string GetXmlString()
         {
             var rootEntry = "<cat type=root>" + _root + "</cat>";
-            var otherEntries = string.Join("", _categories
+            var otherEntries = string.Join("", _terminalCategories
                 .Select(x => "<cat type=nonroot>" + x.Value.GetXmlString() + "</cat>")
                 .ToArray());
             return "<syntaxCats>" + rootEntry + otherEntries + "</syntaxCats>";

@@ -6,7 +6,7 @@ namespace LearningEngine
     {
         public static ParentAgent MakeParentAgent()
         {
-            // Categories
+            // TerminalCategories
             var sentCat = CategoryLabel.Create(NodeType.NonTerminal);
             var npCat = CategoryLabel.Create(NodeType.NonTerminal);
             var vpCat = CategoryLabel.Create(NodeType.NonTerminal);
@@ -32,10 +32,10 @@ namespace LearningEngine
                 .AddTerminal(TermNode.Create(nmodCat, "pa", "/x[PA(x)]"))
                 .AddTerminal(TermNode.Create(nmodCat, "bo", "/x[BO(x)]"))
                 .AddTerminal(TermNode.Create(nmodCat, "po", "/x[PO(x)]"))
-                .AddTerminal(TermNode.Create(vCat, "ba", "/y[/x[BA(x, y)]]"))
-                .AddTerminal(TermNode.Create(vCat, "pa", "/y[/x[PA(x, y)]]"))
-                .AddTerminal(TermNode.Create(vCat, "bo", "/y[/x[BO(x, y)]]"))
-                .AddTerminal(TermNode.Create(vCat, "po", "/y[/x[PO(x, y)]]"))
+                .AddTerminal(TermNode.Create(vCat, "kaba", "/y[/x[KABA(x, y)]]"))
+                .AddTerminal(TermNode.Create(vCat, "kapa", "/y[/x[KAPA(x, y)]]"))
+                .AddTerminal(TermNode.Create(vCat, "kabo", "/y[/x[KABO(x, y)]]"))
+                .AddTerminal(TermNode.Create(vCat, "kapo", "/y[/x[KAPO(x, y)]]"))
                 .AddTerminal(TermNode.Create(vCat, "keba", "/y[/x[KEBA(x, y)]]"))
                 .AddTerminal(TermNode.Create(vCat, "kepa", "/y[/x[KEPA(x, y)]]"))
                 .AddTerminal(TermNode.Create(vCat, "kebo", "/y[/x[KEBO(x, y)]]"))

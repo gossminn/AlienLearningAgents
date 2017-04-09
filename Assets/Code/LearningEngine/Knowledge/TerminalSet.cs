@@ -33,6 +33,12 @@ namespace LearningEngine
             return new TerminalSet(_terminals.Add(node));
         }
 
+        // Factory method: add multiple TermNodes
+        public TerminalSet AddTerminals(IEnumerable<TermNode> nodes)
+        {
+            return nodes.Aggregate(this, (x, y) => x.AddTerminal(y));
+        }
+
         // Factory method: remove a TermNode from an existing TerminalSet
         public TerminalSet RemoveTerminal(TermNode node)
         {

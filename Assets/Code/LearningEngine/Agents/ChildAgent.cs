@@ -7,7 +7,7 @@ namespace LearningEngine
     internal class ChildAgent : LanguageAgent
     {
         // Random number generator
-        private static readonly Random Random = new Random();
+        private static readonly Random _random = new Random();
 
         // Current sentence
         private readonly string _current;
@@ -21,16 +21,12 @@ namespace LearningEngine
         {
             _memory = memory;
             _current = sentence;
-            DebugHelpers.WriteXMLFile(_memory.ToXmlString() + GetXmlString());
-            DebugHelpers.WriteCatNumbers(knowledge.RawCategories.Count,
-                knowledge.GeneralizedCategories.Count);
         }
 
         public string Current
         {
             get { return _current; }
         }
-
 
         // Factory method: create empty instance
         public static ChildAgent Initialize()
@@ -45,17 +41,32 @@ namespace LearningEngine
             // Add input to memory
             var memory = _memory.Memorize(input);
 
-            // Learn categories
-            var rawCategories = _knowledge.RawCategories.ProcessInput(input);
-            var generalizedCategories = rawCategories.Generalize();
+            // Learn terminal terminalCategories
+            var categories0 = _knowledge.RawCategories.ProcessInput(input);
+            var categories1 = categories0.GeneralizeContexts();
+
+            // Generate terminal nodes and rules
+            var termNodes = categories1.GenerateTerminals();
+            var termRules = termNodes.ExtractRules().Cast<ISyntaxRule>();
+
+            // Learn constituents
+
+            // Add TermRules
+            var ruleSet0 = RuleSet.CreateEmpty().AddRules(termRules);
+
+            // Add NonTermRules
+            var categories2 = ruleSet0.ProcessInput(categories1, input);
+
+            // Update knowledge set
             var knowledge = _knowledge
-                .UpdateRawCategories(rawCategories)
-                .UpdateGeneralizedCategories(generalizedCategories);
+                .UpdateRawCategories(categories0)
+                .UpdateGeneralizedCategories(categories1)
+                .UpdateTerminals(termNodes)
+                .UpdateRules(ruleSet0);
 
-            //// Update syntax rules
-            //var knowledge1 = NonTerminalLearning.UpdateNonTerms(
-            //    knowledge0, memory0, input);
-
+            // Write output files
+            DebugHelpers.WriteCatNumbers(categories0.Count, categories1.Count);
+            DebugHelpers.WriteXmlFile(_memory.ToXmlString() + GetXmlString());
             return new ChildAgent(knowledge, _current, memory);
         }
 
@@ -74,7 +85,7 @@ namespace LearningEngine
         // Simplistic version: just produce random sentence from memory
         public ChildAgent SaySomething()
         {
-            var n = Random.Next(_memory.Size);
+            var n = _random.Next(_memory.Size);
             var sentence = n == 0
                 ? _memory.Sentences.First()
                 : _memory.Sentences.Take(n).Last();

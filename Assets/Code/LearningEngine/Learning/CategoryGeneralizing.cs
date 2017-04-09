@@ -4,145 +4,123 @@ using System.Linq;
 
 namespace LearningEngine
 {
-    // Algorithm for generalizing raw categories
+    // Algorithm for generalizing raw terminalCategories
     internal static class CategoryGeneralizing
     {
-        // Helper: check for subset relation in a pair of CategoryKnowledge
-        private static bool HasSubsetRelation(CategoryPair pair)
+        // Merge contexts that are similar (have the same left or right part)
+        public static CategorySet GeneralizeContexts(this CategorySet categorySet)
         {
-            var firstIsSubset = pair.First.Words.All(pair.Second.Words.Contains);
-            var secondIsSubset = pair.Second.Words.All(pair.First.Words.Contains);
-            return firstIsSubset || secondIsSubset;
+            // Helper function: add new category
+            Func<CategorySet, WordDistributionSet, CategorySet> addToSet =
+                (acc, next) => acc.AddCategory(CategoryLabel.Create(NodeType.Terminal), next);
+
+            // Construct initial merge helper object
+            var emptyList = ImmutableList<WordDistributionSet>.Empty;
+            var categories = categorySet.TerminalCategories.Values.ToImmutableList();
+            var mergeState0 = new MergeStateHelper(false, categories, categories, emptyList);
+
+            // Merge terminalCategories and add to new CategorySet
+            var mergeState1 = MergeCategories(mergeState0);
+            return mergeState1._done.Aggregate(CategorySet.CreateEmpty(), addToSet);
         }
 
-        // Helper: do a merger based on a CategoryPair and a MergeHelper
-        private static CategoryKnowledge MergePair(MergeHelper helper, CategoryPair pair)
+        // Helper: check if the contexts of two terminalCategories are the same
+        private static bool CompareContexts(WordDistributionSet cat1, WordDistributionSet cat2)
         {
-            // First category already in merger?
-            if (helper.Done.Contains(pair.First))
+            // Overlap in left contexts?
+            if (cat1.LeftContext.Intersect(cat2.LeftContext).Any())
             {
-                // Merge second with merger containing first
-                var merger = helper.Merged
-                    .First(x => pair.First.Words.All(y => x.Words.Contains(y)));
-                return pair.Second.Merge(merger);
+                return true;
             }
 
-            // Second category already in merger?
-            if (helper.Done.Contains(pair.Second))
+            // Overlap in right contexts?
+            if (cat1.RightContext.Intersect(cat2.RightContext).Any())
             {
-                // Merge first with merger containing second
-                var merger = helper.Merged
-                    .First(x => pair.Second.Words.All(y => x.Words.Contains(y)));
-                return pair.First.Merge(merger);
+                return true;
             }
 
-            // No merge exists? Merge with each other
-            return pair.First.Merge(pair.Second);
+            // Else: no match, direction undefined
+            return false;
         }
 
-        // Merge or keep singletons
-        private static MergeHelper ProcessPairs(MergeHelper helper, CategoryPair pair)
+        private static MergeStateHelper MergeCategories(MergeStateHelper helper)
         {
-            // Helper function: find duplicate mergers
-            Predicate<CategoryKnowledge> isDuplicate =
-                cat1 => helper.Merged.Any(cat2 => CategoryKnowledge.AreEquivalent(cat1, cat2));
+            // Get next merge state
+            var transformed = NextMergeState(helper);
+            return transformed._finished
+                // If done, return that state
+                ? transformed
 
-            // If no subset relation: add both parts of pair as singletons
-            if (!HasSubsetRelation(pair))
+                // Else: repeat
+                : MergeCategories(transformed);
+        }
+
+        private static MergeStateHelper NextMergeState(MergeStateHelper state)
+        {
+            // _busy is empty? Return finished state
+            if (state._busy.IsEmpty)
             {
-                // If first part of pair is already part of merger, skip it
-                var singletons1 = helper.Done.Contains(pair.First)
-                    ? helper.Singletons
-                    : helper.Singletons.Add(pair.First);
-
-                // Idem dito for second part of pair
-                var singletons2 = helper.Done.Contains(pair.Second)
-                    ? singletons1
-                    : singletons1.Add(pair.Second);
-
-                return new MergeHelper(helper.Done, helper.Merged, singletons2);
+                return new MergeStateHelper(true, state._busy, state._todo, state._done);
             }
 
-            // If there is subset relation: merge, and remove from singletons
-            // Remove both parts of pair from singletons (if applicable)
-            var singletons = helper.Singletons
-                .Remove(pair.First)
-                .Remove(pair.Second);
-
-            // Merge the pair, add to merged if this merger does not exist already
-            var merger = MergePair(helper, pair);
-            var merged = isDuplicate(merger)
-                ? helper.Merged
-                : helper.Merged.Add(merger);
-
-            // Add both parts of pair to done
-            var done = helper.Done.Add(pair.First).Add(pair.Second);
-
-            return new MergeHelper(done, merged, singletons);
-        }
-
-        // Generalize similar categories
-        public static CategorySet Generalize(this CategorySet categories0)
-        {
-            // All pairs of CategoryKnowledge
-            var pairs = categories0.Categories
-                .SelectMany(x => categories0.Categories
-                    .Where(y => x.Value != y.Value)
-                    .Select(y => new CategoryPair(x.Value, y.Value)));
-
-            // Create empty instance of helper struct
-            var emptySet = ImmutableHashSet<CategoryKnowledge>.Empty;
-            var emptyHelper = new MergeHelper(emptySet, emptySet, emptySet);
-
-            // Loop through pairs and process them
-            var result = pairs.Aggregate(emptyHelper, ProcessPairs);
-
-            // Create new categories
-            var categories = result.Merged.Union(result.Singletons);
-
-            // Generate new category set
-            return categories.Aggregate(
-                CategorySet.CreateEmpty(),
-                (acc, next) => acc.AddCategory(CategoryLabel.Create(NodeType.Terminal), next));
-        }
-
-        // Helper for keeping two pairs of categories together
-        private struct CategoryPair
-        {
-            // First category
-            public readonly CategoryKnowledge First;
-
-            // Second category
-            public readonly CategoryKnowledge Second;
-
-            // Constructor
-            public CategoryPair(CategoryKnowledge first, CategoryKnowledge second)
+            // _todo is empty? Mark first element of _busy as done, move rest to todo
+            if (state._todo.IsEmpty)
             {
-                First = first;
-                Second = second;
+                var current = state._busy.First();
+                var newList = state._busy.Remove(current);
+                var done = state._done.Add(current);
+                return new MergeStateHelper(false, newList, newList, done);
+            }
+
+            // _todo same as _busy
+            if (state._todo.SequenceEqual(state._busy))
+            {
+                var current = state._todo.First();
+                var todo = state._todo.Remove(current);
+                return new MergeStateHelper(false, state._busy, todo, state._done);
+            }
+
+            // Compare and merge if appropriate
+            else
+            {
+                var current = state._busy.First();
+                var target = state._todo.First();
+
+                // Check if the contexts of the two terminalCategories match
+                if (CompareContexts(current, target))
+                {
+                    var merged = current.Merge(target);
+                    var busy = state._busy
+                        .Remove(current)
+                        .Remove(target)
+                        .Insert(0, merged);
+                    var todo = state._todo.Remove(target);
+                    return new MergeStateHelper(false, busy, todo, state._done);
+                }
+                else
+                {
+                    var todo = state._todo.Remove(target);
+                    return new MergeStateHelper(false, state._busy, todo, state._done);
+
+                }
             }
         }
 
-        // Helper for keeping lists together during the merging process
-        private struct MergeHelper
+        // Helper for storing intermediate merge results
+        private struct MergeStateHelper
         {
-            // Old versions of merged pairs
-            public readonly ImmutableHashSet<CategoryKnowledge> Done;
+            public readonly bool _finished;
+            public readonly ImmutableList<WordDistributionSet> _busy;
+            public readonly ImmutableList<WordDistributionSet> _todo;
+            public readonly ImmutableList<WordDistributionSet> _done;
 
-            // Merged versions
-            public readonly ImmutableHashSet<CategoryKnowledge> Merged;
-
-            // Pairs that remain independent
-            public readonly ImmutableHashSet<CategoryKnowledge> Singletons;
-
-            // Constructor
-            public MergeHelper(ImmutableHashSet<CategoryKnowledge> done,
-                ImmutableHashSet<CategoryKnowledge> merged,
-                ImmutableHashSet<CategoryKnowledge> singletons)
+            public MergeStateHelper(bool finished, ImmutableList<WordDistributionSet> busy,
+                ImmutableList<WordDistributionSet> todo, ImmutableList<WordDistributionSet> done)
             {
-                Done = done;
-                Merged = merged;
-                Singletons = singletons;
+                _finished = finished;
+                _busy = busy;
+                _todo = todo;
+                _done = done;
             }
         }
     }

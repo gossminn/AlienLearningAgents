@@ -4,6 +4,7 @@
     {
         // Branches
         private readonly ITreeNode _left;
+
         private readonly ITreeNode _right;
 
         // Semantic value
@@ -28,6 +29,11 @@
         public SemValue Semantics
         {
             get { return _semantics; }
+        }
+
+        public CategoryLabel Category
+        {
+            get { return _synCat; }
         }
 
         public string GetXmlString()

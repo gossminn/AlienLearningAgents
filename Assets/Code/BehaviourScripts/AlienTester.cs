@@ -4,42 +4,68 @@ using UnityEngine.UI;
 
 public class AlienTester : MonoBehaviour
 {
-    private ParentAgent parentAgent;
-    private ChildAgent childAgent;
-    public TextMesh parentText;
-    public TextMesh childText;
-    public Button parentButton;
-    public Button childButton;
-    public Button evaluateButton;
+    private ChildAgent _childAgent;
+    public Button _childButton;
+    public TextMesh _childText;
+    public Button _evaluateButton;
+    private ParentAgent _parentAgent;
+    public Button _parentButton;
+    public TextMesh _parentText;
+    public InputField _repeatInput;
+    public Button _repeatButton;
 
-	// Use this for initialization
-	void Start ()
+
+    // Use this for initialization
+    private void Start()
     {
-        parentAgent = AlienLanguage.MakeParentAgent();
-        childAgent = ChildAgent.Initialize();
-        parentButton.onClick.AddListener(ParentSay);
-        childButton.onClick.AddListener(ChildSay);
-        evaluateButton.onClick.AddListener(EvaluateSent);
-	}
+        // Initialize agents
+        _parentAgent = AlienLanguage.MakeParentAgent();
+        _childAgent = ChildAgent.Initialize();
+
+        // Add listeners for buttons
+        _parentButton.onClick.AddListener(ParentSay);
+        _childButton.onClick.AddListener(ChildSay);
+        _evaluateButton.onClick.AddListener(EvaluateSent);
+        _repeatButton.onClick.AddListener(RunSimulation);
+    }
 
     private void ParentSay()
     {
-        parentAgent = parentAgent.SaySomething();
-        parentText.text = parentAgent.CurrentSentence;
+        _parentAgent = _parentAgent.SaySomething();
+        _parentText.text = _parentAgent.CurrentSentence;
     }
 
     private void ChildSay()
     {
-        childAgent = childAgent.Learn(parentAgent.CurrentSentence);
-        childAgent = childAgent.SaySomething();
-        childText.text = childAgent.Current;
+        _childAgent = _childAgent.Learn(_parentAgent.CurrentSentence);
+        _childAgent = _childAgent.SaySomething();
+        _childText.text = _childAgent.Current;
     }
 
     private void EvaluateSent()
     {
-        var sentence = childAgent.Current;
-        var feedback = parentAgent.ProvideFeedback(sentence);
-        parentText.text = feedback.ToString();
-        childAgent = childAgent.EvaluateFeedback(feedback);
+        var sentence = _childAgent.Current;
+        var feedback = _parentAgent.ProvideFeedback(sentence);
+        _parentText.text = feedback.ToString();
+        _childAgent = _childAgent.EvaluateFeedback(feedback);
+    }
+    
+    // Run the simulation automatically (repeat n times)
+    private void RunSimulation()
+    {
+        var repetitions = ParseRepetitions();
+        for (var i = 0; i < repetitions; i++)
+        {
+            ParentSay();
+            ChildSay();
+            //EvaluateSent(); TODO: enable when implemented
+        }
+    }
+
+    // Get number of repetitions from text field
+    private int ParseRepetitions()
+    {
+        int n;
+        return int.TryParse(_repeatInput.text, out n) ? n : 0;
     }
 }

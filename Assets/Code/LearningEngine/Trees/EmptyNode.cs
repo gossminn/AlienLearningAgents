@@ -11,6 +11,11 @@
             _identifier = _counter++;
         }
 
+        public CategoryLabel Category
+        {
+            get { return CategoryLabel.EmptyCat; }
+        }
+
         public int Identifier
         {
             get { return _identifier; }

@@ -1,6 +1,6 @@
 ﻿namespace LearningEngine
 {
-    // Class for labelling syntactic categories
+    // Class for labelling syntactic terminalCategories
     internal class CategoryLabel
     {
         // Counter for identifiers
@@ -9,7 +9,7 @@
         // Empty category
         private static readonly CategoryLabel _emptyCat = new CategoryLabel(0, "", NodeType.NonTerminal);
 
-        // Number for identifying categories
+        // Number for identifying terminalCategories
         private readonly int _identifier;
 
         // Optional: give the category a name

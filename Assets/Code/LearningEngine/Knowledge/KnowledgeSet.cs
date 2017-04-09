@@ -3,10 +3,10 @@
     // Data type for storing the linguistic knowledge of an agent
     internal class KnowledgeSet
     {
-        // Generalized syntactic categories
+        // Generalized syntactic terminalCategories
         private readonly CategorySet _generalizedCategories;
 
-        // 'Raw' (ungeneralized) syntactic categories
+        // 'Raw' (ungeneralized) syntactic terminalCategories
         private readonly CategorySet _rawCategories;
 
         // Rewrite rules
