@@ -8,6 +8,9 @@ namespace LearningEngine
         // Random number generator
         private static readonly Random _random = new Random();
 
+        // Root category
+        private readonly CategoryLabel _rootCat;
+
         // Current sentence
         private readonly ITreeNode _currentSent;
 
@@ -16,11 +19,11 @@ namespace LearningEngine
 
         // Constructor is private, public access through factory methods
         private ParentAgent(
-            KnowledgeSet knowledge, ImmutableList<ITreeNode> sentences,
+            KnowledgeSet knowledge, CategoryLabel rootCat, ImmutableList<ITreeNode> sentences,
             ITreeNode currentSent) : base(knowledge)
         {
-            var rootNode = knowledge.RawCategories.Root;
-            var rootRule = knowledge.Rules.FindWithLeftSide(rootNode);
+            _rootCat = rootCat;
+            var rootRule = knowledge.Rules.FindWithLeftSide(_rootCat);
 
             _sentences = sentences.IsEmpty
                 ? rootRule.GenerateAll(knowledge.Rules).ToImmutableList()
@@ -35,13 +38,16 @@ namespace LearningEngine
 
         // Factory method: create based on rules
         public static ParentAgent Create(
-            CategorySet categories, RuleSet rules, TerminalSet terminals)
+            TerminalCategorySet categories, RuleSet rules, VocabularySet terminals, CategoryLabel rootCat)
         {
+            var categorySet = CategorySet.CreateEmpty().UpdateRawTerminals(categories);
+
             return new ParentAgent(
-                KnowledgeSet.Initialize()
-                    .UpdateRawCategories(categories)
+                KnowledgeSet.CreateEmpty()
+                    .UpdateCategories(categorySet)
                     .UpdateRules(rules)
                     .UpdateTerminals(terminals),
+                rootCat,
                 ImmutableList<ITreeNode>.Empty, EmptyNode.Create());
         }
 
@@ -51,7 +57,7 @@ namespace LearningEngine
             var num = _random.Next(_sentences.Count);
             var sentence = _sentences[num];
             //Debug.Log("Parent says: " + sentence.GetFlatString()); // TODO: remove print after testing
-            return new ParentAgent(_knowledge, _sentences, sentence);
+            return new ParentAgent(_knowledge, _rootCat, _sentences, sentence);
         }
 
         // Provide feedback on utterance of child

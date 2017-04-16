@@ -8,7 +8,7 @@
         private readonly ITreeNode _right;
 
         // Semantic value
-        private readonly SemValue _semantics;
+        private readonly LambdaExpression _semantics;
 
         // Syntactic type
         private readonly CategoryLabel _synCat;
@@ -26,7 +26,7 @@
                 _semantics = _right.Semantics.LambdaApply(_left.Semantics);
         }
 
-        public SemValue Semantics
+        public LambdaExpression Semantics
         {
             get { return _semantics; }
         }

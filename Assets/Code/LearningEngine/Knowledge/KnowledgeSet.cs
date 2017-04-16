@@ -1,38 +1,37 @@
 ﻿namespace LearningEngine
 {
+
     // Data type for storing the linguistic knowledge of an agent
     internal class KnowledgeSet
     {
-        // Generalized syntactic terminalCategories
-        private readonly CategorySet _generalizedCategories;
+        // Syntactic categories
+        private readonly CategorySet _categories;
 
-        // 'Raw' (ungeneralized) syntactic terminalCategories
-        private readonly CategorySet _rawCategories;
+        // Learning helpers
+        private readonly KnowledgeHelperSet _helperSet;
 
         // Rewrite rules
         private readonly RuleSet _rules;
 
         // Terminal nodes (vocabulary)
-        private readonly TerminalSet _terminals;
+        private readonly VocabularySet _terminals;
 
         // Constructor
-        private KnowledgeSet(CategorySet rawCategories, CategorySet generalizedCategories,
-            RuleSet rules, TerminalSet terminals)
+        private KnowledgeSet(CategorySet categories, KnowledgeHelperSet helperSet, RuleSet rules, 
+            VocabularySet terminals)
         {
-            _rawCategories = rawCategories;
-            _generalizedCategories = generalizedCategories;
+            _categories = categories;
+            _helperSet = helperSet;
             _rules = rules;
             _terminals = terminals;
         }
 
-        public CategorySet RawCategories
-        {
-            get { return _rawCategories; }
-        }
+        public KnowledgeHelperSet HelperSet
+        { get { return _helperSet; }}
 
-        public CategorySet GeneralizedCategories
+        public CategorySet Categories
         {
-            get { return _generalizedCategories; }
+            get { return _categories; }
         }
 
         public RuleSet Rules
@@ -40,40 +39,56 @@
             get { return _rules; }
         }
 
-        public TerminalSet Terminals
+        public VocabularySet Terminals
         {
             get { return _terminals; }
         }
 
         // Factory methods
-        public static KnowledgeSet Initialize()
+        public static KnowledgeSet CreateEmpty()
         {
             return new KnowledgeSet(
-                CategorySet.CreateEmpty(),
-                CategorySet.CreateEmpty(),
+                CategorySet.CreateEmpty(), 
+                KnowledgeHelperSet.CreateEmpty(),
                 RuleSet.CreateEmpty(),
-                TerminalSet.CreateEmpty());
+                VocabularySet.CreateEmpty());
         }
 
-        // Replace current CategorySet by a new one
-        public KnowledgeSet UpdateRawCategories(CategorySet rawCategories)
+        // Update syntactic categories
+        public KnowledgeSet UpdateCategories(CategorySet categories)
         {
-            return new KnowledgeSet(rawCategories, _generalizedCategories, _rules, _terminals);
+            return new KnowledgeSet(
+                categories,
+                _helperSet,
+                _rules, 
+                _terminals);
         }
 
-        public KnowledgeSet UpdateGeneralizedCategories(CategorySet generalizedCategories)
+        public KnowledgeSet UpdateHelper(KnowledgeHelperSet helperSet)
         {
-            return new KnowledgeSet(_rawCategories, generalizedCategories, _rules, _terminals);
+            return new KnowledgeSet(
+                _categories,
+                helperSet,
+                _rules,
+                _terminals);
         }
 
         public KnowledgeSet UpdateRules(RuleSet rules)
         {
-            return new KnowledgeSet(_rawCategories, _generalizedCategories, rules, _terminals);
+            return new KnowledgeSet(
+                _categories,
+                _helperSet,
+                rules, 
+                _terminals);
         }
 
-        public KnowledgeSet UpdateTerminals(TerminalSet terminals)
+        public KnowledgeSet UpdateTerminals(VocabularySet terminals)
         {
-            return new KnowledgeSet(_rawCategories, _generalizedCategories, _rules, terminals);
+            return new KnowledgeSet(
+                _categories,
+                _helperSet,
+                _rules, 
+                terminals);
         }
     }
 }

@@ -4,28 +4,29 @@ using System.Linq;
 
 namespace LearningEngine
 {
+
     // Learning algorithm for acquiring (raw) syntactic terminalCategories
     internal static class CategoryLearning
     {
-        // Adapt overall CategorySet based on new input
-        public static CategorySet ProcessInput(this CategorySet categories0, string sentence)
+        // Adapt overall TerminalCategorySet based on new input
+        public static TerminalCategorySet ExtractRawCategories(this TerminalCategorySet categories0, string sentence)
         {
             // Get context for each word
             var contexts = WordContext.GetContexts(sentence);
 
-            // For each word, update the CategorySet, return final result
+            // For each word, update the TerminalCategorySet, return final result
             return contexts.Aggregate(categories0, ProcessWord);
         }
 
-        // Helper function: make intermediate state of CategorySet based on single word
-        private static CategorySet ProcessWord(CategorySet categories0, WordContext context)
+        // Helper function: make intermediate state of TerminalCategorySet based on single word
+        private static TerminalCategorySet ProcessWord(TerminalCategorySet categories0, WordContext context)
         {
             // Helper: add word to a specific context
-            Func<CategorySet, CategoryLabel, CategorySet> addWord =
+            Func<TerminalCategorySet, CategoryLabel, TerminalCategorySet> addWord =
                 (categories, label) => categories.UpdateWord(label, context.Word);
 
             // Helper: add context to a contextset
-            Func<CategorySet, CategoryLabel, CategorySet> addContext =
+            Func<TerminalCategorySet, CategoryLabel, TerminalCategorySet> addContext =
                 (categories, label) => categories
                     .UpdateLeftContext(label, context.Left)
                     .UpdateRightContext(label, context.Right);
@@ -50,7 +51,7 @@ namespace LearningEngine
             }
 
             // Otherwise: add as new category
-            var newCategory = WordDistributionSet.Empty()
+            var newCategory = WordDistributionSet.CreateEmpty()
                 .AddLeftContext(context.Left)
                 .AddRightContext(context.Right)
                 .AddWord(context.Word);

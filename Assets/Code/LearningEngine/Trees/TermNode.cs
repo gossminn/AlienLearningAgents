@@ -3,7 +3,7 @@
     internal class TermNode : ITreeNode
     {
         // Semantics
-        private readonly SemValue _semantics;
+        private readonly LambdaExpression _semantics;
 
         // Syntactic category
         private readonly CategoryLabel _synCat;
@@ -16,7 +16,7 @@
         {
             _synCat = synCat;
             _writtenForm = writtenForm;
-            _semantics = new SemValue(lambdaString);
+            _semantics = new LambdaExpression(lambdaString);
         }
 
         public CategoryLabel Category
@@ -24,7 +24,7 @@
             get { return _synCat; }
         }
 
-        public SemValue Semantics
+        public LambdaExpression Semantics
         {
             get { return _semantics; }
         }

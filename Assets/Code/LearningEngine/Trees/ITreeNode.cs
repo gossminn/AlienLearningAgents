@@ -2,7 +2,7 @@
 {
     internal interface ITreeNode
     {
-        SemValue Semantics { get; }
+        LambdaExpression Semantics { get; }
         CategoryLabel Category { get; }
         string GetXmlString();
         string GetFlatString();

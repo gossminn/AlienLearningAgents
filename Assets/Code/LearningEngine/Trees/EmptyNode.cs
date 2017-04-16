@@ -4,7 +4,7 @@
     {
         private static int _counter;
         private readonly int _identifier;
-        private readonly SemValue _semantics = new SemValue("");
+        private readonly LambdaExpression _semantics = new LambdaExpression("");
 
         private EmptyNode()
         {
@@ -21,7 +21,7 @@
             get { return _identifier; }
         }
 
-        public SemValue Semantics
+        public LambdaExpression Semantics
         {
             get { return _semantics; }
         }

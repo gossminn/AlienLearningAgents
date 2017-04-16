@@ -7,7 +7,7 @@ namespace LearningEngine
     {
         public static void EnglishTest()
         {
-            // TerminalCategories
+            // Categories
             var sentCat = CategoryLabel.Create(NodeType.NonTerminal);
             var npCat = CategoryLabel.Create(NodeType.NonTerminal);
             var vpCat = CategoryLabel.Create(NodeType.NonTerminal);
@@ -72,8 +72,8 @@ namespace LearningEngine
 
         public static void LambdaTest()
         {
-            var lambda = new SemValue("/X[/Y[PA(X,Y)]]");
-            var applied = lambda.LambdaApply(new SemValue("BA(DU)"));
+            var lambda = new LambdaExpression("/X[/Y[PA(X,Y)]]");
+            var applied = lambda.LambdaApply(new LambdaExpression("BA(DU)"));
             Debug.Log(applied.Value);
         }
     }

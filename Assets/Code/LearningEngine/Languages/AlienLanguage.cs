@@ -6,7 +6,7 @@ namespace LearningEngine
     {
         public static ParentAgent MakeParentAgent()
         {
-            // TerminalCategories
+            // Categories
             var sentCat = CategoryLabel.Create(NodeType.NonTerminal);
             var npCat = CategoryLabel.Create(NodeType.NonTerminal);
             var vpCat = CategoryLabel.Create(NodeType.NonTerminal);
@@ -14,8 +14,10 @@ namespace LearningEngine
             var nmodCat = CategoryLabel.Create(NodeType.Terminal);
             var vCat = CategoryLabel.Create(NodeType.Terminal);
 
-            var categorySet = CategorySet.CreateEmpty()
-                .SetRootCat(sentCat)
+            // Set root category
+            var rootCat = sentCat;
+
+            var categorySet = TerminalCategorySet.CreateEmpty()
                 .AddCategory(npCat)
                 .AddCategory(vpCat)
                 .AddCategory(nrootCat)
@@ -23,7 +25,7 @@ namespace LearningEngine
                 .AddCategory(vCat);
 
             // Terminals
-            var terminalSet = TerminalSet.CreateEmpty()
+            var terminalSet = VocabularySet.CreateEmpty()
                 .AddTerminal(TermNode.Create(nrootCat, "wu", "WU"))
                 .AddTerminal(TermNode.Create(nrootCat, "zu", "ZU"))
                 .AddTerminal(TermNode.Create(nrootCat, "lu", "LU"))
@@ -50,7 +52,7 @@ namespace LearningEngine
             var rules = terminalRules.Aggregate(nonTermSet, (acc, next) => acc.AddRule(next));
 
             // Parent agent
-            return ParentAgent.Create(categorySet, rules, terminalSet);
+            return ParentAgent.Create(categorySet, rules, terminalSet, rootCat);
         }
     }
 }

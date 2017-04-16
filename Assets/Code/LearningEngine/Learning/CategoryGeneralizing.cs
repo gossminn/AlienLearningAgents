@@ -8,20 +8,20 @@ namespace LearningEngine
     internal static class CategoryGeneralizing
     {
         // Merge contexts that are similar (have the same left or right part)
-        public static CategorySet GeneralizeContexts(this CategorySet categorySet)
+        public static TerminalCategorySet GeneralizeContexts(this TerminalCategorySet categorySet)
         {
             // Helper function: add new category
-            Func<CategorySet, WordDistributionSet, CategorySet> addToSet =
+            Func<TerminalCategorySet, WordDistributionSet, TerminalCategorySet> addToSet =
                 (acc, next) => acc.AddCategory(CategoryLabel.Create(NodeType.Terminal), next);
 
             // Construct initial merge helper object
             var emptyList = ImmutableList<WordDistributionSet>.Empty;
-            var categories = categorySet.TerminalCategories.Values.ToImmutableList();
+            var categories = categorySet.Categories.Values.ToImmutableList();
             var mergeState0 = new MergeStateHelper(false, categories, categories, emptyList);
 
-            // Merge terminalCategories and add to new CategorySet
+            // Merge terminalCategories and add to new TerminalCategorySet
             var mergeState1 = MergeCategories(mergeState0);
-            return mergeState1._done.Aggregate(CategorySet.CreateEmpty(), addToSet);
+            return mergeState1._done.Aggregate(TerminalCategorySet.CreateEmpty(), addToSet);
         }
 
         // Helper: check if the contexts of two terminalCategories are the same
