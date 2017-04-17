@@ -1,6 +1,6 @@
 ﻿namespace LearningEngine
 {
-    internal enum EntitySpecies
+    internal enum AnimalSpecies
     {
         Rabbit,
         Duck,

@@ -15,8 +15,8 @@ public class SimulationController : MonoBehaviour
     public Button RepeatButton;
 
     // UI: text meshes
-    public TextMesh ChildText;
-    public TextMesh ParentText;
+    public Text ChildText;
+    public Text ParentText;
 
     // UI: text input
     public InputField RepeatInput;
