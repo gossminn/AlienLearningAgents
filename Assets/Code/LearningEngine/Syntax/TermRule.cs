@@ -27,17 +27,17 @@ namespace LearningEngine
             get { return _left; }
         }
 
-        public IEnumerable<ITreeNode> GenerateAll(RuleSet _)
+        public IEnumerable<ITreeNode> GenerateAll(RuleSet _, LogicalModel model)
         {
             return _right.AsEnumerable().Cast<ITreeNode>();
         }
 
-        public ParseResult Parse(ImmutableList<string> input, RuleSet rules)
+        public ParseResult Parse(ImmutableList<string> input, RuleSet rules, LogicalModel model)
         {
-            return Parse(input, rules, 0);
+            return Parse(input, rules, 0, model);
         }
 
-        public ParseResult Parse(ImmutableList<string> input, RuleSet _, int n)
+        public ParseResult Parse(ImmutableList<string> input, RuleSet _, int n, LogicalModel model)
         {
             Predicate<TermNode> match = x => x.GetFlatString() == input[n];
 

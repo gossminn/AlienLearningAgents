@@ -1,5 +1,7 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
+using System.Linq;
+using UnityEngine;
+using Random = System.Random;
 
 namespace LearningEngine
 {
@@ -17,17 +19,28 @@ namespace LearningEngine
         // List of possible sentences
         private readonly ImmutableList<ITreeNode> _sentences;
 
+        // Current logicalmodel
+        private readonly LogicalModel _model;
+
         // Constructor is private, public access through factory methods
-        private ParentAgent(
-            KnowledgeSet knowledge, CategoryLabel rootCat, ImmutableList<ITreeNode> sentences,
-            ITreeNode currentSent) : base(knowledge)
+        private ParentAgent(KnowledgeSet knowledge, CategoryLabel rootCat, ITreeNode currentSent,
+            LogicalModel model) : base(knowledge)
         {
             _rootCat = rootCat;
             var rootRule = knowledge.Rules.FindWithLeftSide(_rootCat);
 
-            _sentences = sentences.IsEmpty
-                ? rootRule.GenerateAll(knowledge.Rules).ToImmutableList()
-                : sentences;
+            _sentences = rootRule
+                    .GenerateAll(knowledge.Rules, model)
+                    .Where(x => x.GetTruthValue())
+                    .ToImmutableList();
+
+            _model = model;
+
+            if (_sentences.Count == 0)
+            {
+                Debug.Log("No sentences!");
+            }
+
             _currentSent = currentSent;
         }
 
@@ -37,8 +50,8 @@ namespace LearningEngine
         }
 
         // Factory method: create based on rules
-        public static ParentAgent Create(
-            TerminalCategorySet categories, RuleSet rules, VocabularySet terminals, CategoryLabel rootCat)
+        public static ParentAgent Create(TerminalCategorySet categories, RuleSet rules,
+            VocabularySet terminals, CategoryLabel rootCat, LogicalModel model)
         {
             var categorySet = CategorySet.CreateEmpty().UpdateRawTerminals(categories);
 
@@ -47,8 +60,7 @@ namespace LearningEngine
                     .UpdateCategories(categorySet)
                     .UpdateRules(rules)
                     .UpdateTerminals(terminals),
-                rootCat,
-                ImmutableList<ITreeNode>.Empty, EmptyNode.Create());
+                rootCat, EmptyNode.Create(), model);
         }
 
         // 'Say' something
@@ -56,8 +68,13 @@ namespace LearningEngine
         {
             var num = _random.Next(_sentences.Count);
             var sentence = _sentences[num];
-            //Debug.Log("Parent says: " + sentence.GetFlatString()); // TODO: remove print after testing
-            return new ParentAgent(_knowledge, _rootCat, _sentences, sentence);
+            return new ParentAgent(_knowledge, _rootCat, sentence, _model);
+        }
+
+        // Update model
+        public ParentAgent UpdateModel(LogicalModel model)
+        {
+            return new ParentAgent(_knowledge, _rootCat, _currentSent, model);
         }
 
         // Provide feedback on utterance of child

@@ -1,5 +1,6 @@
 namespace LearningEngine
 {
+    // Option type for storing result of semantic function application
     internal class SemanticResult
     {
         private readonly bool _success;
@@ -13,7 +14,7 @@ namespace LearningEngine
 
         public static SemanticResult CreateFailure()
         {
-            return new SemanticResult(false, null);
+            return new SemanticResult(false, EmptyValue.Create());
         }
 
         public static SemanticResult CreateSuccess(ISemanticValue value)

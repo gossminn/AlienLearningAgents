@@ -94,5 +94,13 @@ namespace LearningEngine
 
             return new LogicalModel(orientations, spatialRelations2, species);
         }
+
+        public static LogicalModel CreateEmpty()
+        {
+            return new LogicalModel(
+                OrientationSet.CreateEmtpy(),
+                SpatialRelationSet.CreateEmpty(),
+                SpeciesSet.CreateEmpty());
+        }
     }
 }

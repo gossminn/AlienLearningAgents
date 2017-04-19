@@ -8,6 +8,9 @@ public class SimulationController : MonoBehaviour
     private ChildAgent _childAgent;
     private ParentAgent _parentAgent;
 
+    // Model
+    private LogicalModel _model;
+
     // UI: buttons
     public Button ChildButton;
     public Button ParentButton;
@@ -20,7 +23,10 @@ public class SimulationController : MonoBehaviour
 
     // UI: text input
     public InputField RepeatInput;
-    
+
+    // Visualizer
+    public EntityVisualizer Visualizer;
+
     // Use this for initialization
     private void Start()
     {
@@ -33,11 +39,22 @@ public class SimulationController : MonoBehaviour
         ChildButton.onClick.AddListener(ChildSay);
         EvaluateButton.onClick.AddListener(EvaluateSent);
         RepeatButton.onClick.AddListener(RunSimulation);
+
+        // Initialize visualizer
+        Visualizer = GetComponent<EntityVisualizer>();
     }
 
     private void ParentSay()
     {
-        _parentAgent = _parentAgent.SaySomething();
+        // Generate and visualize new situation
+        var situation = Situation.Generate();
+        Visualizer.Visualize(situation);
+
+        // Create model from situation
+        _model = LogicalModel.Create(situation);
+
+        // Parent says something
+        _parentAgent = _parentAgent.UpdateModel(_model).SaySomething();
         ParentText.text = _parentAgent.CurrentSentence;
     }
 

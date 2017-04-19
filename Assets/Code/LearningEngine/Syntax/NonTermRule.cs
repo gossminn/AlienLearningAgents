@@ -35,16 +35,17 @@ namespace LearningEngine
             get { return _left; }
         }
 
-        public ParseResult Parse(ImmutableList<string> input, RuleSet rules)
+        public ParseResult Parse(ImmutableList<string> input, RuleSet rules, LogicalModel model)
         {
-            return Parse(input, rules, 0);
+            return Parse(input, rules, 0, model);
         }
 
-        public ParseResult Parse(ImmutableList<string> input, RuleSet rules, int n)
+        public ParseResult Parse(ImmutableList<string> input, RuleSet rules, int n,
+            LogicalModel model)
         {
             // Find rule for right1 and try to apply it
             var rule1 = rules.FindWithLeftSide(_right1);
-            var result1 = rule1.Parse(input, rules, n);
+            var result1 = rule1.Parse(input, rules, n, model);
 
             // If unsuccesful, return failure
             if (!result1.Success)
@@ -53,13 +54,13 @@ namespace LearningEngine
             // If rule is unary: return success
             if (_right2 == CategoryLabel.EmptyCat)
                 return ParseResult.MakeSuccess(
-                    NonTermNode.Create(_left, result1.Tree, EmptyNode.Create(), _functor),
+                    NonTermNode.Create(_left, result1.Tree, EmptyNode.Create(), _functor, model),
                     result1.Index
                 );
 
             // Find rule for right2 and try to apply
             var rule2 = rules.FindWithLeftSide(_right2);
-            var result2 = rule2.Parse(input, rules, result1.Index);
+            var result2 = rule2.Parse(input, rules, result1.Index, model);
 
             // If unsuccesful, return failure
             if (!result2.Success)
@@ -67,28 +68,28 @@ namespace LearningEngine
 
             // Return final result
             return ParseResult.MakeSuccess(
-                NonTermNode.Create(_left, result1.Tree, result2.Tree, _functor),
+                NonTermNode.Create(_left, result1.Tree, result2.Tree, _functor, model),
                 result2.Index
             );
         }
 
-        public IEnumerable<ITreeNode> GenerateAll(RuleSet rules)
+        public IEnumerable<ITreeNode> GenerateAll(RuleSet rules, LogicalModel model)
         {
             // If rule is unary: return all possible values for right1
             if (_right2 == CategoryLabel.EmptyCat)
                 return rules.FindWithLeftSide(_right1)
-                    .GenerateAll(rules)
-                    .Select(child => NonTermNode.Create(_left, child, EmptyNode.Create(), _functor))
+                    .GenerateAll(rules, model)
+                    .Select(child => NonTermNode.Create(
+                        _left, child, EmptyNode.Create(), _functor, model))
                     .Cast<ITreeNode>();
 
             // If rule is binary: return combinations of right1 and right2
             return rules.FindWithLeftSide(_right1)
-                .GenerateAll(rules)
+                .GenerateAll(rules, model)
                 .SelectMany(child1 => rules.FindWithLeftSide(_right2)
-                    .GenerateAll(rules)
-                    .Select(child2 => NonTermNode.Create(_left, child1, child2, _functor))
-                )
-                .Cast<ITreeNode>();
+                    .GenerateAll(rules, model)
+                    .Select(child2 => NonTermNode.Create(_left, child1, child2, _functor, model))
+                    .Cast<ITreeNode>());
         }
 
         public string GetXmlString()
@@ -100,7 +101,8 @@ namespace LearningEngine
         }
 
         // Factory methods for unary and binary rules
-        public static NonTermRule CreateUnary(CategoryLabel left, CategoryLabel right)
+        public static NonTermRule CreateUnary(CategoryLabel left, CategoryLabel right,
+            LogicalModel model)
         {
             return new NonTermRule(left, right, CategoryLabel.EmptyCat, FunctorLoc.Left);
         }

@@ -8,27 +8,44 @@
         private readonly ITreeNode _right;
 
         // Semantic value
-        private readonly LambdaExpression _semantics;
+        private readonly ISemanticValue _semantics;
 
         // Syntactic type
         private readonly CategoryLabel _synCat;
 
         // Constructor
-        private NonTermNode(CategoryLabel synCat, ITreeNode left, ITreeNode right, FunctorLoc functor)
+        private NonTermNode(CategoryLabel synCat, ITreeNode left, ITreeNode right,
+            FunctorLoc functor, LogicalModel model)
         {
             _synCat = synCat;
             _left = left;
             _right = right;
 
             if (functor == FunctorLoc.Left)
-                _semantics = _left.Semantics.LambdaApply(_right.Semantics);
+                _semantics = _left.GetSemantics(model).TryApply(right.GetSemantics(model)).Value;
             else
-                _semantics = _right.Semantics.LambdaApply(_left.Semantics);
+                _semantics = _right.GetSemantics(model).TryApply(_left.GetSemantics(model)).Value;
         }
 
-        public LambdaExpression Semantics
+        public ISemanticValue Semantics
         {
             get { return _semantics; }
+        }
+
+        // TODO: is LogicModel parameter really necessary?
+        public ISemanticValue GetSemantics(LogicalModel model)
+        {
+            return _semantics;
+        }
+
+        public bool GetTruthValue()
+        {
+            if (_semantics is TypeTValue)
+            {
+                var typeT = (TypeTValue) _semantics;
+                return typeT.Value;
+            }
+            return false;
         }
 
         public CategoryLabel Category
@@ -38,7 +55,7 @@
 
         public string GetXmlString()
         {
-            return "<" + _synCat + " value={" + _semantics.Value
+            return "<" + _synCat + " value={" + _semantics
                    + ">" + _left.GetXmlString() + _right.GetXmlString() + "</{_synCat}>";
         }
 
@@ -48,9 +65,10 @@
             return entries.Trim();
         }
 
-        public static NonTermNode Create(CategoryLabel synCat, ITreeNode left, ITreeNode right, FunctorLoc functor)
+        public static NonTermNode Create(CategoryLabel synCat, ITreeNode left, ITreeNode right,
+            FunctorLoc functor, LogicalModel model)
         {
-            return new NonTermNode(synCat, left, right, functor);
+            return new NonTermNode(synCat, left, right, functor, model);
         }
     }
 }

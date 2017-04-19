@@ -4,11 +4,12 @@
     {
         private static int _counter;
         private readonly int _identifier;
-        private readonly LambdaExpression _semantics = new LambdaExpression("");
+        private readonly ISemanticValue _semantics;
 
         private EmptyNode()
         {
             _identifier = _counter++;
+            _semantics = EmptyValue.Create();
         }
 
         public CategoryLabel Category
@@ -21,9 +22,14 @@
             get { return _identifier; }
         }
 
-        public LambdaExpression Semantics
+        public ISemanticValue GetSemantics(LogicalModel model)
         {
-            get { return _semantics; }
+            return _semantics;
+        }
+
+        public bool GetTruthValue()
+        {
+            return false;
         }
 
         public string GetFlatString()

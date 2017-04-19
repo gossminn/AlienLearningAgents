@@ -27,11 +27,24 @@ public class EntityVisualizer : MonoBehaviour
     // Visualizaton method
     internal void Visualize(Situation situation)
     {
+        // Visualize scene
         ResetGameObjects();
         var gameObject1 = GetObject1(situation.Animal1);
         var gameObject2 = GetObject2(situation.Animal2);
         ProcessObject(gameObject1, situation.Animal1);
         ProcessObject(gameObject2, situation.Animal2);
+
+        // Log
+        Debug.Log("E1: " + situation.Animal1.Species + " Lat.: " + situation.Animal1.Latitude +
+              " Long.: " + situation.Animal1.Longitude + " Hem.: " + situation.Animal1.LatHemisphere
+              + " RiverDist.: " + situation.Animal1.RiverDistance + " Direction: "
+              + situation.Animal1.RiverOrientation);
+        Debug.Log("E2: " + situation.Animal2.Species + " Lat.: " + situation.Animal2.Latitude +
+              " Long.: " + situation.Animal2.Longitude + " Hem.: " + situation.Animal2.LatHemisphere
+              + " RiverDist.: " + situation.Animal2.RiverDistance + " Direction: "
+              + situation.Animal2.RiverOrientation);
+
+
     }
 
     // Reset game objects

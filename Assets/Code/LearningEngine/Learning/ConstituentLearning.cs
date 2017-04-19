@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -7,7 +8,7 @@ namespace LearningEngine
     internal static class ConstituentLearning
     {
         // Random number generator
-        private static readonly Random Random = new Random();
+        private static readonly Random _random = new Random();
 
         // Parse a word to get the category label
         private static CategoryLabel ParseTerminal(this RuleSet rules, string word)
@@ -17,12 +18,16 @@ namespace LearningEngine
                 return CategoryLabel.EmptyCat;
 
             var parseInput = ImmutableList<string>.Empty.Add(word);
-            var parseResults = rules.TerminalRules.Select(rule => rule.Parse(parseInput, rules)).ToList();
+            var parseResults = rules.TerminalRules
+                .Select(rule =>
+                    rule.Parse(parseInput, rules, LogicalModel.CreateEmpty()))
+                .ToList();
             return parseResults.First(result => result.Success).Tree.Category;
         }
 
         // Get sequence of category labels
-        private static ImmutableArray<CategoryLabel> GetSequence(string[] words, RuleSet rules)
+        private static ImmutableArray<CategoryLabel> GetSequence(IEnumerable<string> words,
+            RuleSet rules)
         {
             return words.Select(word => rules.ParseTerminal(word)).ToImmutableArray();
         }
@@ -42,7 +47,7 @@ namespace LearningEngine
             ImmutableHashSet<NonTermRule> newRules0, ImmutableArray<CategoryLabel> sequence0)
         {
             // Step 1: randomly group two categories together
-            var num = Random.Next(sequence0.Length - 1);
+            var num = _random.Next(sequence0.Length - 1);
             var firstElem = sequence0[num];
             var secondElem = sequence0[num + 1];
 

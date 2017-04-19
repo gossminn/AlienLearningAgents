@@ -24,24 +24,29 @@ namespace LearningEngine
                 .AddCategory(nmodCat)
                 .AddCategory(vCat);
 
+            // Atomic functions
+            var speciesAtoms = AtomicFunctions.Species.ToArray();
+            var directionAtoms = AtomicFunctions.Directions.ToArray();
+            var spatialAtoms = AtomicFunctions.SpatialRelations.ToArray();
+
             // Terminals
             var terminalSet = VocabularySet.CreateEmpty()
-                .AddTerminal(TermNode.Create(nrootCat, "wu", "WU"))
-                .AddTerminal(TermNode.Create(nrootCat, "zu", "ZU"))
-                .AddTerminal(TermNode.Create(nrootCat, "lu", "LU"))
-                .AddTerminal(TermNode.Create(nrootCat, "du", "DU"))
-                .AddTerminal(TermNode.Create(nmodCat, "ba", "/x[BA(x)]"))
-                .AddTerminal(TermNode.Create(nmodCat, "pa", "/x[PA(x)]"))
-                .AddTerminal(TermNode.Create(nmodCat, "bo", "/x[BO(x)]"))
-                .AddTerminal(TermNode.Create(nmodCat, "po", "/x[PO(x)]"))
-                .AddTerminal(TermNode.Create(vCat, "kaba", "/y[/x[KABA(x, y)]]"))
-                .AddTerminal(TermNode.Create(vCat, "kapa", "/y[/x[KAPA(x, y)]]"))
-                .AddTerminal(TermNode.Create(vCat, "kabo", "/y[/x[KABO(x, y)]]"))
-                .AddTerminal(TermNode.Create(vCat, "kapo", "/y[/x[KAPO(x, y)]]"))
-                .AddTerminal(TermNode.Create(vCat, "keba", "/y[/x[KEBA(x, y)]]"))
-                .AddTerminal(TermNode.Create(vCat, "kepa", "/y[/x[KEPA(x, y)]]"))
-                .AddTerminal(TermNode.Create(vCat, "kebo", "/y[/x[KEBO(x, y)]]"))
-                .AddTerminal(TermNode.Create(vCat, "kepo", "/y[/x[KEPO(x, y)]]"));
+                .AddTerminal(TermNode.Create(nrootCat, "zu", speciesAtoms[0]))
+                .AddTerminal(TermNode.Create(nrootCat, "lu", speciesAtoms[1]))
+                .AddTerminal(TermNode.Create(nrootCat, "wu", speciesAtoms[2]))
+                .AddTerminal(TermNode.Create(nrootCat, "du", speciesAtoms[3]))
+                .AddTerminal(TermNode.Create(nmodCat, "ba", directionAtoms[0]))
+                .AddTerminal(TermNode.Create(nmodCat, "pa", directionAtoms[1]))
+                .AddTerminal(TermNode.Create(nmodCat, "bo", directionAtoms[2]))
+                .AddTerminal(TermNode.Create(nmodCat, "po", directionAtoms[3]))
+                .AddTerminal(TermNode.Create(vCat, "keba", spatialAtoms[0]))
+                .AddTerminal(TermNode.Create(vCat, "kaba", spatialAtoms[1]))
+                .AddTerminal(TermNode.Create(vCat, "kepa", spatialAtoms[2]))
+                .AddTerminal(TermNode.Create(vCat, "kapa", spatialAtoms[3]))
+                .AddTerminal(TermNode.Create(vCat, "kebo", spatialAtoms[4]))
+                .AddTerminal(TermNode.Create(vCat, "kabo", spatialAtoms[5]))
+                .AddTerminal(TermNode.Create(vCat, "kepo", spatialAtoms[6]))
+                .AddTerminal(TermNode.Create(vCat, "kapo", spatialAtoms[7]));
 
             // Ruleset
             var terminalRules = terminalSet.ExtractRules();
@@ -52,7 +57,8 @@ namespace LearningEngine
             var rules = terminalRules.Aggregate(nonTermSet, (acc, next) => acc.AddRule(next));
 
             // Parent agent
-            return ParentAgent.Create(categorySet, rules, terminalSet, rootCat);
+            return ParentAgent.Create(categorySet, rules, terminalSet,
+                rootCat, LogicalModel.CreateEmpty());
         }
     }
 }
