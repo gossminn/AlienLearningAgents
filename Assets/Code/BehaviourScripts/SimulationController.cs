@@ -53,6 +53,11 @@ public class SimulationController : MonoBehaviour
         // Create model from situation
         _model = LogicalModel.Create(situation);
 
+        // TODO: remove after testing
+        _model.PrintSpecies();
+        _model.PrintDirections();
+        _model.PrintRelations();
+
         // Parent says something
         _parentAgent = _parentAgent.UpdateModel(_model).SaySomething();
         ParentText.text = _parentAgent.CurrentSentence;

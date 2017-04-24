@@ -7,27 +7,21 @@
         // Syntactic categories
         private readonly CategorySet _categories;
 
-        // Learning helpers
-        private readonly KnowledgeHelperSet _helperSet;
-
         // Rewrite rules
         private readonly RuleSet _rules;
 
         // Terminal nodes (vocabulary)
         private readonly VocabularySet _terminals;
 
+        // Hypotheses about work mea
+
         // Constructor
-        private KnowledgeSet(CategorySet categories, KnowledgeHelperSet helperSet, RuleSet rules, 
-            VocabularySet terminals)
+        private KnowledgeSet(CategorySet categories, RuleSet rules, VocabularySet terminals)
         {
             _categories = categories;
-            _helperSet = helperSet;
             _rules = rules;
             _terminals = terminals;
         }
-
-        public KnowledgeHelperSet HelperSet
-        { get { return _helperSet; }}
 
         public CategorySet Categories
         {
@@ -48,8 +42,7 @@
         public static KnowledgeSet CreateEmpty()
         {
             return new KnowledgeSet(
-                CategorySet.CreateEmpty(), 
-                KnowledgeHelperSet.CreateEmpty(),
+                CategorySet.CreateEmpty(),
                 RuleSet.CreateEmpty(),
                 VocabularySet.CreateEmpty());
         }
@@ -59,7 +52,6 @@
         {
             return new KnowledgeSet(
                 categories,
-                _helperSet,
                 _rules, 
                 _terminals);
         }
@@ -68,7 +60,6 @@
         {
             return new KnowledgeSet(
                 _categories,
-                helperSet,
                 _rules,
                 _terminals);
         }
@@ -77,7 +68,6 @@
         {
             return new KnowledgeSet(
                 _categories,
-                _helperSet,
                 rules, 
                 _terminals);
         }
@@ -86,7 +76,6 @@
         {
             return new KnowledgeSet(
                 _categories,
-                _helperSet,
                 _rules, 
                 terminals);
         }

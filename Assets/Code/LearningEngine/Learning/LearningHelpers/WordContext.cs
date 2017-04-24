@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace LearningEngine
 {
-
     // Helper class for storing a single word and its context
     internal class WordContext
     {

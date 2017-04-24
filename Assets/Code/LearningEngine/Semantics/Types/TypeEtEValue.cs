@@ -11,6 +11,11 @@ namespace LearningEngine
            _value = value;
         }
 
+        public Func<TypeEtValue, TypeEValue> Value
+        {
+            get { return _value; }
+        }
+
         public static TypeEtEValue Create(Func<TypeEtValue, TypeEValue> value)
         {
             return new TypeEtEValue(value);

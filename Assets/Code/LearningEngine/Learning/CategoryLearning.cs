@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace LearningEngine
 {
-
     // Learning algorithm for acquiring (raw) syntactic terminalCategories
     internal static class CategoryLearning
     {

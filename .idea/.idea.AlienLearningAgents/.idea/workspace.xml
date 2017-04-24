@@ -1,15 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AnalysisUIOptions">
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2e874a9a-c72b-4737-acb3-7bacf1c933af" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Functions/AtomicFunctions.cs.meta" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/LambdaExpression.cs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/LambdaExpression.cs.meta" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/SemBaseType.cs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/SemBaseType.cs.meta" afterPath="" />
+    <list default="true" id="2e874a9a-c72b-4737-acb3-7bacf1c933af" name="Default" comment="Parent agent now has a complete representation of the semantics of the language: given a situation, it can generate all the sentences that are true in that situation. Other changes: cleaned up ChildAgent.Learn() method (each learning step now returns a new knowledge set)">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/IWordHypothesis.cs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/IWordHypothesis.cs.meta" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordHypothesis.cs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordHypothesis.cs.meta" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordHypothesisSet.cs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordHypothesisSet.cs.meta" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/WordSemanticsLearning.cs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/WordSemanticsLearning.cs.meta" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/AtomTypes.cs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/AtomTypes.cs.meta" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/SemanticsTest.cs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/SemanticsTest.cs.meta" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.idea.AlienLearningAgents/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/.idea.AlienLearningAgents/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Assets/Code/BehaviourScripts/SimulationController.cs" afterPath="$PROJECT_DIR$/Assets/Code/BehaviourScripts/SimulationController.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Assets/Code/LearningEngine/Knowledge/KnowledgeSet.cs" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Knowledge/KnowledgeSet.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/CategoryLearning.cs" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/CategoryLearning.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordContext.cs" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordContext.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Types/TypeEtEValue.cs" afterPath="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Types/TypeEtEValue.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Output/AlienKnowledge.xml" afterPath="$PROJECT_DIR$/Output/AlienKnowledge.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Output/CategoryCount.txt" afterPath="$PROJECT_DIR$/Output/CategoryCount.txt" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -20,7 +35,120 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="WordSemanticsLearning.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/WordSemanticsLearning.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="24" lean-forward="false" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+              <folding>
+                <marker date="1493049424499" expanded="true" signature="170:217" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ChildAgent.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Agents/ChildAgent.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1054">
+              <caret line="62" column="37" lean-forward="false" selection-start-line="62" selection-start-column="37" selection-end-line="62" selection-end-column="37" />
+              <folding>
+                <marker date="1493034011594" expanded="true" signature="6:50" ph="..." />
+                <marker date="1493034011594" expanded="true" signature="124:2746" ph="{...}" />
+                <marker date="1493034011594" expanded="true" signature="539:905" ph="{...}" />
+                <marker date="1493034011594" expanded="true" signature="936:993" ph="{...}" />
+                <marker date="1493034011594" expanded="true" signature="1089:1222" ph="{...}" />
+                <marker date="1493034011594" expanded="true" signature="1297:1912" ph="{...}" />
+                <marker date="1493034011594" expanded="true" signature="1922:2021" ph="/* Evaluate feedback ... */" />
+                <marker date="1493034011594" expanded="true" signature="2083:2334" ph="{...}" />
+                <marker date="1493034011594" expanded="true" signature="2344:2435" ph="/* Produce sentence ... */" />
+                <marker date="1493034011594" expanded="true" signature="2476:2740" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="KnowledgeSet.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Knowledge/KnowledgeSet.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="36" lean-forward="false" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
+              <folding>
+                <marker date="1493049716705" expanded="true" signature="125:2062" ph="{...}" />
+                <marker date="1493049716705" expanded="true" signature="381:433" ph="/* Hypotheses about work mea ... */" />
+                <marker date="1493049716705" expanded="true" signature="526:648" ph="{...}" />
+                <marker date="1493049716705" expanded="true" signature="687:747" ph="{...}" />
+                <marker date="1493049716705" expanded="true" signature="777:832" ph="{...}" />
+                <marker date="1493049716705" expanded="true" signature="872:931" ph="{...}" />
+                <marker date="1493049716705" expanded="true" signature="1008:1193" ph="{...}" />
+                <marker date="1493049716705" expanded="true" signature="1302:1441" ph="{...}" />
+                <marker date="1493049716705" expanded="true" signature="1513:1652" ph="{...}" />
+                <marker date="1493049716705" expanded="true" signature="1708:1847" ph="{...}" />
+                <marker date="1493049716705" expanded="true" signature="1917:2056" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NonTerminalHelper.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/NonTerminalHelper.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="30" lean-forward="false" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="30" />
+              <folding>
+                <marker date="1492013064938" expanded="true" signature="183:942" ph="{...}" />
+                <marker date="1492013064938" expanded="true" signature="420:506" ph="{...}" />
+                <marker date="1492013064938" expanded="true" signature="556:616" ph="{...}" />
+                <marker date="1492013064938" expanded="true" signature="668:723" ph="{...}" />
+                <marker date="1492013064938" expanded="true" signature="855:936" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WordHypothesisSet.cs" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordHypothesisSet.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="528">
+              <caret line="46" column="13" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+              <folding>
+                <marker date="1493051350292" expanded="true" signature="6:68" ph="..." />
+                <marker date="1493051350292" expanded="true" signature="94:2261" ph="{...}" />
+                <marker date="1493051350292" expanded="true" signature="101:219" ph="/* Defines the type of meaning an atomic meaning can encode ... */" />
+                <marker date="1493051350292" expanded="true" signature="256:2259" ph="{...}" />
+                <marker date="1493051350292" expanded="true" signature="743:869" ph="{...}" />
+                <marker date="1493051350292" expanded="true" signature="924:1196" ph="{...}" />
+                <marker date="1493051350292" expanded="true" signature="1282:1831" ph="{...}" />
+                <marker date="1493051350292" expanded="true" signature="1394:1821" ph="{...}" />
+                <marker date="1493051350292" expanded="true" signature="1926:2039" ph="{...}" />
+                <marker date="1493051350292" expanded="true" signature="2137:2253" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WordHypothesis.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordHypothesis.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="4" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+              <folding>
+                <marker date="1493050884221" expanded="true" signature="6:49" ph="..." />
+                <marker date="1493050884221" expanded="true" signature="75:1265" ph="{...}" />
+                <marker date="1493050884221" expanded="true" signature="231:1263" ph="{...}" />
+                <marker date="1493050884221" expanded="true" signature="447:527" ph="{...}" />
+                <marker date="1493050884221" expanded="true" signature="555:609" ph="{...}" />
+                <marker date="1493050884221" expanded="true" signature="674:732" ph="{...}" />
+                <marker date="1493050884221" expanded="true" signature="798:913" ph="{...}" />
+                <marker date="1493050884221" expanded="true" signature="989:1082" ph="{...}" />
+                <marker date="1493050884221" expanded="true" signature="1161:1257" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -51,16 +179,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/NounFunctions.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/SpeciesFunctions.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Reality/CardinalDirection.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Reality/RiverDirection.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/ISemanticValue.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/TypeEtEValue.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/TypeEtValue.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/TypeTValue.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Reality/WorldModel.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Reality/EntityModel.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/SpatialRelationSet.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/OrientationSet.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/SpeciesSet.cs" />
@@ -92,16 +210,26 @@
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Trees/EmptyNode.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Model/OrientationSet.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Agents/ParentAgent.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/BehaviourScripts/SimulationController.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Model/SpatialRelationSet.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/BehaviourScripts/EntityVisualizer.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Model/LogicalModel.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Functions/AtomicFunctions.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Functions/AtomicMeanings.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/CategoryLearning.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/TerminalLearning.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/ConstituentLearning.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Agents/ChildAgent.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/FunctorLoc.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Types/TypeEtEValue.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/BehaviourScripts/SimulationController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/SemanticsTest.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordContext.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/CategoryLearning.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/WordSemanticsLearning.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Knowledge/KnowledgeSet.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/AtomicMeaningTypes.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordHypothesis.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/IWordHypothesis.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordHypothesisSet.cs" />
       </list>
     </option>
   </component>
@@ -112,9 +240,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="158" />
+    <option name="x" value="113" />
     <option name="y" value="37" />
-    <option name="width" value="1179" />
+    <option name="width" value="1225" />
     <option name="height" value="779" />
   </component>
   <component name="ProjectLevelVcsManager">
@@ -242,6 +370,70 @@
               <option name="myItemId" value="Code" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LearningEngine" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Learning" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AlienLearningAgents (2 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Assembly-CSharp" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Assets" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Code" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LearningEngine" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Learning" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LearningHelpers" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AlienLearningAgents (2 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Assembly-CSharp" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Assets" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Code" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -268,7 +460,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="SearchEverywhereHistoryKey" value="atomic&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Functions/AtomicMeanings.cs&#10;terminalcat&#9;null&#9;null&#10;generatetermin&#9;null&#9;null&#10;child&#9;null&#9;null&#10;learning&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Learning/ConstituentLearning.cs&#10;visual&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/BehaviourScripts/EntityVisualizer.cs&#10;river&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Reality/RiverDirection.cs&#10;alienl&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Languages/AlienLanguage.cs&#10;spatial&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Model/SpatialRelationSet.cs&#10;contro&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/BehaviourScripts/SimulationController.cs&#10;simu&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/BehaviourScripts/SimulationController.cs&#10;parentagent&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Agents/ParentAgent.cs&#10;commi&#9;ACTION&#9;CheckinProject&#10;RiverD&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Reality/RiverDirection.cs&#10;alien&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Languages/AlienLanguage.cs&#10;visu&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/BehaviourScripts/EntityVisualizer.cs&#10;termno&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Trees/TermNode.cs&#10;nonterm&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Trees/NonTermNode.cs&#10;parent&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Agents/ParentAgent.cs&#10;entity&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Model/Entity.cs&#10;model empty&#9;null&#9;null&#10;plugins&#9;null&#9;null&#10;logical&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Model/LogicalModel.cs&#10;termrul&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Syntax/TermRule.cs&#10;itree&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Trees/ITreeNode.cs&#10;termnod&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Trees/TermNode.cs&#10;emptyval&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Types/EmptyValue.cs&#10;semanticre&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Functions/SemanticResult.cs&#10;TryAppl&#9;null&#9;null&#10;generate&#9;null&#9;null&#10;interactive&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="wordh&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Learning/LearningHelpers/WordHypothesis.cs&#10;know&#9;null&#9;null&#10;child&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Agents/ChildAgent.cs&#10;controlle&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/BehaviourScripts/SimulationController.cs&#10;TypeEValue&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Types/TypeEValue.cs&#10;atomic&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Functions/AtomicMeanings.cs&#10;terminalcat&#9;null&#9;null&#10;generatetermin&#9;null&#9;null&#10;learning&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Learning/ConstituentLearning.cs&#10;visual&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/BehaviourScripts/EntityVisualizer.cs&#10;river&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Reality/RiverDirection.cs&#10;alienl&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Languages/AlienLanguage.cs&#10;spatial&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Model/SpatialRelationSet.cs&#10;contro&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/BehaviourScripts/SimulationController.cs&#10;simu&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/BehaviourScripts/SimulationController.cs&#10;parentagent&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Agents/ParentAgent.cs&#10;commi&#9;ACTION&#9;CheckinProject&#10;RiverD&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Reality/RiverDirection.cs&#10;alien&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Languages/AlienLanguage.cs&#10;visu&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/BehaviourScripts/EntityVisualizer.cs&#10;termno&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Trees/TermNode.cs&#10;nonterm&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Trees/NonTermNode.cs&#10;parent&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Agents/ParentAgent.cs&#10;entity&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Model/Entity.cs&#10;model empty&#9;null&#9;null&#10;plugins&#9;null&#9;null&#10;logical&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Model/LogicalModel.cs&#10;termrul&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Syntax/TermRule.cs&#10;itree&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Trees/ITreeNode.cs&#10;termnod&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Trees/TermNode.cs&#10;emptyval&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Types/EmptyValue.cs&#10;semanticre&#9;FILE&#9;file://C:/Users/gosse/OneDrive/Documents/GitHub/AlienLearningAgents/Assets/Code/LearningEngine/Semantics/Functions/SemanticResult.cs&#10;TryAppl&#9;null&#9;null&#10;generate&#9;null&#9;null&#10;interactive&#9;null&#9;null" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -390,7 +582,8 @@
       <workItem from="1492692128203" duration="161000" />
       <workItem from="1492692425566" duration="85000" />
       <workItem from="1492694688346" duration="3529000" />
-      <workItem from="1493025534238" duration="5482000" />
+      <workItem from="1493025534238" duration="12279000" />
+      <workItem from="1493050984505" duration="377000" />
     </task>
     <task id="LOCAL-00001" summary="Completed category learning, added first attempt at syntactic learning">
       <created>1492359058057</created>
@@ -431,7 +624,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="61237000" />
+    <option name="totallyTimeSpent" value="68411000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -443,29 +636,29 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="158" y="37" width="1179" height="779" extended-state="0" />
+    <frame x="113" y="37" width="1225" height="779" extended-state="0" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Errors In Solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32249674" sideWeight="0.50564176" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Unit Tests" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294702" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32886904" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32886904" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32886904" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Change Signature" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25065732" sideWeight="0.53869045" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22914912" sideWeight="0.52993345" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32738096" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25065732" sideWeight="0.46130952" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22914912" sideWeight="0.47006652" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32249674" sideWeight="0.49435824" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32738096" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -488,8 +681,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Code/BehaviourScripts/SimulationController.cs</url>
-          <line>60</line>
-          <properties startOffset="1618" endOffset="1689" documentPath="$PROJECT_DIR$/Assets/Code/BehaviourScripts/SimulationController.cs" />
+          <line>65</line>
+          <properties startOffset="1755" endOffset="1826" documentPath="$PROJECT_DIR$/Assets/Code/BehaviourScripts/SimulationController.cs" />
           <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
@@ -498,101 +691,10 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Types/TypeTValue.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="47" lean-forward="false" selection-start-line="2" selection-start-column="47" selection-end-line="2" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Trees/TermNode.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="60" lean-forward="false" selection-start-line="18" selection-start-column="60" selection-end-line="18" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Reality/Animal.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="31" column="31" lean-forward="true" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/Debugging/DebugHelpers.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="1" lean-forward="false" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Trees/TermNode.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Reality/Animal.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1245">
-          <caret line="83" column="68" lean-forward="false" selection-start-line="83" selection-start-column="68" selection-end-line="83" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Trees/TermNode.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Trees/TermNode.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/Debugging/DebugHelpers.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="22" column="1" lean-forward="false" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Reality/CardinalDirection.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="1" lean-forward="false" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Types/TypeTValue.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="47" lean-forward="false" selection-start-line="2" selection-start-column="47" selection-end-line="2" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Reality/Animal.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="18" column="18" lean-forward="false" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Types/TypeEtEValue.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="19" lean-forward="false" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Types/TypeEValue.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="47" lean-forward="true" selection-start-line="16" selection-start-column="47" selection-end-line="16" selection-end-column="47" />
         </state>
       </provider>
     </entry>
@@ -738,30 +840,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/BehaviourScripts/SimulationController.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1037">
-          <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-          <folding>
-            <marker date="1492692039612" expanded="true" signature="6:62" ph="..." />
-            <marker date="1492692039612" expanded="true" signature="656:1146" ph="{...}" />
-            <marker date="1492692039612" expanded="true" signature="1176:1696" ph="{...}" />
-            <marker date="1492692039612" expanded="true" signature="1725:1904" ph="{...}" />
-            <marker date="1492692039612" expanded="true" signature="1937:2165" ph="{...}" />
-            <marker date="1492692039612" expanded="true" signature="2260:2493" ph="{...}" />
-            <marker date="1492692039612" expanded="true" signature="2358:2487" ph="{...}" />
-            <marker date="1492692039612" expanded="true" signature="2578:2667" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Reality/RiverDirection.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="18" lean-forward="false" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
-          <folding>
-            <marker date="1492366168883" expanded="true" signature="59:139" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -769,10 +851,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="816">
           <caret line="48" column="54" lean-forward="false" selection-start-line="48" selection-start-column="54" selection-end-line="48" selection-end-column="54" />
-          <folding>
-            <marker date="1493026650913" expanded="true" signature="86:3159" ph="{...}" />
-            <marker date="1493026650913" expanded="true" signature="144:3153" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -780,18 +858,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1190">
           <caret line="70" column="43" lean-forward="false" selection-start-line="70" selection-start-column="43" selection-end-line="70" selection-end-column="43" />
-          <folding>
-            <marker date="1492690644870" expanded="true" signature="6:117" ph="..." />
-            <marker date="1492690644870" expanded="true" signature="192:3081" ph="{...}" />
-            <marker date="1492690644870" expanded="true" signature="851:1339" ph="{...}" />
-            <marker date="1492690644870" expanded="true" signature="1216:1288" ph="{...}" />
-            <marker date="1492690644870" expanded="true" signature="1378:1455" ph="{...}" />
-            <marker date="1492690644870" expanded="true" signature="1673:2054" ph="{...}" />
-            <marker date="1492690644870" expanded="true" signature="2124:2318" ph="{...}" />
-            <marker date="1492690644870" expanded="true" signature="2397:2631" ph="{...}" />
-            <marker date="1492690644870" expanded="true" signature="2715:2814" ph="{...}" />
-            <marker date="1492690644870" expanded="true" signature="2922:3075" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -799,16 +865,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="64" column="54" lean-forward="false" selection-start-line="64" selection-start-column="54" selection-end-line="64" selection-end-column="54" />
-          <folding>
-            <marker date="1493026006483" expanded="true" signature="24:3902" ph="{...}" />
-            <marker date="1493026006483" expanded="true" signature="58:3900" ph="{...}" />
-            <marker date="1493026006483" expanded="true" signature="356:500" ph="{...}" />
-            <marker date="1493026006483" expanded="true" signature="544:606" ph="{...}" />
-            <marker date="1493026006483" expanded="true" signature="658:724" ph="{...}" />
-            <marker date="1493026006483" expanded="true" signature="759:816" ph="{...}" />
-            <marker date="1493026006483" expanded="true" signature="927:3648" ph="{...}" />
-            <marker date="1493026006483" expanded="true" signature="3698:3894" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -816,23 +872,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="416">
           <caret line="103" column="24" lean-forward="false" selection-start-line="103" selection-start-column="24" selection-end-line="103" selection-end-column="24" />
-          <folding>
-            <marker date="1492697490212" expanded="false" signature="6:54" ph="..." />
-            <marker date="1492697490212" expanded="true" signature="101:4615" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="486:628" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="706:1681" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="1744:2074" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="1792:2068" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="2151:2357" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="2432:2846" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="2924:3025" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="3131:3560" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="3181:3554" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="3670:4086" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="3708:4080" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="4196:4612" ph="{...}" />
-            <marker date="1492697490212" expanded="true" signature="4234:4606" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -840,43 +879,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="149">
           <caret line="93" column="34" lean-forward="false" selection-start-line="93" selection-start-column="34" selection-end-line="93" selection-end-column="34" />
-          <folding>
-            <marker date="1492691818274" expanded="true" signature="6:68" ph="..." />
-            <marker date="1492691818274" expanded="true" signature="134:6090" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="237:458" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="374:448" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="1570:1882" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="1938:2160" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="2251:3499" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="2379:3489" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="2472:2579" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="2710:2814" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="2946:3054" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="3192:3302" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="3599:6084" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="3686:6074" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="3779:4053" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="4337:4611" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="4900:5174" ph="{...}" />
-            <marker date="1492691818274" expanded="true" signature="5464:5738" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/CategoryLearning.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="27" column="59" lean-forward="false" selection-start-line="27" selection-start-column="59" selection-end-line="27" selection-end-column="59" />
-          <folding>
-            <marker date="1493027952465" expanded="false" signature="6:68" ph="..." />
-            <marker date="1493027952465" expanded="true" signature="94:3364" ph="{...}" />
-            <marker date="1493027952465" expanded="true" signature="215:3362" ph="{...}" />
-            <marker date="1493027952465" expanded="true" signature="380:996" ph="{...}" />
-            <marker date="1493027952465" expanded="true" signature="1179:1450" ph="{...}" />
-            <marker date="1493027952465" expanded="true" signature="1656:3356" ph="{...}" />
-            <marker date="1493027952465" expanded="true" signature="2641:2740" ph="{...}" />
-            <marker date="1493027952465" expanded="true" signature="2906:3002" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -884,12 +886,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="18" column="58" lean-forward="false" selection-start-line="18" selection-start-column="58" selection-end-line="18" selection-end-column="58" />
-          <folding>
-            <marker date="1493028263625" expanded="true" signature="44:1244" ph="{...}" />
-            <marker date="1493028263625" expanded="true" signature="89:1242" ph="{...}" />
-            <marker date="1493028263625" expanded="true" signature="244:757" ph="{...}" />
-            <marker date="1493028263625" expanded="true" signature="849:1236" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -897,27 +893,100 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
           <caret line="28" column="30" lean-forward="false" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Knowledge/Categories/TerminalCategorySet.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="15" column="9" lean-forward="false" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Functions/AtomicMeanings.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/SemBaseType.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/LambdaExpression.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Types/TypeEValue.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="47" lean-forward="false" selection-start-line="16" selection-start-column="47" selection-end-line="16" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/FunctorLoc.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="1" lean-forward="false" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Types/TypeEtEValue.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="15" column="32" lean-forward="false" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/BehaviourScripts/SimulationController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="58" column="32" lean-forward="false" selection-start-line="58" selection-start-column="32" selection-end-line="58" selection-end-column="32" />
           <folding>
-            <marker date="1493028780436" expanded="false" signature="6:102" ph="..." />
-            <marker date="1493028780436" expanded="true" signature="128:4098" ph="{...}" />
-            <marker date="1493028780436" expanded="true" signature="176:4096" ph="{...}" />
-            <marker date="1493028780436" expanded="true" signature="430:1122" ph="{...}" />
-            <marker date="1493028780436" expanded="true" signature="1257:1727" ph="{...}" />
-            <marker date="1493028780436" expanded="true" signature="1890:1997" ph="{...}" />
-            <marker date="1493028780436" expanded="true" signature="2163:2507" ph="{...}" />
-            <marker date="1493028780436" expanded="true" signature="2704:4090" ph="{...}" />
-            <marker date="1493028780436" expanded="true" signature="3897:4008" ph="{...}" />
+            <marker date="1493037162672" expanded="true" signature="6:62" ph="..." />
+            <marker date="1493037162672" expanded="true" signature="656:1146" ph="{...}" />
+            <marker date="1493037162672" expanded="true" signature="1176:1833" ph="{...}" />
+            <marker date="1493037162672" expanded="true" signature="1862:2041" ph="{...}" />
+            <marker date="1493037162672" expanded="true" signature="2074:2302" ph="{...}" />
+            <marker date="1493037162672" expanded="true" signature="2397:2630" ph="{...}" />
+            <marker date="1493037162672" expanded="true" signature="2495:2624" ph="{...}" />
+            <marker date="1493037162672" expanded="true" signature="2715:2804" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/SemanticsTest.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="55" column="62" lean-forward="false" selection-start-line="55" selection-start-column="62" selection-end-line="55" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordContext.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="5" column="1" lean-forward="false" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/CategoryLearning.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="5" column="1" lean-forward="false" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/WordSemanticsLearning.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="24" lean-forward="false" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+          <folding>
+            <marker date="1493049424499" expanded="true" signature="170:217" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Agents/ChildAgent.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
+        <state relative-caret-position="1054">
           <caret line="62" column="37" lean-forward="false" selection-start-line="62" selection-start-column="37" selection-end-line="62" selection-end-column="37" />
           <folding>
-            <marker date="1493034011594" expanded="false" signature="6:50" ph="..." />
-            <marker date="1493034011594" expanded="true" signature="76:2748" ph="{...}" />
+            <marker date="1493034011594" expanded="true" signature="6:50" ph="..." />
             <marker date="1493034011594" expanded="true" signature="124:2746" ph="{...}" />
             <marker date="1493034011594" expanded="true" signature="539:905" ph="{...}" />
             <marker date="1493034011594" expanded="true" signature="936:993" ph="{...}" />
@@ -931,66 +1000,96 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Knowledge/Categories/TerminalCategorySet.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Knowledge/KnowledgeHelpers/KnowledgeHelperSet.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="15" column="9" lean-forward="false" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+        <state relative-caret-position="155">
+          <caret line="21" column="48" lean-forward="false" selection-start-line="21" selection-start-column="48" selection-end-line="21" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Knowledge/KnowledgeSet.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="36" lean-forward="false" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
           <folding>
-            <marker date="1492001579381" expanded="false" signature="6:102" ph="..." />
-            <marker date="1492001579381" expanded="true" signature="128:5251" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="242:5249" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="589:647" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="730:790" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="848:914" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="1031:1158" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="1311:1437" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="1635:1737" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="1872:2224" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="2362:2716" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="2836:3259" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="3375:3753" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="3896:4324" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="4470:4903" ph="{...}" />
-            <marker date="1492001579381" expanded="true" signature="4990:5243" ph="{...}" />
+            <marker date="1493049716705" expanded="true" signature="125:2062" ph="{...}" />
+            <marker date="1493049716705" expanded="true" signature="381:433" ph="/* Hypotheses about work mea ... */" />
+            <marker date="1493049716705" expanded="true" signature="526:648" ph="{...}" />
+            <marker date="1493049716705" expanded="true" signature="687:747" ph="{...}" />
+            <marker date="1493049716705" expanded="true" signature="777:832" ph="{...}" />
+            <marker date="1493049716705" expanded="true" signature="872:931" ph="{...}" />
+            <marker date="1493049716705" expanded="true" signature="1008:1193" ph="{...}" />
+            <marker date="1493049716705" expanded="true" signature="1302:1441" ph="{...}" />
+            <marker date="1493049716705" expanded="true" signature="1513:1652" ph="{...}" />
+            <marker date="1493049716705" expanded="true" signature="1708:1847" ph="{...}" />
+            <marker date="1493049716705" expanded="true" signature="1917:2056" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/Functions/AtomicMeanings.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/AtomTypes.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding>
-            <marker date="1493026933171" expanded="true" signature="6:66" ph="..." />
-            <marker date="1493026933171" expanded="true" signature="92:5547" ph="{...}" />
-            <marker date="1493026933171" expanded="true" signature="214:5545" ph="{...}" />
-            <marker date="1493026933171" expanded="true" signature="591:749" ph="{...}" />
-            <marker date="1493026933171" expanded="true" signature="828:900" ph="{...}" />
-            <marker date="1493026933171" expanded="true" signature="982:1042" ph="{...}" />
-            <marker date="1493026933171" expanded="true" signature="1130:1196" ph="{...}" />
-            <marker date="1493026933171" expanded="true" signature="1295:1384" ph="{...}" />
-            <marker date="1493026933171" expanded="true" signature="1470:2215" ph="{...}" />
-            <marker date="1493026933171" expanded="true" signature="2304:3858" ph="{...}" />
-            <marker date="1493026933171" expanded="true" signature="3953:5118" ph="{...}" />
-            <marker date="1493026933171" expanded="true" signature="5232:5538" ph="{...}" />
-            <marker date="1493026933171" expanded="true" signature="5420:5528" ph="{...}" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/SemBaseType.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/IWordHypothesis.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
-          <caret line="2" column="21" lean-forward="false" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
-          <folding />
+          <caret line="2" column="73" lean-forward="false" selection-start-line="2" selection-start-column="73" selection-end-line="2" selection-end-column="73" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Semantics/LambdaExpression.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/NonTerminalHelper.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="30" lean-forward="false" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
-          <folding />
+        <state relative-caret-position="85">
+          <caret line="5" column="30" lean-forward="false" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="30" />
+          <folding>
+            <marker date="1492013064938" expanded="true" signature="183:942" ph="{...}" />
+            <marker date="1492013064938" expanded="true" signature="420:506" ph="{...}" />
+            <marker date="1492013064938" expanded="true" signature="556:616" ph="{...}" />
+            <marker date="1492013064938" expanded="true" signature="668:723" ph="{...}" />
+            <marker date="1492013064938" expanded="true" signature="855:936" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordHypothesis.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="4" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+          <folding>
+            <marker date="1493050884221" expanded="true" signature="6:49" ph="..." />
+            <marker date="1493050884221" expanded="true" signature="75:1265" ph="{...}" />
+            <marker date="1493050884221" expanded="true" signature="231:1263" ph="{...}" />
+            <marker date="1493050884221" expanded="true" signature="447:527" ph="{...}" />
+            <marker date="1493050884221" expanded="true" signature="555:609" ph="{...}" />
+            <marker date="1493050884221" expanded="true" signature="674:732" ph="{...}" />
+            <marker date="1493050884221" expanded="true" signature="798:913" ph="{...}" />
+            <marker date="1493050884221" expanded="true" signature="989:1082" ph="{...}" />
+            <marker date="1493050884221" expanded="true" signature="1161:1257" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Code/LearningEngine/Learning/LearningHelpers/WordHypothesisSet.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="46" column="13" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+          <folding>
+            <marker date="1493051350292" expanded="true" signature="6:68" ph="..." />
+            <marker date="1493051350292" expanded="true" signature="94:2261" ph="{...}" />
+            <marker date="1493051350292" expanded="true" signature="101:219" ph="/* Defines the type of meaning an atomic meaning can encode ... */" />
+            <marker date="1493051350292" expanded="true" signature="256:2259" ph="{...}" />
+            <marker date="1493051350292" expanded="true" signature="743:869" ph="{...}" />
+            <marker date="1493051350292" expanded="true" signature="924:1196" ph="{...}" />
+            <marker date="1493051350292" expanded="true" signature="1282:1831" ph="{...}" />
+            <marker date="1493051350292" expanded="true" signature="1394:1821" ph="{...}" />
+            <marker date="1493051350292" expanded="true" signature="1926:2039" ph="{...}" />
+            <marker date="1493051350292" expanded="true" signature="2137:2253" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
