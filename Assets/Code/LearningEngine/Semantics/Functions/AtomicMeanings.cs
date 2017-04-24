@@ -5,14 +5,14 @@ using System.Linq;
 namespace LearningEngine
 {
     // Functions for atomic semantic types (i.e., the types of terminal nodes)
-    internal static class AtomicFunctions
+    internal static class AtomicMeanings
     {
         // Sets of atomic functions applying to current
         private static readonly IEnumerable<Func<LogicalModel, ISemanticValue>> _species;
         private static readonly IEnumerable<Func<LogicalModel, ISemanticValue>> _directions;
         private static readonly IEnumerable<Func<LogicalModel, ISemanticValue>> _spatialRelations;
 
-        static AtomicFunctions()
+        static AtomicMeanings()
         {
             _species = MakeSpecies();
             _directions = MakeDirections();
@@ -32,6 +32,11 @@ namespace LearningEngine
         public static IEnumerable<Func<LogicalModel, ISemanticValue>> SpatialRelations
         {
             get { return _spatialRelations; }
+        }
+
+        public static IEnumerable<IEnumerable<Func<LogicalModel, ISemanticValue>>> GetFunctions()
+        {
+            return new[] {_species, _directions, _spatialRelations};
         }
 
         private static IEnumerable<Func<LogicalModel, ISemanticValue>> MakeSpecies()
@@ -75,10 +80,9 @@ namespace LearningEngine
                     // Make a function that takes in a model and returns an <<e,t>,e>
                     m => (ISemanticValue) TypeEtEValue.Create(
                         // Take in an <e,t> and filter out entities satisfying that <e,t>
-                        f => TypeEValue.Create(filterEntities(m)(f)
-                            .DefaultIfEmpty(Entity.Nothing).SingleOrDefault(
+                        f => TypeEValue.Create(filterEntities(m)(f).Where(
                             // Finally, take the single entity with direction d
-                            e => m.Orientations.Contains(d, e))));
+                            e => m.Orientations.Contains(d, e)).DefaultIfEmpty(Entity.Nothing).Single()));
 
             // Return collection of directionFunctions
             return directions.Select(directionFunction);
@@ -102,7 +106,7 @@ namespace LearningEngine
                         e1 => TypeEtValue.Create(
                             // Take in another e and return a t
                             e2 => TypeTValue.Create(m.SpatialRelations.Contains(
-                                r.Orientation, r.SameSide, e1.Value, e2.Value))
+                                r.Orientation, r.SameSide, e2.Value, e1.Value))
                             ));
 
             return relations.Select(relationFunction);

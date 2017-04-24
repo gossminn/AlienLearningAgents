@@ -58,5 +58,6 @@ namespace LearningEngine
                     throw new ArgumentOutOfRangeException("direction", direction, null);
             }
         }
+
     }
 }

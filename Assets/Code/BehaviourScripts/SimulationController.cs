@@ -56,6 +56,10 @@ public class SimulationController : MonoBehaviour
         // Parent says something
         _parentAgent = _parentAgent.UpdateModel(_model).SaySomething();
         ParentText.text = _parentAgent.CurrentSentence;
+
+        // TODO: remove after debugging
+        Debug.Log(_parentAgent.EvaluateSentence(_parentAgent.CurrentSentence));
+
     }
 
     private void ChildSay()

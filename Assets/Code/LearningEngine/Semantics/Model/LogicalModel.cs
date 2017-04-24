@@ -62,7 +62,7 @@ namespace LearningEngine
             var equalLongitude = animal1.Longitude == animal2.Longitude;
 
             // Which animal is furthest upstream/downstream?
-            var furthestUpstream = animal1.Longitude < animal2.Longitude
+            var furthestUpstream = animal1.Longitude > animal2.Longitude
                 ? Entity.Entity1
                 : Entity.Entity2;
             var furthestDownstream = furthestUpstream == Entity.Entity1

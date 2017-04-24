@@ -7,7 +7,7 @@ namespace LearningEngine
     internal class ChildAgent : LanguageAgent
     {
         // Random number generator
-        private static readonly Random Random = new Random();
+        private static readonly Random _random = new Random();
 
         // Current sentence
         private readonly string _current;
@@ -51,33 +51,17 @@ namespace LearningEngine
             // Add input to memory
             var memory = _memory.Memorize(input);
 
-            // Learn and genereralize syntactic categories
-            var categories0 = _knowledge.Categories;
-            var rawCategories = categories0.RawTerminals.ExtractRawCategories(input);
-            var generalizedCategories = rawCategories.GeneralizeContexts();
-            var categories1 = categories0
-                .UpdateRawTerminals(rawCategories)
-                .UpdateGeneralizedTerminals(generalizedCategories);
+            // Learn and generalize categories
+            var knowledge1 = _knowledge.LearnCategories(input);
 
-            // Generate terminal nodes and rules
-            var termNodes = generalizedCategories.GenerateTerminals();
-            var termRules = termNodes.ExtractRules();
+            // Learn terminal nodes and rules
+            var knowledge2 = knowledge1.LearnTerminals();
 
-            // Add to rule set
-            var ruleSet1 = RuleSet.CreateEmpty().AddRules(termRules);
+            // Generate (random) non-terminal rules
+            var knowledge3 = knowledge2.LearnConstituents(words);
 
-            // Infer nonterminal rules and categories TODO: should not happen again every time Learn() is called
-            var helper = ConstituentLearning.InferFromInput(ruleSet1, words);
-            var categories2 = categories1.UpdateRawNonTerminals(helper.Categories);
-            var ruleSet2 = ruleSet1.ClearNonterminals().AddRules(helper.Rules);
-            
-            // Update knowledge set
-            var knowledge = _knowledge
-                .UpdateCategories(categories2)
-                .UpdateTerminals(termNodes)
-                .UpdateRules(ruleSet2);
-
-            return new ChildAgent(knowledge, _current, memory);
+            // New child agent object
+            return new ChildAgent(knowledge3, _current, memory);
         }
 
         // Evaluate feedback
@@ -95,7 +79,7 @@ namespace LearningEngine
         // Simplistic version: just produce random sentence from memory
         public ChildAgent SaySomething()
         {
-            var n = Random.Next(_memory.Size);
+            var n = _random.Next(_memory.Size);
             var sentence = n == 0
                 ? _memory.Sentences.First()
                 : _memory.Sentences.Take(n).Last();

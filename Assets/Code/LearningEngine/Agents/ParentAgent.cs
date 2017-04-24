@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using UnityEngine;
 using Random = System.Random;
@@ -69,6 +70,14 @@ namespace LearningEngine
             var num = _random.Next(_sentences.Count);
             var sentence = _sentences[num];
             return new ParentAgent(_knowledge, _rootCat, sentence, _model);
+        }
+
+        // Evaluate a sentence
+        public bool EvaluateSentence(string s)
+        {
+            var words = s.Split().ToImmutableList();
+            var rootRule = _knowledge.Rules.FindWithLeftSide(_rootCat);
+            return rootRule.Parse(words, _knowledge.Rules, _model).Tree.GetTruthValue();
         }
 
         // Update model

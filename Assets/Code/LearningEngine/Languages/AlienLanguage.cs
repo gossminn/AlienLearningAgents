@@ -25,9 +25,9 @@ namespace LearningEngine
                 .AddCategory(vCat);
 
             // Atomic functions
-            var speciesAtoms = AtomicFunctions.Species.ToArray();
-            var directionAtoms = AtomicFunctions.Directions.ToArray();
-            var spatialAtoms = AtomicFunctions.SpatialRelations.ToArray();
+            var speciesAtoms = AtomicMeanings.Species.ToArray();
+            var directionAtoms = AtomicMeanings.Directions.ToArray();
+            var spatialAtoms = AtomicMeanings.SpatialRelations.ToArray();
 
             // Terminals
             var terminalSet = VocabularySet.CreateEmpty()

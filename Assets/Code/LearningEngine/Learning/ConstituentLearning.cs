@@ -10,6 +10,31 @@ namespace LearningEngine
         // Random number generator
         private static readonly Random _random = new Random();
 
+        // Wrapper function
+        public static KnowledgeSet LearnConstituents(this KnowledgeSet knowledge,
+            IEnumerable<string> words)
+        {
+            // Old rules
+            var rules = knowledge.Rules;
+
+            // Infer new rules, store in helper object
+            var helper = rules.InferFromInput(words);
+
+            // Old categories
+            var categories0 = knowledge.Categories;
+
+            // Update categories
+            var categories1 = categories0.UpdateRawNonTerminals(helper.Categories);
+
+            // Update rule set
+            var ruleSet = rules.ClearNonterminals().AddRules(helper.Rules);
+
+            // New knowledge set with updated categories and new rules
+            return knowledge
+                .UpdateCategories(categories1)
+                .UpdateRules(ruleSet);
+        }
+
         // Parse a word to get the category label
         private static CategoryLabel ParseTerminal(this RuleSet rules, string word)
         {
@@ -33,7 +58,8 @@ namespace LearningEngine
         }
 
         // Infer non-terminal categories and rules
-        public static NonTerminalHelper InferFromInput(RuleSet rules, string[] words)
+        public static NonTerminalHelper InferFromInput(this RuleSet rules,
+            IEnumerable<string> words)
         {
             // Parse words to get sequence of CategoryLabels, then of Monograms
             var sequence = GetSequence(words, rules);

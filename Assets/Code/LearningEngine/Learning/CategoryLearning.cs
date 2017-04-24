@@ -8,6 +8,26 @@ namespace LearningEngine
     // Learning algorithm for acquiring (raw) syntactic terminalCategories
     internal static class CategoryLearning
     {
+        // Wrapper function: learn raw categories and generalize
+        public static KnowledgeSet LearnCategories(this KnowledgeSet knowledge, string input)
+        {
+            // Old category set
+            var categories0 = knowledge.Categories;
+
+            // Update raw categories based on input
+            var rawCategories = categories0.RawTerminals.ExtractRawCategories(input);
+
+            // Generalize based on input
+            var generalizedCategories = rawCategories.GeneralizeContexts();
+
+            // New category set
+            var categories1 = categories0
+                .UpdateRawTerminals(rawCategories)
+                .UpdateGeneralizedTerminals(generalizedCategories);
+
+            return knowledge.UpdateCategories(categories1);
+        }
+
         // Adapt overall TerminalCategorySet based on new input
         public static TerminalCategorySet ExtractRawCategories(this TerminalCategorySet categories0, string sentence)
         {

@@ -102,42 +102,42 @@ namespace LearningEngine
                     {
                         return new SpatialRelationSet(
                             _towards.Add(pair), _away, _upstream, _downstream,
-                            _sameTowards.Add(pair), _sameAway, _sameDownstream, _sameUpstream);
+                            _sameTowards.Add(pair), _sameAway, _sameUpstream, _sameDownstream);
                     }
                     return new SpatialRelationSet(
                         _towards.Add(pair), _away, _upstream, _downstream,
-                        _sameTowards, _sameAway, _sameDownstream, _sameUpstream);
+                        _sameTowards, _sameAway, _sameUpstream, _sameDownstream);
                 case RiverDirection.Away:
                     if (sameSide)
                     {
                         return new SpatialRelationSet(
                             _towards, _away.Add(pair), _upstream, _downstream,
-                            _sameTowards, _sameAway.Add(pair), _sameDownstream, _sameUpstream);
+                            _sameTowards, _sameAway.Add(pair), _sameUpstream, _sameDownstream);
                     }
                     return new SpatialRelationSet(
                         _towards, _away.Add(pair), _upstream, _downstream,
-                        _sameTowards, _sameAway, _sameDownstream, _sameUpstream);
+                        _sameTowards, _sameAway, _sameUpstream, _sameDownstream);
 
                 case RiverDirection.Upstream:
                     if (sameSide)
                     {
                         return new SpatialRelationSet(
                             _towards, _away, _upstream.Add(pair), _downstream,
-                            _sameTowards, _sameAway, _sameDownstream.Add(pair), _sameUpstream);
+                            _sameTowards, _sameAway, _sameUpstream.Add(pair), _sameDownstream);
                     }
                     return new SpatialRelationSet(
                         _towards, _away, _upstream.Add(pair), _downstream,
-                        _sameTowards, _sameAway, _sameDownstream, _sameUpstream);
+                        _sameTowards, _sameAway, _sameUpstream, _sameDownstream);
                 case RiverDirection.Downstream:
                     if (sameSide)
                     {
                         return new SpatialRelationSet(
                             _towards, _away, _upstream, _downstream.Add(pair),
-                            _sameTowards, _sameAway, _sameDownstream, _sameUpstream.Add(pair));
+                            _sameTowards, _sameAway, _sameUpstream, _sameDownstream.Add(pair));
                     }
                     return new SpatialRelationSet(
                         _towards, _away, _upstream, _downstream.Add(pair),
-                        _sameTowards, _sameAway, _sameDownstream, _sameUpstream);
+                        _sameTowards, _sameAway, _sameUpstream, _sameDownstream);
                 default:
                     throw new ArgumentOutOfRangeException("direction", direction, null);
             }

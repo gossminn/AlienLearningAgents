@@ -99,9 +99,9 @@ public class EntityVisualizer : MonoBehaviour
         switch (animal.AbsoluteOrientation)
         {
             case CardinalDirection.North:
-                return 0;
-            case CardinalDirection.South:
                 return 180;
+            case CardinalDirection.South:
+                return 0;
             case CardinalDirection.East:
                 return 90;
             case CardinalDirection.West:
