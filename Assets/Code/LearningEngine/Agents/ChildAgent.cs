@@ -45,6 +45,12 @@ namespace LearningEngine
         // Learn from input
         public ChildAgent Learn(string input)
         {
+            // String is empty: skip this step TODO: find out why!
+            if (input == "")
+            {
+                return this;
+            }
+
             // Tokenize input
             var words = input.Split();
 
@@ -59,6 +65,10 @@ namespace LearningEngine
 
             // Generate (random) non-terminal rules
             var knowledge3 = knowledge2.LearnConstituents(words);
+
+            // TODO: remove after testing
+            DebugHelpers.WriteWordsetChanged(knowledge3.Categories.GeneralizedTerminals
+                .HasChanged(_knowledge.Categories.GeneralizedTerminals));
 
             // New child agent object
             return new ChildAgent(knowledge3, _current, memory);
@@ -79,6 +89,12 @@ namespace LearningEngine
         // Simplistic version: just produce random sentence from memory
         public ChildAgent SaySomething()
         {
+            // Memory is empty: don't do anything, return self
+            if (!_memory.Sentences.Any())
+            {
+                return this;
+            }
+
             var n = _random.Next(_memory.Size);
             var sentence = n == 0
                 ? _memory.Sentences.First()

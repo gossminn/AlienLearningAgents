@@ -23,5 +23,10 @@ namespace LearningEngine
         {
             return SemanticResult.CreateFailure();
         }
+
+        public bool AppliesToModel(LogicalModel model)
+        {
+            return true;
+        }
     }
 }

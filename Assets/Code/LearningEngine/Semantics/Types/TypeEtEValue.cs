@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Immutable;
+using System.Linq;
 
 namespace LearningEngine
 {
@@ -28,6 +30,19 @@ namespace LearningEngine
                 return SemanticResult.CreateSuccess(_value((TypeEtValue) argument));
             }
             return SemanticResult.CreateFailure();
+        }
+
+        public bool AppliesToModel(LogicalModel model)
+        {
+            // Define set of possible <e,t> values
+            var species = AtomicMeanings.Species.Select(x => (TypeEtValue) x(model));
+
+            // Make list of entities that current value can refer to in model
+            var values = species.Aggregate(ImmutableList<Entity>.Empty,
+                (acc, next) => acc.Add(_value(next).Value));
+
+            // Check if list contains anything that is not 'Nothing'
+            return values.Any(x => x != Entity.Nothing);
         }
     }
 }

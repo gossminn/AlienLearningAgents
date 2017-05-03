@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace AlienDebug
 {
@@ -17,6 +18,14 @@ namespace AlienDebug
             using (var sw = new StreamWriter("Output/CategoryCount.txt", true))
             {
                 sw.WriteLine(raw + "\t" + generalized);
+            }
+        }
+
+        public static void WriteWordsetChanged(bool changed)
+        {
+            using (var sw = new StreamWriter("Output/CategoryChanged.txt", true))
+            {
+                sw.WriteLine(Convert.ToInt32(changed));
             }
         }
     }

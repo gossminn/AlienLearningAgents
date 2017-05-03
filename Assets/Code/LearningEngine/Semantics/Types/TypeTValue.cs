@@ -1,6 +1,5 @@
 namespace LearningEngine
 {
-    // TODO: should be dependent on Situation?
     internal class TypeTValue : ISemanticValue
     {
         private readonly bool _value;
@@ -23,6 +22,11 @@ namespace LearningEngine
         public SemanticResult TryApply(ISemanticValue argument)
         {
             return SemanticResult.CreateFailure();
+        }
+
+        public bool AppliesToModel(LogicalModel model)
+        {
+            return _value;
         }
     }
 }

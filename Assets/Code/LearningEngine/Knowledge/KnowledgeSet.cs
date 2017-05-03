@@ -1,6 +1,5 @@
 ﻿namespace LearningEngine
 {
-
     // Data type for storing the linguistic knowledge of an agent
     internal class KnowledgeSet
     {

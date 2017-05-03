@@ -37,11 +37,11 @@ namespace LearningEngine
             switch (atomType)
             {
                 case AtomTypes.Species:
-                    return _species.Single(hasWord);
+                    return _species.Cast<IWordHypothesis>().Single(hasWord);
                 case AtomTypes.Direction:
-                    return _directions.Single(hasWord);
+                    return _directions.Cast<IWordHypothesis>().Single(hasWord);
                 case AtomTypes.Relation:
-                    return _relations.Single(hasWord);
+                    return _relations.Cast<IWordHypothesis>().Single(hasWord);
                 default:
                     throw new ArgumentOutOfRangeException("atomType", atomType, null);
             }

@@ -25,6 +25,13 @@ namespace LearningEngine
             return SemanticResult.CreateFailure();
         }
 
+        public bool AppliesToModel(LogicalModel model)
+        {
+            // Determine if current predicate is true for any of the two values
+            return _value(TypeEValue.Create(Entity.Entity1)).Value ||
+                   _value(TypeEValue.Create(Entity.Entity2)).Value;
+        }
+
         public static TypeEtValue Create(Func<TypeEValue, TypeTValue> value)
         {
             return new TypeEtValue(value);

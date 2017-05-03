@@ -98,8 +98,7 @@ namespace LearningEngine
         }
 
         // Find categories containing a given left context
-        public IEnumerable<CategoryLabel>
-            FindLeftContext(string left)
+        public IEnumerable<CategoryLabel> FindLeftContext(string left)
         {
             // Helper function: does a category contain the context?
             Predicate<WordDistributionSet> hasLeftContext =
@@ -123,6 +122,32 @@ namespace LearningEngine
             return _categories
                 .Where(entry => hasRightContext(entry.Value))
                 .Select(pair => pair.Key);
+        }
+
+        // Detect whether the entries in a set have changed compared to the previous version
+        public bool HasChanged(TerminalCategorySet previous)
+        {
+            // Number of sets should be the same
+            var currentNumber = _categories.Values.Count();
+            var prevNumber = previous.Categories.Values.Count();
+            if (currentNumber != prevNumber)
+            {
+                return true;
+            }
+
+            // Union of sets should have the same entries
+            var currentWords = _categories.Values.Aggregate(
+                Enumerable.Empty<string>(),
+                (acc, next) => acc.Concat(next.Words))
+                .ToImmutableHashSet();
+
+            var previousWords = previous.Categories.Values.Aggregate(
+                    Enumerable.Empty<string>(),
+                    (acc, next) => acc.Concat(next.Words))
+                .ToImmutableHashSet();
+
+            return !currentWords.SetEquals(previousWords);
+
         }
 
         // Get XML representation of the ruleset

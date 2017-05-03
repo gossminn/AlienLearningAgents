@@ -37,6 +37,8 @@ namespace LearningEngine
 
             _model = model;
 
+            Debug.Log("Sentences: " + _sentences.Count);
+
             if (_sentences.Count == 0)
             {
                 Debug.Log("No sentences!");
@@ -68,7 +70,7 @@ namespace LearningEngine
         public ParentAgent SaySomething()
         {
             var num = _random.Next(_sentences.Count);
-            var sentence = _sentences[num];
+            var sentence = _sentences.Count > 0 ? _sentences[num] : EmptyNode.Create();
             return new ParentAgent(_knowledge, _rootCat, sentence, _model);
         }
 

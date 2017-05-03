@@ -11,6 +11,11 @@ namespace LearningEngine
             return SemanticResult.CreateFailure();
         }
 
+        public bool AppliesToModel(LogicalModel model)
+        {
+            return false;
+        }
+
         public static EmptyValue Create()
         {
             return new EmptyValue();
