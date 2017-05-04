@@ -7,8 +7,7 @@ namespace LearningEngine
 {
     internal class CategoryMeaningHypotheses
     {
-        private readonly ImmutableHashSet<string> _words;
-        private readonly ImmutableHashSet<IEnumerable<Func<LogicalModel, ISemanticValue>>> _meanings;
+        private readonly ImmutableHashSet<WordHypothesis>
 
         private CategoryMeaningHypotheses(ImmutableHashSet<string> words,
             ImmutableHashSet<IEnumerable<Func<LogicalModel, ISemanticValue>>> meanings)
