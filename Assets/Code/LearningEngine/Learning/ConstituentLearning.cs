@@ -2,8 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Knowledge;
+using Code.LearningEngine.Knowledge.Categories;
+using Code.LearningEngine.Knowledge.Rules;
+using Code.LearningEngine.Learning.LearningHelpers;
+using Code.LearningEngine.Semantics;
+using Code.LearningEngine.Semantics.Model;
+using Code.LearningEngine.Syntax;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Learning
 {
     internal static class ConstituentLearning
     {

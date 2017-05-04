@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Code.LearningEngine.Syntax;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Knowledge.KnowledgeHelpers
 {
     // Data type for representing pairs of consecutively occuring syntactic categories
     internal class CategoryBigram : ICategoryNGram

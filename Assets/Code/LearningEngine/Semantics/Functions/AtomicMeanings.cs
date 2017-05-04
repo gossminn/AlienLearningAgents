@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Code.LearningEngine.Reality;
+using Code.LearningEngine.Semantics.Model;
+using Code.LearningEngine.Semantics.Types;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Semantics.Functions
 {
     // Functions for atomic semantic types (i.e., the types of terminal nodes)
     internal static class AtomicMeanings

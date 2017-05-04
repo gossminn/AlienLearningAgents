@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Knowledge.KnowledgeHelpers
 {
     // Data type for storing a set of CategoryBigrams
     internal class CategoryBigramSet

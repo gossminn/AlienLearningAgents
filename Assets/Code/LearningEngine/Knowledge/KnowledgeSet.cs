@@ -1,4 +1,8 @@
-﻿namespace LearningEngine
+﻿using Code.LearningEngine.Knowledge.Categories;
+using Code.LearningEngine.Knowledge.KnowledgeHelpers;
+using Code.LearningEngine.Knowledge.Rules;
+
+namespace Code.LearningEngine.Knowledge
 {
     // Data type for storing the linguistic knowledge of an agent
     internal class KnowledgeSet

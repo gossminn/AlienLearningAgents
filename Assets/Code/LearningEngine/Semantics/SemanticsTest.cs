@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using Code.LearningEngine.Semantics.Functions;
+using Code.LearningEngine.Semantics.Model;
+using UnityEngine;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Semantics
 {
     internal static class SemanticsTest
     {

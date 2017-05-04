@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Syntax;
+using Code.LearningEngine.Trees;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Knowledge.Rules
 {
     // Data type for representing a set of TermNodes
     internal class VocabularySet

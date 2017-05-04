@@ -1,4 +1,6 @@
-namespace LearningEngine
+using Code.LearningEngine.Semantics.Types;
+
+namespace Code.LearningEngine.Semantics.Functions
 {
     // Option type for storing result of semantic function application
     internal class SemanticResult

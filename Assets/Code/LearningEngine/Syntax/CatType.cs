@@ -1,4 +1,4 @@
-﻿namespace LearningEngine
+﻿namespace Code.LearningEngine.Syntax
 {
     internal enum NodeType
     {

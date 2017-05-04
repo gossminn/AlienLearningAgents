@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Immutable;
+using Code.LearningEngine.Reality;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Semantics.Model
 {
     internal class SpeciesSet
     {

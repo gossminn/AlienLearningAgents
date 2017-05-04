@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Semantics.Functions;
+using Code.LearningEngine.Semantics.Model;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Semantics.Types
 {
     internal class TypeEEtValue : ISemanticValue
     {

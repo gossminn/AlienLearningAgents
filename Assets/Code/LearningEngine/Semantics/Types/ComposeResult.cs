@@ -1,6 +1,7 @@
 using System;
+using Code.LearningEngine.Semantics.Model;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Semantics.Types
 {
     internal class ComposeResult
     {

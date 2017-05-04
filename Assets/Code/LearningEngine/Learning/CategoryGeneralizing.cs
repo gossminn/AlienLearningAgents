@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Knowledge.Categories;
+using Code.LearningEngine.Syntax;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Learning
 {
     // Algorithm for generalizing raw terminalCategories
     internal static class CategoryGeneralizing

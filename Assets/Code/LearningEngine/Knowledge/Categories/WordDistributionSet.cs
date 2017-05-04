@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Knowledge.Categories
 {
     // Class for storing knowledge (words plus contexts) about syntactic (terminal) terminalCategories
     internal class WordDistributionSet

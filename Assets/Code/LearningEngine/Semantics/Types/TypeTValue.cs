@@ -1,4 +1,7 @@
-namespace LearningEngine
+using Code.LearningEngine.Semantics.Functions;
+using Code.LearningEngine.Semantics.Model;
+
+namespace Code.LearningEngine.Semantics.Types
 {
     internal class TypeTValue : ISemanticValue
     {

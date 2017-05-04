@@ -1,4 +1,6 @@
-namespace LearningEngine
+using Code.LearningEngine.Reality;
+
+namespace Code.LearningEngine.Semantics.Model
 {
     internal class LogicalModel
     {

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Syntax;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Knowledge.Categories
 {
     // Data type for representing a set of terminal syntactic categories
     internal class TerminalCategorySet

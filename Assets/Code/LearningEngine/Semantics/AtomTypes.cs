@@ -1,4 +1,4 @@
-﻿namespace LearningEngine
+﻿namespace Code.LearningEngine.Semantics
 {
     internal enum AtomTypes
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace AlienDebug
+namespace Code.Debugging
 {
     internal static class DebugHelpers
     {

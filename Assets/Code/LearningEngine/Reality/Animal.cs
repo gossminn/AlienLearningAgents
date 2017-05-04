@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Reality
 {
     internal class Animal
     {

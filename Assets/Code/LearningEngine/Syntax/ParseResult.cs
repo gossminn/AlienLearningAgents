@@ -1,10 +1,11 @@
-﻿namespace LearningEngine
+﻿using Code.LearningEngine.Trees;
+
+namespace Code.LearningEngine.Syntax
 {
     internal class ParseResult
     {
         // Static instance: failure state
-        private static readonly ParseResult _failure =
-            new ParseResult(false, EmptyNode.Create(), 0);
+        private static readonly ParseResult _failure = new ParseResult(false, EmptyNode.Create(), 0);
 
         // Index: where to start parsing?
         private readonly int _index;

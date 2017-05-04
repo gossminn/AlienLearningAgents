@@ -1,6 +1,14 @@
 ﻿using System.Linq;
+using Code.LearningEngine.Agents;
+using Code.LearningEngine.Knowledge.Categories;
+using Code.LearningEngine.Knowledge.Rules;
+using Code.LearningEngine.Semantics;
+using Code.LearningEngine.Semantics.Functions;
+using Code.LearningEngine.Semantics.Model;
+using Code.LearningEngine.Syntax;
+using Code.LearningEngine.Trees;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Languages
 {
     internal static class AlienLanguage
     {

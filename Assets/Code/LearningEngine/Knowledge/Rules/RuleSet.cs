@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Syntax;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Knowledge.Rules
 {
     // Datatype for representing a set of syntax rules
     internal class RuleSet

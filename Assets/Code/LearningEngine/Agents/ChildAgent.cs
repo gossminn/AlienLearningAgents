@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
-using AlienDebug;
+using Code.Debugging;
+using Code.LearningEngine.Knowledge;
+using Code.LearningEngine.Learning;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Agents
 {
     internal class ChildAgent : LanguageAgent
     {

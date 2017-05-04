@@ -1,4 +1,4 @@
-﻿namespace LearningEngine
+﻿namespace Code.LearningEngine.Syntax
 {
     // Class for labelling syntactic terminalCategories
     internal class CategoryLabel

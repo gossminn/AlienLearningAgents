@@ -1,4 +1,6 @@
-﻿namespace LearningEngine
+﻿using Code.LearningEngine.Knowledge;
+
+namespace Code.LearningEngine.Agents
 {
     internal abstract class LanguageAgent
     {

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Immutable;
+using Code.LearningEngine.Knowledge.Categories;
+using Code.LearningEngine.Syntax;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Learning.LearningHelpers
 {
     // Helper class for temporarily storing a NonTerminalCategorySet and a RuleSet
     internal class NonTerminalHelper

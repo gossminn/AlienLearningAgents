@@ -2,13 +2,13 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Agents
 {
     // Helper class for storing the sentences a ChildAgent has memorized
     internal class SentenceMemory
     {
         // Maximum memory size
-        private const int _maxSize = 10;
+        private const int MaxSize = 10;
 
         // Sentences are stored in queue
         private readonly ImmutableQueue<string> _sentences;
@@ -39,7 +39,7 @@ namespace LearningEngine
         public SentenceMemory Memorize(string sentence)
         {
             // Queue not filled yet: add sentence and increment size
-            if (Size < _maxSize)
+            if (Size < MaxSize)
                 return new SentenceMemory(_sentences.Enqueue(sentence));
 
             // Queue has maximum size: remove first element + add sentence

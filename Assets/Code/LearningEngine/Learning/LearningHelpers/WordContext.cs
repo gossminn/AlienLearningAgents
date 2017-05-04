@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Learning.LearningHelpers
 {
     // Helper class for storing a single word and its context
     internal class WordContext

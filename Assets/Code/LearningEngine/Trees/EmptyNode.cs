@@ -1,4 +1,8 @@
-﻿namespace LearningEngine
+﻿using Code.LearningEngine.Semantics.Model;
+using Code.LearningEngine.Semantics.Types;
+using Code.LearningEngine.Syntax;
+
+namespace Code.LearningEngine.Trees
 {
     internal class EmptyNode : ITreeNode
     {

@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Knowledge;
+using Code.LearningEngine.Knowledge.Categories;
+using Code.LearningEngine.Knowledge.Rules;
+using Code.LearningEngine.Semantics.Model;
+using Code.LearningEngine.Syntax;
+using Code.LearningEngine.Trees;
 using UnityEngine;
 using Random = System.Random;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Agents
 {
     internal class ParentAgent : LanguageAgent
     {

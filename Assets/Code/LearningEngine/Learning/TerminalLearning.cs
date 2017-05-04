@@ -1,6 +1,10 @@
 ﻿using System.Linq;
+using Code.LearningEngine.Knowledge;
+using Code.LearningEngine.Knowledge.Categories;
+using Code.LearningEngine.Knowledge.Rules;
+using Code.LearningEngine.Trees;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Learning
 {
     internal static class TerminalLearning
     {

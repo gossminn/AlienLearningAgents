@@ -1,4 +1,4 @@
-﻿namespace LearningEngine
+﻿namespace Code.LearningEngine.Knowledge.KnowledgeHelpers
 {
     // Wrapper for data structures that store intermediate states needed for learning
     internal class KnowledgeHelperSet

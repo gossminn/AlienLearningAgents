@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Knowledge;
+using Code.LearningEngine.Knowledge.Categories;
+using Code.LearningEngine.Learning.LearningHelpers;
+using Code.LearningEngine.Syntax;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Learning
 {
     // Learning algorithm for acquiring (raw) syntactic terminalCategories
     internal static class CategoryLearning

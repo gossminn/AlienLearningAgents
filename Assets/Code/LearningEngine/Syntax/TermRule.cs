@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Knowledge.Rules;
+using Code.LearningEngine.Semantics.Model;
+using Code.LearningEngine.Trees;
 
-namespace LearningEngine
+namespace Code.LearningEngine.Syntax
 {
     internal class TermRule : ISyntaxRule
     {

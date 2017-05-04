@@ -1,4 +1,4 @@
-﻿namespace LearningEngine
+﻿namespace Code.LearningEngine.Knowledge.Categories
 {
     // Wrapper class for category sets 
     internal class CategorySet
