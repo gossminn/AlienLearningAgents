@@ -1,5 +1,6 @@
 ﻿using Code.LearningEngine.Knowledge.Categories;
 using Code.LearningEngine.Knowledge.KnowledgeHelpers;
+using Code.LearningEngine.Knowledge.MeaningHypotheses;
 using Code.LearningEngine.Knowledge.Rules;
 
 namespace Code.LearningEngine.Knowledge
@@ -16,14 +17,17 @@ namespace Code.LearningEngine.Knowledge
         // Terminal nodes (vocabulary)
         private readonly VocabularySet _terminals;
 
-        // Hypotheses about work mea
+        // Hypotheses about word meanings
+        private readonly MeaningHypothesisSet _hypotheses;
 
         // Constructor
-        private KnowledgeSet(CategorySet categories, RuleSet rules, VocabularySet terminals)
+        private KnowledgeSet(CategorySet categories, RuleSet rules, VocabularySet terminals,
+            MeaningHypothesisSet hypotheses)
         {
             _categories = categories;
             _rules = rules;
             _terminals = terminals;
+            _hypotheses = hypotheses;
         }
 
         public CategorySet Categories
@@ -41,13 +45,19 @@ namespace Code.LearningEngine.Knowledge
             get { return _terminals; }
         }
 
+        public MeaningHypothesisSet Hypotheses
+        {
+            get { return _hypotheses; }
+        }
+
         // Factory methods
         public static KnowledgeSet CreateEmpty()
         {
             return new KnowledgeSet(
                 CategorySet.CreateEmpty(),
                 RuleSet.CreateEmpty(),
-                VocabularySet.CreateEmpty());
+                VocabularySet.CreateEmpty(),
+                MeaningHypothesisSet.Initialize(TerminalCategorySet.CreateEmpty()));
         }
 
         // Update syntactic categories
@@ -56,7 +66,8 @@ namespace Code.LearningEngine.Knowledge
             return new KnowledgeSet(
                 categories,
                 _rules, 
-                _terminals);
+                _terminals,
+                _hypotheses);
         }
 
         public KnowledgeSet UpdateHelper(KnowledgeHelperSet helperSet)
@@ -64,7 +75,8 @@ namespace Code.LearningEngine.Knowledge
             return new KnowledgeSet(
                 _categories,
                 _rules,
-                _terminals);
+                _terminals,
+                _hypotheses);
         }
 
         public KnowledgeSet UpdateRules(RuleSet rules)
@@ -72,7 +84,8 @@ namespace Code.LearningEngine.Knowledge
             return new KnowledgeSet(
                 _categories,
                 rules, 
-                _terminals);
+                _terminals,
+                _hypotheses);
         }
 
         public KnowledgeSet UpdateTerminals(VocabularySet terminals)
@@ -80,7 +93,17 @@ namespace Code.LearningEngine.Knowledge
             return new KnowledgeSet(
                 _categories,
                 _rules, 
-                terminals);
+                terminals,
+                _hypotheses);
+        }
+
+        public KnowledgeSet UpdateHypotheses(MeaningHypothesisSet hypotheses)
+        {
+            return new KnowledgeSet(
+                _categories,
+                _rules,
+                _terminals,
+                hypotheses);
         }
     }
 }

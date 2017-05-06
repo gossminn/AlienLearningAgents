@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using Code.Debugging;
 using Code.LearningEngine.Knowledge;
+using Code.LearningEngine.Knowledge.MeaningHypotheses;
 using Code.LearningEngine.Learning;
+using Code.LearningEngine.Semantics.Model;
 
 namespace Code.LearningEngine.Agents
 {
@@ -18,16 +21,16 @@ namespace Code.LearningEngine.Agents
         private readonly SentenceMemory _memory;
 
         // Constructor
-        private ChildAgent(KnowledgeSet knowledge, string sentence,
-            SentenceMemory memory) : base(knowledge)
+        private ChildAgent(KnowledgeSet knowledgeSet, string sentence,
+            SentenceMemory memory) : base(knowledgeSet)
         {
             _memory = memory;
             _current = sentence;
 
             // Write output files
             DebugHelpers.WriteCatNumbers(
-                _knowledge.Categories.RawTerminals.Count, 
-                _knowledge.Categories.GeneralizedTerminals.Count);
+                KnowledgeSet.Categories.RawTerminals.Count,
+                KnowledgeSet.Categories.GeneralizedTerminals.Count);
             DebugHelpers.WriteXmlFile(_memory.ToXmlString() + GetXmlString());
 
         }
@@ -45,7 +48,7 @@ namespace Code.LearningEngine.Agents
         }
 
         // Learn from input
-        public ChildAgent Learn(string input)
+        public ChildAgent Learn(string input, LogicalModel model)
         {
             // String is empty: skip this step TODO: find out why!
             if (input == "")
@@ -54,13 +57,13 @@ namespace Code.LearningEngine.Agents
             }
 
             // Tokenize input
-            var words = input.Split();
+            var words = input.Split().ToImmutableArray();
 
             // Add input to memory
             var memory = _memory.Memorize(input);
 
             // Learn and generalize categories
-            var knowledge1 = _knowledge.LearnCategories(input);
+            var knowledge1 = KnowledgeSet.LearnCategories(input);
 
             // Learn terminal nodes and rules
             var knowledge2 = knowledge1.LearnTerminals();
@@ -68,12 +71,21 @@ namespace Code.LearningEngine.Agents
             // Generate (random) non-terminal rules
             var knowledge3 = knowledge2.LearnConstituents(words);
 
-            // TODO: remove after testing
-            DebugHelpers.WriteWordsetChanged(knowledge3.Categories.GeneralizedTerminals
-                .HasChanged(_knowledge.Categories.GeneralizedTerminals));
+            // Determine if category knowledge has changed
+            var catsHaveChanged = knowledge3.Categories.GeneralizedTerminals
+                .HasChanged(KnowledgeSet.Categories.GeneralizedTerminals);
+            DebugHelpers.WriteWordsetChanged(catsHaveChanged); // TODO: remove after testing
+
+            // If so: re-initialize hypothesis set
+            var hypotheses = catsHaveChanged
+                ? MeaningHypothesisSet.Initialize(knowledge3.Categories.GeneralizedTerminals)
+                : knowledge3.Hypotheses;
+
+            // Evaluate hypotheses based on model
+            var knowledge4 = knowledge3.UpdateHypotheses(hypotheses).LearnWordSemantics(model, words);
 
             // New child agent object
-            return new ChildAgent(knowledge3, _current, memory);
+            return new ChildAgent(knowledge4, _current, memory);
         }
 
         // Evaluate feedback
@@ -81,10 +93,10 @@ namespace Code.LearningEngine.Agents
         public ChildAgent EvaluateFeedback(Feedback feedback)
         {
             if (feedback == Feedback.Happy)
-                return new ChildAgent(_knowledge, _current, _memory);
+                return new ChildAgent(KnowledgeSet, _current, _memory);
 
             var memory = _memory.Forget(_current);
-            return new ChildAgent(_knowledge, _current, memory);
+            return new ChildAgent(KnowledgeSet, _current, memory);
         }
 
         // Produce sentence
@@ -101,7 +113,7 @@ namespace Code.LearningEngine.Agents
             var sentence = n == 0
                 ? _memory.Sentences.First()
                 : _memory.Sentences.Take(n).Last();
-            return new ChildAgent(_knowledge, sentence, _memory);
+            return new ChildAgent(KnowledgeSet, sentence, _memory);
         }
     }
 }

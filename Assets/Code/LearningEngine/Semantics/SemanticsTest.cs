@@ -1,6 +1,6 @@
-﻿using Code.LearningEngine.Semantics.Functions;
+﻿using Code.Debugging;
+using Code.LearningEngine.Semantics.Functions;
 using Code.LearningEngine.Semantics.Model;
-using UnityEngine;
 
 namespace Code.LearningEngine.Semantics
 {
@@ -11,9 +11,9 @@ namespace Code.LearningEngine.Semantics
             var output = "SPECIES TEST\n" + "++++++++++++++\n";
             foreach (var meaning in AtomicMeanings.Species)
             {
-                output += meaning(m).AppliesToModel(m);
+                output += meaning.GetHashCode().ToString() + meaning(m).AppliesToModel(m) + "\n";
             }
-            Debug.Log(output);
+            DebugHelpers.LogSemanticTest(output);
         }
 
         public static void PrintDirections(this LogicalModel m)
@@ -21,9 +21,9 @@ namespace Code.LearningEngine.Semantics
             var output = "DIRECTIONS TEST\n" + "++++++++++++++\n";
             foreach (var meaning in AtomicMeanings.Directions)
             {
-                output += meaning(m).AppliesToModel(m);
+                output += meaning.GetHashCode().ToString() + meaning(m).AppliesToModel(m) + "\n";
             }
-            Debug.Log(output);
+            DebugHelpers.LogSemanticTest(output);
         }
 
         public static void PrintRelations(this LogicalModel m)
@@ -31,9 +31,9 @@ namespace Code.LearningEngine.Semantics
             var output = "RELATIONS TEST\n" + "++++++++++++++\n";
             foreach (var meaning in AtomicMeanings.SpatialRelations)
             {
-                output += meaning(m).AppliesToModel(m);
+                output += meaning.GetHashCode().ToString() + meaning(m).AppliesToModel(m) + "\n";
             }
-            Debug.Log(output);
+            DebugHelpers.LogSemanticTest(output);
         }
     }
 }

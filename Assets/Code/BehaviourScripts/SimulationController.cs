@@ -75,7 +75,7 @@ namespace Code.BehaviourScripts
 
         private void ChildSay()
         {
-            _childAgent = _childAgent.Learn(_parentAgent.CurrentSentence);
+            _childAgent = _childAgent.Learn(_parentAgent.CurrentSentence, _model);
             _childAgent = _childAgent.SaySomething();
             ChildText.text = _childAgent.Current;
         }

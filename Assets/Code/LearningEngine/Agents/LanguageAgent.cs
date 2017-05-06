@@ -5,26 +5,27 @@ namespace Code.LearningEngine.Agents
     internal abstract class LanguageAgent
     {
         // Knowledge representation
-        protected readonly KnowledgeSet _knowledge;
+        protected readonly KnowledgeSet KnowledgeSet;
 
         // Constructor
-        protected LanguageAgent(KnowledgeSet knowledge)
+        protected LanguageAgent(KnowledgeSet knowledgeSet)
         {
-            _knowledge = knowledge;
+            KnowledgeSet = knowledgeSet;
         }
 
         public KnowledgeSet Knowledge
         {
-            get { return _knowledge; }
+            get { return KnowledgeSet; }
         }
 
         // Print knowledge representation as XML
         public string GetXmlString()
         {
-            return _knowledge.Categories.RawTerminals.GetXmlString() +
-                   _knowledge.Categories.GeneralizedTerminals.GetXmlString() +
-                   _knowledge.Rules.GetXmlString() +
-                   _knowledge.Terminals.GetXmlString();
+            return KnowledgeSet.Categories.RawTerminals.GetXmlString() +
+                   KnowledgeSet.Categories.GeneralizedTerminals.GetXmlString() +
+                   KnowledgeSet.Rules.GetXmlString() +
+                   KnowledgeSet.Terminals.GetXmlString() +
+                   KnowledgeSet.Hypotheses.ToXmlString();
         }
     }
 }

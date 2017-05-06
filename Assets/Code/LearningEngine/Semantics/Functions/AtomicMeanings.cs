@@ -57,7 +57,7 @@ namespace Code.LearningEngine.Semantics.Functions
                         e => TypeTValue.Create(m.Species.Contains(s, e.Value)));
 
             // Make a function for each species
-            return species.Select(speciesFunction);
+            return species.Select(speciesFunction).ToArray(); // for non-lazy evaluation
         }
 
         private static IEnumerable<Func<LogicalModel, ISemanticValue>> MakeDirections()
@@ -88,7 +88,7 @@ namespace Code.LearningEngine.Semantics.Functions
                             e => m.Orientations.Contains(d, e)).DefaultIfEmpty(Entity.Nothing).Single()));
 
             // Return collection of directionFunctions
-            return directions.Select(directionFunction);
+            return directions.Select(directionFunction).ToArray();
         }
 
         private static IEnumerable<Func<LogicalModel, ISemanticValue>> MakeSpatialRelations()
@@ -112,7 +112,7 @@ namespace Code.LearningEngine.Semantics.Functions
                                 r.Orientation, r.SameSide, e2.Value, e1.Value))
                             ));
 
-            return relations.Select(relationFunction);
+            return relations.Select(relationFunction).ToArray();
         }
 
         // Type for temporarily storing a RiverOrientation and a boolean

@@ -29,14 +29,14 @@ namespace Code.LearningEngine.Agents
         private readonly LogicalModel _model;
 
         // Constructor is private, public access through factory methods
-        private ParentAgent(KnowledgeSet knowledge, CategoryLabel rootCat, ITreeNode currentSent,
-            LogicalModel model) : base(knowledge)
+        private ParentAgent(KnowledgeSet knowledgeSet, CategoryLabel rootCat, ITreeNode currentSent,
+            LogicalModel model) : base(knowledgeSet)
         {
             _rootCat = rootCat;
-            var rootRule = knowledge.Rules.FindWithLeftSide(_rootCat);
+            var rootRule = knowledgeSet.Rules.FindWithLeftSide(_rootCat);
 
             _sentences = rootRule
-                    .GenerateAll(knowledge.Rules, model)
+                    .GenerateAll(knowledgeSet.Rules, model)
                     .Where(x => x.GetTruthValue())
                     .ToImmutableList();
 
@@ -76,21 +76,21 @@ namespace Code.LearningEngine.Agents
         {
             var num = _random.Next(_sentences.Count);
             var sentence = _sentences.Count > 0 ? _sentences[num] : EmptyNode.Create();
-            return new ParentAgent(_knowledge, _rootCat, sentence, _model);
+            return new ParentAgent(KnowledgeSet, _rootCat, sentence, _model);
         }
 
         // Evaluate a sentence
         public bool EvaluateSentence(string s)
         {
             var words = s.Split().ToImmutableList();
-            var rootRule = _knowledge.Rules.FindWithLeftSide(_rootCat);
-            return rootRule.Parse(words, _knowledge.Rules, _model).Tree.GetTruthValue();
+            var rootRule = KnowledgeSet.Rules.FindWithLeftSide(_rootCat);
+            return rootRule.Parse(words, KnowledgeSet.Rules, _model).Tree.GetTruthValue();
         }
 
         // Update model
         public ParentAgent UpdateModel(LogicalModel model)
         {
-            return new ParentAgent(_knowledge, _rootCat, _currentSent, model);
+            return new ParentAgent(KnowledgeSet, _rootCat, _currentSent, model);
         }
 
         // Provide feedback on utterance of child
