@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Random = System.Random;
@@ -28,6 +29,11 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
                 m => SemanticClassHypotheses.Initialize(words, m));
 
             // Store in HashSet
+            return MakeHypothesisSet(hypotheses);
+        }
+
+        private static SyntaxCategoryHypotheses MakeHypothesisSet(IEnumerable<SemanticClassHypotheses> hypotheses)
+        {
             var hypothesisSet = hypotheses.Aggregate(
                 ImmutableHashSet<SemanticClassHypotheses>.Empty,
                 (acc, next) => acc.Add(next));
@@ -40,6 +46,12 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             return _hypotheses.Any(h => h.IsRelevant());
         }
 
+        // Set is fixed when only one semantic class hypothesis is left
+        public bool IsFixed()
+        {
+            return _hypotheses.Count == 1;
+        }
+
         // Does category contain a given word?
         public bool HasMeaningFor(string word)
         {
@@ -47,10 +59,9 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
         }
 
         // Guess: randomly choose a hypothesis about a semantic class
-        public SemanticClassHypotheses Guess()
+        public SyntaxCategoryHypotheses Guess()
         {
-            var randomNumber = _randomNumbers.Next(_hypotheses.Count);
-            return _hypotheses.Skip(randomNumber).First();
+            var hypotheses = _hypotheses.Single().Guess();
         }
 
         // Evaluate based on context: eliminate irrelevant hypotheses
@@ -62,10 +73,7 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
                 .Where(h => h.IsRelevant());
 
             // Store new hypothesis set
-            var hypothesisSet = hypotheses.Aggregate(
-                ImmutableHashSet<SemanticClassHypotheses>.Empty,
-                (acc, next) => acc.Add(next));
-            return new SyntaxCategoryHypotheses(hypothesisSet);
+            return MakeHypothesisSet(hypotheses);
         }
 
         public string ToXmlString()

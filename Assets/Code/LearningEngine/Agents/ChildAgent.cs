@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using Code.Debugging;
 using Code.LearningEngine.Knowledge;
 using Code.LearningEngine.Knowledge.MeaningHypotheses;
 using Code.LearningEngine.Learning;
 using Code.LearningEngine.Semantics.Model;
+using UnityEngine;
+using Random = System.Random;
 
 namespace Code.LearningEngine.Agents
 {
@@ -47,8 +48,8 @@ namespace Code.LearningEngine.Agents
                 KnowledgeSet.CreateEmpty(), "", SentenceMemory.Initialize());
         }
 
-        // Learn from input
-        public ChildAgent Learn(string input, LogicalModel model)
+        // Process input
+        public ChildAgent ProcessInput(string input, LogicalModel model)
         {
             // String is empty: skip this step TODO: find out why!
             if (input == "")
@@ -62,8 +63,23 @@ namespace Code.LearningEngine.Agents
             // Add input to memory
             var memory = _memory.Memorize(input);
 
+            // Infer knowledge from input
+            var knowledge = InferKnowledge(model, words);
+
+            // If meaning set is fixed, produce a guess (and ask parent for input)
+            if (knowledge.Hypotheses.IsFixed())
+            {
+                MeaningHypothesisSet guess = knowledge.Hypotheses.Guess();
+            }
+
+            // New child agent object
+            return new ChildAgent(knowledge, _current, memory);
+        }
+
+        private KnowledgeSet InferKnowledge(LogicalModel model, ImmutableArray<string> words)
+        {
             // Learn and generalize categories
-            var knowledge1 = KnowledgeSet.LearnCategories(input);
+            var knowledge1 = KnowledgeSet.LearnCategories(words);
 
             // Learn terminal nodes and rules
             var knowledge2 = knowledge1.LearnTerminals();
@@ -83,9 +99,7 @@ namespace Code.LearningEngine.Agents
 
             // Evaluate hypotheses based on model
             var knowledge4 = knowledge3.UpdateHypotheses(hypotheses).LearnWordSemantics(model, words);
-
-            // New child agent object
-            return new ChildAgent(knowledge4, _current, memory);
+            return knowledge4;
         }
 
         // Evaluate feedback
@@ -99,21 +113,10 @@ namespace Code.LearningEngine.Agents
             return new ChildAgent(KnowledgeSet, _current, memory);
         }
 
-        // Produce sentence
-        // Simplistic version: just produce random sentence from memory
+        // Produce sentence / guess
         public ChildAgent SaySomething()
         {
-            // Memory is empty: don't do anything, return self
-            if (!_memory.Sentences.Any())
-            {
-                return this;
-            }
-
-            var n = _random.Next(_memory.Size);
-            var sentence = n == 0
-                ? _memory.Sentences.First()
-                : _memory.Sentences.Take(n).Last();
-            return new ChildAgent(KnowledgeSet, sentence, _memory);
+            return this;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Code.LearningEngine.Knowledge.Categories;
 using Code.LearningEngine.Semantics.Model;
@@ -25,17 +26,20 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             // Generate initial hypotheses for each set
             var hypotheses = wordSets.Select(SyntaxCategoryHypotheses.Initialize);
 
-            // Add to HashSet
-            var hypothesisSet = hypotheses.Aggregate(
-                ImmutableHashSet<SyntaxCategoryHypotheses>.Empty,
-                (acc, next) => acc.Add(next));
-            return new MeaningHypothesisSet(hypothesisSet);
+            // Make set from enumerable
+            return MakeHypothesisSet(hypotheses);
         }
 
         // Are hypotheses still relevant (otherwise it's corrupt)?
         public bool IsRelevant()
         {
             return _hypotheses.All(h => h.IsRelevant());
+        }
+
+        // Overall set is fixed when every category is fixed
+        public bool IsFixed()
+        {
+            return _hypotheses.All(h => h.IsFixed());
         }
 
         // Evaluate based on context
@@ -45,6 +49,11 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             var hypotheses = _hypotheses.Select(h => h.Evaluate(model, words));
 
             // Make new hypothesis set
+            return MakeHypothesisSet(hypotheses);
+        }
+
+        private static MeaningHypothesisSet MakeHypothesisSet(IEnumerable<SyntaxCategoryHypotheses> hypotheses)
+        {
             var hypothesisSet = hypotheses.Aggregate(
                 ImmutableHashSet<SyntaxCategoryHypotheses>.Empty,
                 (acc, next) => acc.Add(next));
@@ -55,6 +64,15 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
         {
             var entries = _hypotheses.Select(x => x.ToXmlString());
             return "<meanings>" + string.Join("", entries.ToArray()) + "</meanings>";
+        }
+
+        public MeaningHypothesisSet Guess()
+        {
+            // Make a guess for each hypothesis
+            var hypotheses = _hypotheses.Select(h => h.Guess());
+
+            // Return as hypothesis set
+            return MakeHypothesisSet(hypotheses);
         }
     }
 }

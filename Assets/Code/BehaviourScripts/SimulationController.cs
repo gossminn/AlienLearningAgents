@@ -41,8 +41,8 @@ namespace Code.BehaviourScripts
             _childAgent = ChildAgent.Initialize();
 
             // Add listeners for buttons
-            ParentButton.onClick.AddListener(ParentSay);
-            ChildButton.onClick.AddListener(ChildSay);
+            ParentButton.onClick.AddListener(ParentTurn);
+            ChildButton.onClick.AddListener(ChildTurn);
             EvaluateButton.onClick.AddListener(EvaluateSent);
             RepeatButton.onClick.AddListener(RunSimulation);
 
@@ -50,7 +50,7 @@ namespace Code.BehaviourScripts
             Visualizer = GetComponent<EntityVisualizer>();
         }
 
-        private void ParentSay()
+        private void ParentTurn()
         {
             // Generate and visualize new situation
             var situation = Situation.Generate();
@@ -73,10 +73,10 @@ namespace Code.BehaviourScripts
 
         }
 
-        private void ChildSay()
+        private void ChildTurn()
         {
-            _childAgent = _childAgent.Learn(_parentAgent.CurrentSentence, _model);
-            _childAgent = _childAgent.SaySomething();
+            // Child processes input; will produce a sentence or remain silent
+            _childAgent = _childAgent.ProcessInput(_parentAgent.CurrentSentence, _model);
             ChildText.text = _childAgent.Current;
         }
 
@@ -94,8 +94,8 @@ namespace Code.BehaviourScripts
             var repetitions = ParseRepetitions();
             for (var i = 0; i < repetitions; i++)
             {
-                ParentSay();
-                ChildSay();
+                ParentTurn();
+                ChildTurn();
                 //EvaluateSent(); TODO: enable when implemented
             }
         }

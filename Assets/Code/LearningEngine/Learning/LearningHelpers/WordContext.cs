@@ -40,11 +40,8 @@ namespace Code.LearningEngine.Learning.LearningHelpers
         }
 
         // Factory method: create contexts for each word in a sentence
-        public static ImmutableArray<WordContext> GetContexts(string sentence)
+        public static ImmutableArray<WordContext> GetContexts(ImmutableArray<string> words)
         {
-            // Split sentence into array of words
-            var words = sentence.Split();
-
             // Functions for getting word to the left or to the right, respectively
             Func<int, string> leftOf =
                 index => index == 0 ? "#" : words[index - 1];

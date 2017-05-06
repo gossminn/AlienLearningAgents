@@ -35,16 +35,26 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             return _hypotheses.All(h => h.Value.IsRelevant());
         }
 
+        // Meanings are fixed when for every word, there is only one meaning left
+        public bool IsFixed()
+        {
+            return _hypotheses.All(h => h.Value.IsFixed());
+        }
+
         // Does dictionary contain meaning for a given word?
         public bool HasMeaningFor(string word)
         {
             return _hypotheses.Keys.Contains(word);
         }
 
-        // Produce a guess for a given word
-        public Func<LogicalModel, ISemanticValue> Guess(string word)
+        // Produce a guess
+        public SemanticClassHypotheses Guess()
         {
-            return _hypotheses[word].Guess();
+            var hypotheses = _hypotheses.Select(h => new {W = h.Key, M = h.Value.Guess()});
+            var hypothesisDict = hypotheses.Aggregate(
+                ImmutableDictionary<string, WordMeaningHypotheses>.Empty,
+                (acc, next) => acc.Add(next.W, next.M));
+            return new SemanticClassHypotheses(hypothesisDict);
         }
 
         // Evaluate and eliminate hypotheses based on contexts

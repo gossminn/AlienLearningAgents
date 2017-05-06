@@ -37,11 +37,29 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             return !_meanings.IsEmpty;
         }
 
-        // Guess: return one of the hypotheses at random (may throw error if no meanings left)
-        public Func<LogicalModel, ISemanticValue> Guess()
+        // A word's meaning is fixed if there is only one hypothesis left
+        public bool IsFixed()
         {
+            return _meanings.Count == 1;
+        }
+
+        // Guess: return one of the hypotheses at random (may throw error if no meanings left)
+        public WordMeaningHypotheses Guess()
+        {
+            // Already fixed? Just return current instance
+            if (IsFixed())
+            {
+                return this;
+            }
+
+            // Else: randomly choose one hypothesis, discard all other hypotheses
             var randomNum = _randomNumbers.Next(_meanings.Count);
-            return _meanings.Skip(randomNum).First();
+            var randomHypothesis = _meanings.Skip(randomNum).First();
+
+            var hypothesisSet = ImmutableHashSet<Func<LogicalModel, ISemanticValue>>
+                .Empty
+                .Add(randomHypothesis);
+            return new WordMeaningHypotheses(hypothesisSet);
         }
 
         // Evaluate and eliminate hypotheses based on context
@@ -62,5 +80,6 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
         {
             return string.Join(",", _meanings.Select(x => x.GetHashCode().ToString()).ToArray());
         }
+
     }
 }

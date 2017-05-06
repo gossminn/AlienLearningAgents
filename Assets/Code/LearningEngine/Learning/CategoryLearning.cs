@@ -12,13 +12,13 @@ namespace Code.LearningEngine.Learning
     internal static class CategoryLearning
     {
         // Wrapper function: learn raw categories and generalize
-        public static KnowledgeSet LearnCategories(this KnowledgeSet knowledge, string input)
+        public static KnowledgeSet LearnCategories(this KnowledgeSet knowledge, ImmutableArray<string> words)
         {
             // Old category set
             var categories0 = knowledge.Categories;
 
             // Update raw categories based on input
-            var rawCategories = categories0.RawTerminals.ExtractRawCategories(input);
+            var rawCategories = categories0.RawTerminals.ExtractRawCategories(words);
 
             // Generalize based on input
             var generalizedCategories = rawCategories.GeneralizeContexts();
@@ -32,7 +32,7 @@ namespace Code.LearningEngine.Learning
         }
 
         // Adapt overall TerminalCategorySet based on new input
-        public static TerminalCategorySet ExtractRawCategories(this TerminalCategorySet categories0, string sentence)
+        public static TerminalCategorySet ExtractRawCategories(this TerminalCategorySet categories0, ImmutableArray<string> sentence)
         {
             // Get context for each word
             var contexts = WordContext.GetContexts(sentence);
