@@ -40,6 +40,18 @@ namespace Code.LearningEngine.Trees
             return false;
         }
 
+        // Factory method for creating new instances
+        public static TermNode Create(CategoryLabel synCat, string writtenForm,
+            Func<LogicalModel, ISemanticValue> evalFunction)
+        {
+            return new TermNode(synCat, writtenForm, evalFunction);
+        }
+
+        public TermNode UpdateMeaning(Func<LogicalModel, ISemanticValue> evalFunction)
+        {
+            return new TermNode(_synCat, _writtenForm, evalFunction);
+        }
+
         // Get as flat string
         public string GetFlatString()
         {
@@ -49,14 +61,9 @@ namespace Code.LearningEngine.Trees
         // Generate XML representation
         public string GetXmlString()
         {
-            return "<" + _synCat + " value=" + _evalFunction
+            return "<" + _synCat + " value=" + _evalFunction.GetHashCode()
                    + ">" + _writtenForm + "</" + _synCat + ">";
         }
 
-        // Factory method for creating new instances
-        public static TermNode Create(CategoryLabel synCat, string writtenForm, Func<LogicalModel, ISemanticValue> evalFunction)
-        {
-            return new TermNode(synCat, writtenForm, evalFunction);
-        }
     }
 }

@@ -116,5 +116,11 @@ namespace Code.LearningEngine.Syntax
         {
             return new NonTermRule(left, right1, right2, functor);
         }
+
+        public static NonTermRule CreateEmpty()
+        {
+            return new NonTermRule(CategoryLabel.EmptyCat, CategoryLabel.EmptyCat, CategoryLabel.EmptyCat,
+                FunctorLoc.Left);
+        }
     }
 }

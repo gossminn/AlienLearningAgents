@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Random = System.Random;
 using Code.LearningEngine.Semantics.Functions;
 using Code.LearningEngine.Semantics.Model;
 
@@ -12,9 +11,6 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
     {
         // Store word meaning hypotheses per semantic type
         private readonly ImmutableHashSet<SemanticClassHypotheses> _hypotheses;
-
-        // Random number generator
-        private static readonly Random _randomNumbers = new Random();
 
         private SyntaxCategoryHypotheses(ImmutableHashSet<SemanticClassHypotheses> hypotheses)
         {
@@ -58,10 +54,22 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             return _hypotheses.Any(h => h.HasMeaningFor(word));
         }
 
+        // Find unique meaning for a word
+        public MeaningCandidate FindMeaningFor(string word)
+        {
+            return _hypotheses
+                .Single(h => h.HasMeaningFor(word))
+                .FindMeaningFor(word);
+        }
+
         // Guess: randomly choose a hypothesis about a semantic class
         public SyntaxCategoryHypotheses Guess()
         {
             var hypotheses = _hypotheses.Single().Guess();
+            var hypothesisSet = ImmutableHashSet<SemanticClassHypotheses>
+                .Empty
+                .Add(hypotheses);
+            return new SyntaxCategoryHypotheses(hypothesisSet);
         }
 
         // Evaluate based on context: eliminate irrelevant hypotheses

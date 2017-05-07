@@ -11,12 +11,15 @@ namespace Code.LearningEngine.Knowledge.Rules
     {
         private readonly ImmutableHashSet<TermRule> _terminalRules;
         private readonly ImmutableHashSet<NonTermRule> _nonTerminalRules;
+        private readonly NonTermRule _root;
 
         // Private constructor
-        private RuleSet(ImmutableHashSet<TermRule> terminalRules, ImmutableHashSet<NonTermRule> nonTerminalRules)
+        private RuleSet(ImmutableHashSet<TermRule> terminalRules, ImmutableHashSet<NonTermRule> nonTerminalRules,
+            NonTermRule root)
         {
             _terminalRules = terminalRules;
             _nonTerminalRules = nonTerminalRules;
+            _root = root;
         }
 
         public IEnumerable<TermRule> TerminalRules
@@ -24,10 +27,16 @@ namespace Code.LearningEngine.Knowledge.Rules
             get { return _terminalRules.AsEnumerable(); }
         }
 
+        public NonTermRule Root
+        {
+            get { return _root; }
+        }
+
         // Factory method: create an empty RuleSet
         public static RuleSet CreateEmpty()
         {
-            return new RuleSet(ImmutableHashSet<TermRule>.Empty, ImmutableHashSet<NonTermRule>.Empty);
+            return new RuleSet(ImmutableHashSet<TermRule>.Empty, ImmutableHashSet<NonTermRule>.Empty,
+                NonTermRule.CreateEmpty());
         }
 
         // Factory method: add a rule to an existing RuleSet
@@ -39,11 +48,11 @@ namespace Code.LearningEngine.Knowledge.Rules
             if (_terminalRules.Any(sameLeft))
             {
                 var newRules = _terminalRules.Remove(_terminalRules.Single(sameLeft)).Add(rule);
-                return new RuleSet(newRules, _nonTerminalRules);
+                return new RuleSet(newRules, _nonTerminalRules, _root);
             }
 
             // Otherwise: just add the rule
-            return new RuleSet(_terminalRules.Add(rule), _nonTerminalRules);
+            return new RuleSet(_terminalRules.Add(rule), _nonTerminalRules, _root);
         }
 
         public RuleSet AddRule(NonTermRule rule)
@@ -54,11 +63,11 @@ namespace Code.LearningEngine.Knowledge.Rules
             if (_nonTerminalRules.Any(sameLeft))
             {
                 var newRules = _nonTerminalRules.Remove(_nonTerminalRules.Single(sameLeft)).Add(rule);
-                return new RuleSet(_terminalRules, newRules);
+                return new RuleSet(_terminalRules, newRules, _root);
             }
 
             // Otherwise: just add the rule
-            return new RuleSet(_terminalRules, _nonTerminalRules.Add(rule));
+            return new RuleSet(_terminalRules, _nonTerminalRules.Add(rule), _root);
         }
 
         // Factory method: add multiple rules to an existing RuleSet
@@ -72,9 +81,15 @@ namespace Code.LearningEngine.Knowledge.Rules
             return rules.Aggregate(this, (x, y) => x.AddRule(y));
         }
 
-        public RuleSet ClearNonterminals()
+        // Set root category
+        public RuleSet SetRoot(NonTermRule root)
         {
-            return new RuleSet(_terminalRules, ImmutableHashSet<NonTermRule>.Empty);
+            return new RuleSet(_terminalRules, _nonTerminalRules, root);
+        }
+
+        public RuleSet ClearNonTerminals()
+        {
+            return new RuleSet(_terminalRules, ImmutableHashSet<NonTermRule>.Empty, NonTermRule.CreateEmpty());
         }
 
         // Method for getting rules from the set based on the 'left-handed' SyntaxCat
@@ -92,5 +107,6 @@ namespace Code.LearningEngine.Knowledge.Rules
             var nonTerminalEntries = string.Join("", _nonTerminalRules.Select(x => x.GetXmlString()).ToArray());
             return "<syntaxRules>" + terminalEntries + nonTerminalEntries + "</syntaxRules>";
         }
+
     }
 }

@@ -12,6 +12,7 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
         // For each category, store hypotheses about its semantics
         private readonly ImmutableHashSet<SyntaxCategoryHypotheses> _hypotheses;
 
+        // Constructor
         private MeaningHypothesisSet(ImmutableHashSet<SyntaxCategoryHypotheses> hypotheses)
         {
             _hypotheses = hypotheses;
@@ -30,16 +31,14 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             return MakeHypothesisSet(hypotheses);
         }
 
-        // Are hypotheses still relevant (otherwise it's corrupt)?
-        public bool IsRelevant()
+        // Produce a guess
+        public MeaningHypothesisSet Guess()
         {
-            return _hypotheses.All(h => h.IsRelevant());
-        }
+            // Make a guess for each hypothesis
+            var hypotheses = _hypotheses.Select(h => h.Guess());
 
-        // Overall set is fixed when every category is fixed
-        public bool IsFixed()
-        {
-            return _hypotheses.All(h => h.IsFixed());
+            // Return as hypothesis set
+            return MakeHypothesisSet(hypotheses);
         }
 
         // Evaluate based on context
@@ -52,6 +51,8 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             return MakeHypothesisSet(hypotheses);
         }
 
+
+        // Helper method for adding hypotheses to a set
         private static MeaningHypothesisSet MakeHypothesisSet(IEnumerable<SyntaxCategoryHypotheses> hypotheses)
         {
             var hypothesisSet = hypotheses.Aggregate(
@@ -60,19 +61,31 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             return new MeaningHypothesisSet(hypothesisSet);
         }
 
+        // Are hypotheses still relevant (otherwise it's corrupt)?
+        public bool IsRelevant()
+        {
+            return _hypotheses.All(h => h.IsRelevant());
+        }
+
+        // Overall set is fixed when every category is fixed
+        public bool IsFixed()
+        {
+            return _hypotheses.All(h => h.IsFixed());
+        }
+
+        // Find unique meaning for a given word (assumes one and only one meaning is present)
+        public MeaningCandidate FindMeaningFor(string word)
+        {
+            return _hypotheses
+                .Single(h => h.HasMeaningFor(word))
+                .FindMeaningFor(word);
+        }
+
+
         public string ToXmlString()
         {
             var entries = _hypotheses.Select(x => x.ToXmlString());
             return "<meanings>" + string.Join("", entries.ToArray()) + "</meanings>";
-        }
-
-        public MeaningHypothesisSet Guess()
-        {
-            // Make a guess for each hypothesis
-            var hypotheses = _hypotheses.Select(h => h.Guess());
-
-            // Return as hypothesis set
-            return MakeHypothesisSet(hypotheses);
         }
     }
 }

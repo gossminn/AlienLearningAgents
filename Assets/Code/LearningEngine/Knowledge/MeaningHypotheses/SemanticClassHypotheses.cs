@@ -47,6 +47,12 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             return _hypotheses.Keys.Contains(word);
         }
 
+        // Find unique meaning for word
+        public MeaningCandidate FindMeaningFor(string word)
+        {
+            return _hypotheses[word].GetSingleMeaning();
+        }
+
         // Produce a guess
         public SemanticClassHypotheses Guess()
         {
@@ -78,5 +84,6 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             var entries = _hypotheses.Select(x => "<word=" + x.Key + ">" + x.Value.ToXmlString() + "</word>");
             return "<words>" + string.Join("", entries.ToArray()) + "</words>";
         }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using Code.Debugging;
 using Code.LearningEngine.Knowledge;
@@ -12,7 +13,7 @@ namespace Code.LearningEngine.Agents
 {
     internal class ChildAgent : LanguageAgent
     {
-        // Random number generator
+        // Random numbers generator
         private static readonly Random _random = new Random();
 
         // Current sentence
@@ -66,14 +67,40 @@ namespace Code.LearningEngine.Agents
             // Infer knowledge from input
             var knowledge = InferKnowledge(model, words);
 
-            // If meaning set is fixed, produce a guess (and ask parent for input)
-            if (knowledge.Hypotheses.IsFixed())
+            return knowledge.Hypotheses.IsFixed()
+                ? ProduceGuess(knowledge, words, model)
+                : new ChildAgent(knowledge, _current, memory);
+        }
+
+        private ChildAgent ProduceGuess(KnowledgeSet knowledge, ImmutableArray<string> words, LogicalModel model)
+        {
+            // Produce guess
+            var guess = knowledge.Hypotheses.Guess();
+
+            // Make terminal nodes and rules based on guess
+            var knowledge1 = knowledge.LearnTerminals(guess);
+
+            // Infer rules based on guess
+            var knowledge2 = knowledge1.GuessStructure(guess, words, model);
+
+            // Try to parse current sentence with guessed rules
+            var parseSent = knowledge2.Rules.Root.Parse(words.ToImmutableList(), knowledge2.Rules, model);
+
+            // If this fails, guess again
+            if (!parseSent.Tree.GetTruthValue())
             {
-                MeaningHypothesisSet guess = knowledge.Hypotheses.Guess();
+                return ProduceGuess(knowledge, words, model);
             }
 
-            // New child agent object
-            return new ChildAgent(knowledge, _current, memory);
+            // Generate all possible sentences and select a random one
+            var sentences = knowledge2.Rules.Root
+                .GenerateAll(knowledge2.Rules, model)
+                .Where(x => x.GetTruthValue())
+                .ToArray();
+            var randomNum = _random.Next(sentences.Length);
+            var randomSent = sentences[randomNum].GetFlatString();
+
+            return new ChildAgent(knowledge2, randomSent, _memory);
         }
 
         private KnowledgeSet InferKnowledge(LogicalModel model, ImmutableArray<string> words)
@@ -81,25 +108,19 @@ namespace Code.LearningEngine.Agents
             // Learn and generalize categories
             var knowledge1 = KnowledgeSet.LearnCategories(words);
 
-            // Learn terminal nodes and rules
-            var knowledge2 = knowledge1.LearnTerminals();
-
-            // Generate (random) non-terminal rules
-            var knowledge3 = knowledge2.LearnConstituents(words);
-
             // Determine if category knowledge has changed
-            var catsHaveChanged = knowledge3.Categories.GeneralizedTerminals
+            var catsHaveChanged = knowledge1.Categories.GeneralizedTerminals
                 .HasChanged(KnowledgeSet.Categories.GeneralizedTerminals);
             DebugHelpers.WriteWordsetChanged(catsHaveChanged); // TODO: remove after testing
 
             // If so: re-initialize hypothesis set
             var hypotheses = catsHaveChanged
-                ? MeaningHypothesisSet.Initialize(knowledge3.Categories.GeneralizedTerminals)
-                : knowledge3.Hypotheses;
+                ? MeaningHypothesisSet.Initialize(knowledge1.Categories.GeneralizedTerminals)
+                : knowledge1.Hypotheses;
 
             // Evaluate hypotheses based on model
-            var knowledge4 = knowledge3.UpdateHypotheses(hypotheses).LearnWordSemantics(model, words);
-            return knowledge4;
+            var knowledge2 = knowledge1.UpdateHypotheses(hypotheses).LearnWordSemantics(model, words);
+            return knowledge2;
         }
 
         // Evaluate feedback
@@ -111,12 +132,6 @@ namespace Code.LearningEngine.Agents
 
             var memory = _memory.Forget(_current);
             return new ChildAgent(KnowledgeSet, _current, memory);
-        }
-
-        // Produce sentence / guess
-        public ChildAgent SaySomething()
-        {
-            return this;
         }
     }
 }

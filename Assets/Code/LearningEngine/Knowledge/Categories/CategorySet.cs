@@ -8,17 +8,15 @@
         private readonly TerminalCategorySet _generalizedTerminals;
 
         // Syntactic caterories of nonterminals
-        private readonly NonTerminalCategorySet _rawNonTerminals;
-        private readonly NonTerminalCategorySet _generalizedNonTerminals;
+        private readonly NonTerminalCategorySet _nonTerminals;
 
         // Constructor
         private CategorySet(TerminalCategorySet rawTerminals, TerminalCategorySet generalizedTerminals,
-            NonTerminalCategorySet rawNonTerminals, NonTerminalCategorySet generalizedNonTerminals)
+            NonTerminalCategorySet nonTerminals)
         {
             _rawTerminals = rawTerminals;
             _generalizedTerminals = generalizedTerminals;
-            _rawNonTerminals = rawNonTerminals;
-            _generalizedNonTerminals = generalizedNonTerminals;
+            _nonTerminals = nonTerminals;
         }
 
         // Getters
@@ -32,61 +30,33 @@
             get { return _generalizedTerminals; }
         }
 
-        public NonTerminalCategorySet RawNonTerminals
+        public NonTerminalCategorySet NonTerminals
         {
-            get { return _rawNonTerminals; }
-        }
-
-        public NonTerminalCategorySet GeneralizedNonTerminals
-        {
-            get { return _generalizedNonTerminals; }
+            get { return _nonTerminals; }
         }
 
         // Factory method: create empty
         public static CategorySet CreateEmpty()
         {
-            return new CategorySet(
-                TerminalCategorySet.CreateEmpty(), 
-                TerminalCategorySet.CreateEmpty(), 
-                NonTerminalCategorySet.CreateEmpty(),
+            return new CategorySet(TerminalCategorySet.CreateEmpty(), TerminalCategorySet.CreateEmpty(),
                 NonTerminalCategorySet.CreateEmpty());
         }
 
         // Update sets
         public CategorySet UpdateRawTerminals(TerminalCategorySet rawTerminals)
         {
-            return new CategorySet(
-                rawTerminals,
-                _generalizedTerminals,
-                _rawNonTerminals,
-                _generalizedNonTerminals);
+            return new CategorySet(rawTerminals, _generalizedTerminals, _nonTerminals);
+
         }
 
         public CategorySet UpdateGeneralizedTerminals(TerminalCategorySet generalizedTerminals)
         {
-            return new CategorySet(
-                _rawTerminals,
-                generalizedTerminals,
-                _rawNonTerminals,
-                _generalizedNonTerminals);
+            return new CategorySet(_rawTerminals, generalizedTerminals, _nonTerminals);
         }
 
-        public CategorySet UpdateRawNonTerminals(NonTerminalCategorySet rawNonTerminals)
+        public CategorySet UpdateNonTerminals(NonTerminalCategorySet generalizedNonTerminals)
         {
-            return new CategorySet(
-                _rawTerminals,
-                _generalizedTerminals,
-                rawNonTerminals,
-                _generalizedNonTerminals);
-        }
-
-        public CategorySet UpdateGeneralizedNonTerminals(NonTerminalCategorySet generalizedNonTerminals)
-        {
-            return new CategorySet(
-                _rawTerminals,
-                _generalizedTerminals,
-                _rawNonTerminals,
-                generalizedNonTerminals);
+            return new CategorySet(_rawTerminals, _generalizedTerminals, generalizedNonTerminals);
         }
     }
 }
