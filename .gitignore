@@ -3,7 +3,7 @@
 /[Oo]bj/
 #/[Bb]uild/
 #/[Bb]uilds/
-/Output/
+/Output/*
 /Assets/AssetStoreTools*
 /Assets/3rdPartyAssets/*
 /Assets/Other/3rdPartyAssets/*

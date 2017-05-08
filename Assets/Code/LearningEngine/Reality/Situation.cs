@@ -40,7 +40,7 @@
             }
 
             // Positions must be unique
-            if (s.Animal1.Latitude == s.Animal2.Latitude &&
+            if (s.Animal1.RiverDistance == s.Animal2.RiverDistance &&
                 s.Animal1.Longitude == s.Animal2.Longitude)
             {
                 return false;

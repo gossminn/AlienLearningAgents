@@ -102,7 +102,11 @@ namespace Code.LearningEngine.Agents
             // If this fails, guess again
             if (!parseSent.Tree.GetTruthValue())
             {
-                return ProduceGuess(model, iteration + 1);
+                // Treat this in same way as negative feedback from parent
+                var hypotheses = KnowledgeSet.Hypotheses.ProcessFeedback(Feedback.Angry, _parentSent, guess);
+
+                return new ChildAgent(KnowledgeSet.UpdateHypotheses(hypotheses), _current, _memory, guess, _parentSent)
+                    .ProduceGuess(model, iteration + 1);
             }
 
             // Generate all possible sentences and select a random one

@@ -69,7 +69,6 @@ namespace Code.BehaviourScripts
             _parentAgent = _parentAgent.UpdateModel(_model).SaySomething();
             ParentText.text = _parentAgent.CurrentSentence;
 
-            // TODO: remove after debugging
             Debug.Log(_parentAgent.EvaluateSentence(_parentAgent.CurrentSentence));
 
         }
@@ -83,10 +82,19 @@ namespace Code.BehaviourScripts
 
         private void EvaluateSent()
         {
+            EvaluateSent(0);
+        }
+
+        private void EvaluateSent(int i)
+        {
             var sentence = _childAgent.Current;
             if (sentence != "")
             {
                 var feedback = _parentAgent.ProvideFeedback(sentence);
+                if (i > 200 && feedback == Feedback.Angry)
+                {
+
+                }
                 ParentText.text = feedback.ToString();
                 DebugHelpers.WriteFeedback(feedback);
                 _childAgent = _childAgent.EvaluateFeedback(feedback);
@@ -101,7 +109,7 @@ namespace Code.BehaviourScripts
             {
                 ParentTurn();
                 ChildTurn();
-                EvaluateSent();
+                EvaluateSent(i);
             }
         }
 
