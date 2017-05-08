@@ -79,8 +79,14 @@ namespace Code.LearningEngine.Agents
                 : new ChildAgent(knowledge, _current, memory, _guess, words);
         }
 
-        private ChildAgent ProduceGuess(LogicalModel model)
+        private ChildAgent ProduceGuess(LogicalModel model, int iteration = 0)
         {
+            // Avoid infinite looping
+            if (iteration > 100)
+            {
+                return this;
+            }
+
             // Produce guess
             var guess = KnowledgeSet.Hypotheses.Guess();
 
@@ -96,7 +102,7 @@ namespace Code.LearningEngine.Agents
             // If this fails, guess again
             if (!parseSent.Tree.GetTruthValue())
             {
-                return ProduceGuess(model);
+                return ProduceGuess(model, iteration + 1);
             }
 
             // Generate all possible sentences and select a random one
