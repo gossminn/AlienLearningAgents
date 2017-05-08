@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Agents;
 using Code.LearningEngine.Knowledge.Categories;
 using Code.LearningEngine.Semantics.Model;
 
@@ -31,6 +32,12 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             return MakeHypothesisSet(hypotheses);
         }
 
+        // Empty initializer
+        public static MeaningHypothesisSet Empty()
+        {
+            return new MeaningHypothesisSet(ImmutableHashSet<SyntaxCategoryHypotheses>.Empty);
+        }
+
         // Produce a guess
         public MeaningHypothesisSet Guess()
         {
@@ -46,6 +53,17 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
         {
             // Evaluate all hypotheses
             var hypotheses = _hypotheses.Select(h => h.Evaluate(model, words));
+
+            // Make new hypothesis set
+            return MakeHypothesisSet(hypotheses);
+        }
+
+        // Process feedback from parent
+        public MeaningHypothesisSet ProcessFeedback(Feedback feedback, ImmutableArray<string> words,
+            MeaningHypothesisSet guess)
+        {
+            // Process feedback for each hypothesis
+            var hypotheses = _hypotheses.Select(h => h.ProcessFeedback(feedback, words, guess));
 
             // Make new hypothesis set
             return MakeHypothesisSet(hypotheses);
@@ -80,7 +98,6 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
                 .Single(h => h.HasMeaningFor(word))
                 .FindMeaningFor(word);
         }
-
 
         public string ToXmlString()
         {

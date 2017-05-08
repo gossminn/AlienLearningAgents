@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using Code.Debugging;
 using Code.LearningEngine.Knowledge;
 using Code.LearningEngine.Knowledge.MeaningHypotheses;
 using Code.LearningEngine.Learning;
 using Code.LearningEngine.Semantics.Model;
-using UnityEngine;
 using Random = System.Random;
 
 namespace Code.LearningEngine.Agents
@@ -19,15 +17,23 @@ namespace Code.LearningEngine.Agents
         // Current sentence
         private readonly string _current;
 
+        // Last sentence by father
+        private readonly ImmutableArray<string> _parentSent;
+
         // Queue with n last heard sentences
         private readonly SentenceMemory _memory;
 
+        // Current guess
+        private readonly MeaningHypothesisSet _guess;
+
         // Constructor
-        private ChildAgent(KnowledgeSet knowledgeSet, string sentence,
-            SentenceMemory memory) : base(knowledgeSet)
+        private ChildAgent(KnowledgeSet knowledgeSet, string sentence, SentenceMemory memory,
+        MeaningHypothesisSet guess, ImmutableArray<string> parentSent) : base(knowledgeSet)
         {
             _memory = memory;
             _current = sentence;
+            _parentSent = parentSent;
+            _guess = guess;
 
             // Write output files
             DebugHelpers.WriteCatNumbers(
@@ -46,7 +52,8 @@ namespace Code.LearningEngine.Agents
         public static ChildAgent Initialize()
         {
             return new ChildAgent(
-                KnowledgeSet.CreateEmpty(), "", SentenceMemory.Initialize());
+                KnowledgeSet.CreateEmpty(), "", SentenceMemory.Initialize(), MeaningHypothesisSet.Empty(),
+                ImmutableArray<string>.Empty);
         }
 
         // Process input
@@ -68,28 +75,28 @@ namespace Code.LearningEngine.Agents
             var knowledge = InferKnowledge(model, words);
 
             return knowledge.Hypotheses.IsFixed()
-                ? ProduceGuess(knowledge, words, model)
-                : new ChildAgent(knowledge, _current, memory);
+                ? new ChildAgent(knowledge, "", memory, _guess, words).ProduceGuess(model)
+                : new ChildAgent(knowledge, _current, memory, _guess, words);
         }
 
-        private ChildAgent ProduceGuess(KnowledgeSet knowledge, ImmutableArray<string> words, LogicalModel model)
+        private ChildAgent ProduceGuess(LogicalModel model)
         {
             // Produce guess
-            var guess = knowledge.Hypotheses.Guess();
+            var guess = KnowledgeSet.Hypotheses.Guess();
 
             // Make terminal nodes and rules based on guess
-            var knowledge1 = knowledge.LearnTerminals(guess);
+            var knowledge1 = KnowledgeSet.LearnTerminals(guess);
 
             // Infer rules based on guess
-            var knowledge2 = knowledge1.GuessStructure(guess, words, model);
+            var knowledge2 = knowledge1.GuessStructure(guess, _parentSent, model);
 
             // Try to parse current sentence with guessed rules
-            var parseSent = knowledge2.Rules.Root.Parse(words.ToImmutableList(), knowledge2.Rules, model);
+            var parseSent = knowledge2.Rules.Root.Parse(_parentSent.ToImmutableList(), knowledge2.Rules, model);
 
             // If this fails, guess again
             if (!parseSent.Tree.GetTruthValue())
             {
-                return ProduceGuess(knowledge, words, model);
+                return ProduceGuess(model);
             }
 
             // Generate all possible sentences and select a random one
@@ -100,7 +107,7 @@ namespace Code.LearningEngine.Agents
             var randomNum = _random.Next(sentences.Length);
             var randomSent = sentences[randomNum].GetFlatString();
 
-            return new ChildAgent(knowledge2, randomSent, _memory);
+            return new ChildAgent(knowledge2, randomSent, _memory, guess, _parentSent);
         }
 
         private KnowledgeSet InferKnowledge(LogicalModel model, ImmutableArray<string> words)
@@ -124,14 +131,12 @@ namespace Code.LearningEngine.Agents
         }
 
         // Evaluate feedback
-        // Simplistic version: if parent is angry, remove sentence from memory
         public ChildAgent EvaluateFeedback(Feedback feedback)
         {
-            if (feedback == Feedback.Happy)
-                return new ChildAgent(KnowledgeSet, _current, _memory);
+            var hypotheses = KnowledgeSet.Hypotheses.ProcessFeedback(feedback, _current.Split().ToImmutableArray(),
+                _guess);
 
-            var memory = _memory.Forget(_current);
-            return new ChildAgent(KnowledgeSet, _current, memory);
+            return new ChildAgent(KnowledgeSet.UpdateHypotheses(hypotheses), _current, _memory, _guess, _parentSent);
         }
     }
 }

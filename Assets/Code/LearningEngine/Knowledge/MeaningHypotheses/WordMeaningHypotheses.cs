@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Agents;
 using Code.LearningEngine.Semantics.Model;
 using Code.LearningEngine.Semantics.Types;
 
@@ -87,6 +88,29 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
                 ImmutableHashSet<MeaningCandidate>.Empty,
                 (acc, next) => acc.Add(next));
             return new WordMeaningHypotheses(hypothesisSet);
+        }
+
+        // Process feedback
+        public WordMeaningHypotheses ProcessFeedback(Feedback feedback, MeaningCandidate guess)
+        {
+            // Guess does not apply to this hypothesis: don't change anything
+            if (!_meanings.Contains(guess))
+            {
+                return this;
+            }
+
+            // Else, process feedback:
+            var candidate = feedback == Feedback.Angry
+                // If feedback is negative, decrease score for that meaning candidate
+                ? guess.DecreaseScore()
+                : feedback == Feedback.Happy
+                    // Else if it's positive, increase the score
+                    ? guess.IncreaseScore()
+                    // Otherwise, leave as-is
+                    : guess;
+
+            // Replace guess by new version
+            return new WordMeaningHypotheses(_meanings.Remove(guess).Add(candidate));
         }
 
         // Write as XML string

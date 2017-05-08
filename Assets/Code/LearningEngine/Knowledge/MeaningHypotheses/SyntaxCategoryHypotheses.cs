@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Agents;
 using Code.LearningEngine.Semantics.Functions;
 using Code.LearningEngine.Semantics.Model;
 
@@ -81,6 +82,13 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
                 .Where(h => h.IsRelevant());
 
             // Store new hypothesis set
+            return MakeHypothesisSet(hypotheses);
+        }
+
+        public SyntaxCategoryHypotheses ProcessFeedback(Feedback feedback, ImmutableArray<string> words,
+            MeaningHypothesisSet guess)
+        {
+            var hypotheses = _hypotheses.Select(h => h.ProcessFeedback(feedback, words, guess));
             return MakeHypothesisSet(hypotheses);
         }
 

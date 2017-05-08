@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Code.LearningEngine.Agents;
 
 namespace Code.Debugging
 {
@@ -47,6 +48,14 @@ namespace Code.Debugging
             {
                 var counter = _counter / 2;
                 sw.WriteLine(counter + "\n" + testResults);
+            }
+        }
+
+        public static void WriteFeedback(Feedback feedback)
+        {
+            using (var sw = new StreamWriter("Output/Feedback.txt", true))
+            {
+                sw.WriteLine(feedback);
             }
         }
     }

@@ -38,10 +38,7 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
 
         public MeaningCandidate DecreaseScore()
         {
-            // Ensure score never gets below 0
-            return _score > 0
-                ? new MeaningCandidate(_meaning, _score - 1)
-                : this;
+            return new MeaningCandidate(_meaning, _score - 1);
         }
 
         public string ToXmlString()

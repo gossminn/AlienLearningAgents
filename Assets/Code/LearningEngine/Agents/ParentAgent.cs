@@ -96,10 +96,11 @@ namespace Code.LearningEngine.Agents
         // Provide feedback on utterance of child
         public Feedback ProvideFeedback(string sentence)
         {
-            if (_currentSent.GetFlatString() == sentence)
-                return Feedback.Happy;
-
-            return Feedback.Angry;
+            return sentence == ""
+                ? Feedback.Confused
+                : EvaluateSentence(sentence)
+                    ? Feedback.Happy
+                    : Feedback.Angry;
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Code.LearningEngine.Agents;
 using Code.LearningEngine.Semantics.Model;
 using Code.LearningEngine.Semantics.Types;
 
@@ -79,11 +80,26 @@ namespace Code.LearningEngine.Knowledge.MeaningHypotheses
             return new SemanticClassHypotheses(hypothesisDict);
         }
 
+        public SemanticClassHypotheses ProcessFeedback(Feedback feedback, ImmutableArray<string> words,
+            MeaningHypothesisSet guess)
+        {
+            // Process feedback for each hypothesis
+            var hypotheses = _hypotheses.Select(
+                h => words.Contains(h.Key)
+                    ? new {W = h.Key, M = h.Value.ProcessFeedback(feedback, guess.FindMeaningFor(h.Key))}
+                    : new {W = h.Key, M = h.Value});
+
+            // Store new hypotheses in dictionary
+            var hypothesisDict = hypotheses.Aggregate(
+                ImmutableDictionary<string, WordMeaningHypotheses>.Empty,
+                (acc, next) => acc.Add(next.W, next.M));
+            return new SemanticClassHypotheses(hypothesisDict);
+        }
+
         public string ToXmlString()
         {
             var entries = _hypotheses.Select(x => "<word=" + x.Key + ">" + x.Value.ToXmlString() + "</word>");
             return "<words>" + string.Join("", entries.ToArray()) + "</words>";
         }
-
     }
 }

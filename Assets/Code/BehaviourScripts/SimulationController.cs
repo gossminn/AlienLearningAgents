@@ -1,4 +1,5 @@
-﻿using Code.LearningEngine.Agents;
+﻿using Code.Debugging;
+using Code.LearningEngine.Agents;
 using Code.LearningEngine.Languages;
 using Code.LearningEngine.Reality;
 using Code.LearningEngine.Semantics;
@@ -83,9 +84,13 @@ namespace Code.BehaviourScripts
         private void EvaluateSent()
         {
             var sentence = _childAgent.Current;
-            var feedback = _parentAgent.ProvideFeedback(sentence);
-            ParentText.text = feedback.ToString();
-            _childAgent = _childAgent.EvaluateFeedback(feedback);
+            if (sentence != "")
+            {
+                var feedback = _parentAgent.ProvideFeedback(sentence);
+                ParentText.text = feedback.ToString();
+                DebugHelpers.WriteFeedback(feedback);
+                _childAgent = _childAgent.EvaluateFeedback(feedback);
+            }
         }
 
         // Run the simulation automatically (repeat n times)
@@ -96,7 +101,7 @@ namespace Code.BehaviourScripts
             {
                 ParentTurn();
                 ChildTurn();
-                //EvaluateSent(); TODO: enable when implemented
+                EvaluateSent();
             }
         }
 
