@@ -1,4 +1,5 @@
-﻿using Code.Debugging;
+﻿using System.Collections;
+using Code.Debugging;
 using Code.LearningEngine.Agents;
 using Code.LearningEngine.Languages;
 using Code.LearningEngine.Reality;
@@ -19,17 +20,24 @@ namespace Code.BehaviourScripts
         private LogicalModel _model;
 
         // UI: buttons
-        public Button ChildButton;
-        public Button ParentButton;
-        public Button EvaluateButton;
-        public Button RepeatButton;
+        public Button RunButton;
+        public Button StopButton;
 
-        // UI: text meshes
-        public Text ChildText;
-        public Text ParentText;
+        // UI: texts
+        public InputField ChildText;
+        public InputField ParentText;
+        public InputField FeedbackText;
+
+        // UI: counter
+        public Text CountText;
+        private int _counter;
 
         // UI: text input
         public InputField RepeatInput;
+        public InputField DelayInput;
+
+        // Continue or not?
+        private bool _continue;
 
         // Visualizer
         public EntityVisualizer Visualizer;
@@ -42,13 +50,41 @@ namespace Code.BehaviourScripts
             _childAgent = ChildAgent.Initialize();
 
             // Add listeners for buttons
-            ParentButton.onClick.AddListener(ParentTurn);
-            ChildButton.onClick.AddListener(ChildTurn);
-            EvaluateButton.onClick.AddListener(EvaluateSent);
-            RepeatButton.onClick.AddListener(RunSimulation);
+            RunButton.onClick.AddListener(() => StartCoroutine("RunSimulation"));
+            StopButton.onClick.AddListener(() => StopCoroutine("RunSimulation"));
 
             // Initialize visualizer
             Visualizer = GetComponent<EntityVisualizer>();
+        }
+
+        // Run the simulation automatically (repeat n times)
+        private IEnumerator RunSimulation()
+        {
+            var delay = GetDelay();
+            var repetitions = GetRepetitions();
+            for (var i = 0; i < repetitions; i++)
+            {
+                // Display counter
+                _counter++;
+                CountText.text = _counter.ToString();
+
+                // Set texts to empty
+                ParentText.text = "";
+                ChildText.text = "";
+                FeedbackText.text = "";
+
+                // Parent turn
+                ParentTurn();
+                yield return new WaitForSeconds(delay / 10f);
+
+                // Child turn
+                ChildTurn();
+                yield return new WaitForSeconds(delay / 10f);
+
+                // Evaluation turn
+                EvaluateSent();
+                yield return new WaitForSeconds(delay / 10f);
+            }
         }
 
         private void ParentTurn()
@@ -68,9 +104,6 @@ namespace Code.BehaviourScripts
             // Parent says something
             _parentAgent = _parentAgent.UpdateModel(_model).SaySomething();
             ParentText.text = _parentAgent.CurrentSentence;
-
-            Debug.Log(_parentAgent.EvaluateSentence(_parentAgent.CurrentSentence));
-
         }
 
         private void ChildTurn()
@@ -82,42 +115,33 @@ namespace Code.BehaviourScripts
 
         private void EvaluateSent()
         {
-            EvaluateSent(0);
-        }
-
-        private void EvaluateSent(int i)
-        {
             var sentence = _childAgent.Current;
             if (sentence != "")
             {
                 var feedback = _parentAgent.ProvideFeedback(sentence);
-                if (i > 200 && feedback == Feedback.Angry)
-                {
-
-                }
-                ParentText.text = feedback.ToString();
+                FeedbackText.text = feedback.ToString();
                 DebugHelpers.WriteFeedback(feedback);
                 _childAgent = _childAgent.EvaluateFeedback(feedback);
             }
         }
 
-        // Run the simulation automatically (repeat n times)
-        private void RunSimulation()
+        // Get delay
+        private int GetDelay()
         {
-            var repetitions = ParseRepetitions();
-            for (var i = 0; i < repetitions; i++)
-            {
-                ParentTurn();
-                ChildTurn();
-                EvaluateSent(i);
-            }
+            return ParseInputNumber(DelayInput);
         }
 
-        // Get number of repetitions from text field
-        private int ParseRepetitions()
+        // Get repetitions
+        private float GetRepetitions()
+        {
+            return ParseInputNumber(RepeatInput);
+        }
+
+        // Parse int from textfield
+        private static int ParseInputNumber(InputField input)
         {
             int n;
-            return int.TryParse(RepeatInput.text, out n) ? n : 0;
+            return int.TryParse(input.text, out n) ? n : 0;
         }
     }
 }
