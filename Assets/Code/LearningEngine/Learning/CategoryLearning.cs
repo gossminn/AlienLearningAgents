@@ -54,20 +54,28 @@ namespace Code.LearningEngine.Learning
                     .UpdateLeftContext(label, context.Left)
                     .UpdateRightContext(label, context.Right);
 
-            // Get terminalCategories with matching left/right context
-            var withLeftCtxt = categories0.FindLeftContext(context.Left);
-            var withRightCtxt = categories0.FindRightContext(context.Right);
-            var withBothCtxt = withLeftCtxt.Intersect(withRightCtxt);
+            // Find other words with a matching left/right context
+            var withLeftCtxt = categories0.FindLeftContext(context.Left).ToImmutableList();
+            var withRightCtxt = categories0.FindRightContext(context.Right).ToImmutableList();
 
-            // If match: add word to context
-            var categoryLabels = withBothCtxt.ToImmutableList();
-            if (categoryLabels.Any())
+
+            // Relevant contexts found?
+            if (withLeftCtxt.Any() && withRightCtxt.Any())
             {
-                return categoryLabels.Aggregate(categories0, addWord);
+                var withBothCtxt = withLeftCtxt.Intersect(withRightCtxt);
+
+                // If match: add word to context
+                var categoryLabels = withBothCtxt.ToImmutableList();
+                if (categoryLabels.Any())
+                {
+                    return categoryLabels.Aggregate(categories0, addWord);
+                }
             }
 
-            // No match but word known: add context
+            // Find other categories with the current word in them
             var withWord = categories0.FindWord(context.Word).ToImmutableList();
+
+            // If there are any, add the context of the current word
             if (withWord.Any())
             {
                 return withWord.Aggregate(categories0, addContext);

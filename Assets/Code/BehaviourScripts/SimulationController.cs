@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Diagnostics;
+using System.IO;
 using Code.Debugging;
 using Code.LearningEngine.Agents;
 using Code.LearningEngine.Languages;
@@ -7,6 +9,7 @@ using Code.LearningEngine.Semantics;
 using Code.LearningEngine.Semantics.Model;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 namespace Code.BehaviourScripts
 {
@@ -45,6 +48,9 @@ namespace Code.BehaviourScripts
         // Use this for initialization
         private void Start()
         {
+            // Directory for output files
+            Directory.CreateDirectory("Output");
+
             // Initialize agents
             _parentAgent = AlienLanguage.MakeParentAgent();
             _childAgent = ChildAgent.Initialize();
@@ -73,16 +79,30 @@ namespace Code.BehaviourScripts
                 ChildText.text = "";
                 FeedbackText.text = "";
 
+                // TODO: remove after debugging
+                var sw = new Stopwatch();
+
                 // Parent turn
+                sw.Start();
                 ParentTurn();
+                sw.Stop();
+                Debug.Log("Parent turn: " + sw.ElapsedMilliseconds);
                 yield return new WaitForSeconds(delay / 10f);
 
                 // Child turn
+                sw.Reset();
+                sw.Start();
                 ChildTurn();
+                sw.Stop();
+                Debug.Log("Child turn: " + sw.ElapsedMilliseconds);
                 yield return new WaitForSeconds(delay / 10f);
 
                 // Evaluation turn
+                sw.Reset();
+                sw.Start();
                 EvaluateSent();
+                sw.Stop();
+                Debug.Log("Evaluation turn: " + sw.ElapsedMilliseconds);
                 yield return new WaitForSeconds(delay / 10f);
             }
         }

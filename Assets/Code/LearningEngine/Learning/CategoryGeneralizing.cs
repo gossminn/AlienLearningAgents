@@ -29,14 +29,25 @@ namespace Code.LearningEngine.Learning
         // Helper: check if the contexts of two terminalCategories are the same
         private static bool CompareContexts(WordDistributionSet cat1, WordDistributionSet cat2)
         {
+            if (cat1.LeftContext.IsEmpty || cat2.LeftContext.IsEmpty)
+            {
+                return false;
+            }
+
             // Overlap in left contexts?
-            if (cat1.LeftContext.Intersect(cat2.LeftContext).Any())
+            // (Use Linq.Intersect instead of ImmutableHashSet.Intersect to avoid WebGL problems)
+            if (cat1.LeftContext.AsEnumerable().Intersect(cat2.LeftContext.AsEnumerable()).Any())
             {
                 return true;
             }
 
+            if (cat1.RightContext.IsEmpty || cat2.RightContext.IsEmpty)
+            {
+                return false;
+            }
+
             // Overlap in right contexts?
-            if (cat1.RightContext.Intersect(cat2.RightContext).Any())
+            if (cat1.RightContext.AsEnumerable().Intersect(cat2.RightContext.AsEnumerable()).Any())
             {
                 return true;
             }
