@@ -1,18 +1,14 @@
 open System.IO
 
 let feedback = File.ReadAllLines("Feedback.txt")
-let length = feedback |> Array.length
+let windowSize = 25
 
-let FindPercentageUntil x = 
-    let happyN = 
-        feedback 
-        |> Array.mapi (fun i e -> i, e)
-        |> Array.takeWhile (fun (i, _) -> i < x)
-        |> Array.map snd
-        |> Array.filter (fun s -> s = "Happy")
-        |> Array.length
-    ((float happyN) / (float x)) * 100.0
+let findPercentageUntil x = 
+    let lowIndex = if x > windowSize then x - windowSize else 0
+    let lastN = [lowIndex .. x] |> List.map (fun i -> feedback.[i])
+    let happy = lastN |> List.filter (fun x -> x = "Happy")
+    (float happy.Length) / (float lastN.Length) * 100.0
  
-{1..length}
-|> Seq.map FindPercentageUntil
+{0 .. feedback.Length - 1}
+|> Seq.map findPercentageUntil
 |> Seq.iter (fun x -> printfn "%f" x)
