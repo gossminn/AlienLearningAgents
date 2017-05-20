@@ -1,15 +1,12 @@
 ﻿using System.Collections;
-using System.Diagnostics;
 using System.IO;
+using UnityEngine;
+using UnityEngine.UI;
 using Code.Debugging;
 using Code.LearningEngine.Agents;
 using Code.LearningEngine.Languages;
 using Code.LearningEngine.Reality;
-using Code.LearningEngine.Semantics;
 using Code.LearningEngine.Semantics.Model;
-using UnityEngine;
-using UnityEngine.UI;
-using Debug = UnityEngine.Debug;
 
 namespace Code.BehaviourScripts
 {
@@ -79,30 +76,16 @@ namespace Code.BehaviourScripts
                 ChildText.text = "";
                 FeedbackText.text = "";
 
-                // TODO: remove after debugging
-                var sw = new Stopwatch();
-
                 // Parent turn
-                sw.Start();
                 ParentTurn();
-                sw.Stop();
-                Debug.Log("Parent turn: " + sw.ElapsedMilliseconds);
                 yield return new WaitForSeconds(delay / 10f);
 
                 // Child turn
-                sw.Reset();
-                sw.Start();
                 ChildTurn();
-                sw.Stop();
-                Debug.Log("Child turn: " + sw.ElapsedMilliseconds);
                 yield return new WaitForSeconds(delay / 10f);
 
                 // Evaluation turn
-                sw.Reset();
-                sw.Start();
                 EvaluateSent();
-                sw.Stop();
-                Debug.Log("Evaluation turn: " + sw.ElapsedMilliseconds);
                 yield return new WaitForSeconds(delay / 10f);
             }
         }
@@ -116,13 +99,8 @@ namespace Code.BehaviourScripts
             // Create model from situation
             _model = LogicalModel.Create(situation);
 
-            // TODO: remove after testing
-            _model.PrintSpecies();
-            _model.PrintDirections();
-            _model.PrintRelations();
-
             // Parent says something
-            _parentAgent = _parentAgent.UpdateModel(_model).SaySomething();
+            _parentAgent = _parentAgent.SaySomething(_model);
             ParentText.text = _parentAgent.CurrentSentence;
         }
 
@@ -138,10 +116,11 @@ namespace Code.BehaviourScripts
             var sentence = _childAgent.Current;
             if (sentence != "")
             {
-                var feedback = _parentAgent.ProvideFeedback(sentence);
+                var feedback = _parentAgent.ProvideFeedback(sentence, _model);
                 FeedbackText.text = feedback.ToString();
-                DebugHelpers.WriteFeedback(feedback);
                 _childAgent = _childAgent.EvaluateFeedback(feedback);
+
+                DebugHelpers.WriteFeedback(feedback);
             }
         }
 

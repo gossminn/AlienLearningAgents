@@ -6,7 +6,6 @@ using Code.LearningEngine.Knowledge.Rules;
 using Code.LearningEngine.Semantics.Model;
 using Code.LearningEngine.Syntax;
 using Code.LearningEngine.Trees;
-using UnityEngine;
 using Random = System.Random;
 
 namespace Code.LearningEngine.Agents
@@ -22,33 +21,11 @@ namespace Code.LearningEngine.Agents
         // Current sentence
         private readonly ITreeNode _currentSent;
 
-        // List of possible sentences
-        private readonly ImmutableList<ITreeNode> _sentences;
-
-        // Current logicalmodel
-        private readonly LogicalModel _model;
-
         // Constructor is private, public access through factory methods
-        private ParentAgent(KnowledgeSet knowledgeSet, CategoryLabel rootCat, ITreeNode currentSent,
-            LogicalModel model) : base(knowledgeSet)
+        private ParentAgent(KnowledgeSet knowledgeSet, CategoryLabel rootCat,
+            ITreeNode currentSent) : base(knowledgeSet)
         {
             _rootCat = rootCat;
-            var rootRule = knowledgeSet.Rules.FindWithLeftSide(_rootCat);
-
-            _sentences = rootRule
-                    .GenerateAll(knowledgeSet.Rules, model)
-                    .Where(x => x.GetTruthValue())
-                    .ToImmutableList();
-
-            _model = model;
-
-            Debug.Log("Sentences: " + _sentences.Count);
-
-            if (_sentences.Count == 0)
-            {
-                Debug.Log("No sentences!");
-            }
-
             _currentSent = currentSent;
         }
 
@@ -58,49 +35,51 @@ namespace Code.LearningEngine.Agents
         }
 
         // Factory method: create based on rules
-        public static ParentAgent Create(TerminalCategorySet categories, RuleSet rules,
+        public static ParentAgent Initialize(TerminalCategorySet categories, RuleSet rules,
             VocabularySet terminals, CategoryLabel rootCat, LogicalModel model)
         {
+            // Define knowledge set
             var categorySet = CategorySet.CreateEmpty().UpdateRawTerminals(categories);
+            var knowledgeSet = KnowledgeSet.CreateEmpty()
+                .UpdateCategories(categorySet)
+                .UpdateRules(rules)
+                .UpdateTerminals(terminals);
 
-            return new ParentAgent(
-                KnowledgeSet.CreateEmpty()
-                    .UpdateCategories(categorySet)
-                    .UpdateRules(rules)
-                    .UpdateTerminals(terminals),
-                rootCat, EmptyNode.Create(), model);
+            return new ParentAgent(knowledgeSet, rootCat, EmptyNode.Create());
         }
 
-        // 'Say' something
-        public ParentAgent SaySomething()
+        // Produce an utterance
+        public ParentAgent SaySomething(LogicalModel model)
         {
-            var num = _random.Next(_sentences.Count);
-            var sentence = _sentences.Count > 0 ? _sentences[num] : EmptyNode.Create();
-            return new ParentAgent(KnowledgeSet, _rootCat, sentence, _model);
+            // Generate all true sentences
+            var rootRule = KnowledgeSet.Rules.FindWithLeftSide(_rootCat);
+            var sentences = rootRule.GenerateAll(KnowledgeSet.Rules, model)
+                .Where(x => x.GetTruthValue())
+                .ToImmutableList();
+
+            // Select random sentence
+            var num = _random.Next(sentences.Count);
+            var sentence = sentences.Count > 0
+                ? sentences[num]
+                : EmptyNode.Create(); // Use dummy tree if no true sentence exist
+
+            // New version of agent with new current sentence
+            return new ParentAgent(KnowledgeSet, _rootCat, sentence);
         }
 
-        // Evaluate a sentence
-        public bool EvaluateSentence(string s)
+        // Determine if a sentence is true under the current model
+        public bool EvaluateSentence(string s, LogicalModel model)
         {
             var words = s.Split().ToImmutableList();
             var rootRule = KnowledgeSet.Rules.FindWithLeftSide(_rootCat);
-            return rootRule.Parse(words, KnowledgeSet.Rules, _model).Tree.GetTruthValue();
-        }
-
-        // Update model
-        public ParentAgent UpdateModel(LogicalModel model)
-        {
-            return new ParentAgent(KnowledgeSet, _rootCat, _currentSent, model);
+            return rootRule.Parse(words, KnowledgeSet.Rules, model).Tree.GetTruthValue();
         }
 
         // Provide feedback on utterance of child
-        public Feedback ProvideFeedback(string sentence)
+        public Feedback ProvideFeedback(string sentence, LogicalModel model)
         {
-            return sentence == ""
-                ? Feedback.Confused
-                : EvaluateSentence(sentence)
-                    ? Feedback.Happy
-                    : Feedback.Angry;
+            // Evaluate child's sentence; be 'happy' if it's true, else be 'angry'
+            return EvaluateSentence(sentence, model) ? Feedback.Happy : Feedback.Angry;
         }
     }
 }

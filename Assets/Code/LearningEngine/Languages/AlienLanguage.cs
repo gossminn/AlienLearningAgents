@@ -65,7 +65,7 @@ namespace Code.LearningEngine.Languages
             var rules = terminalRules.Aggregate(nonTermSet, (acc, next) => acc.AddRule(next));
 
             // Parent agent
-            return ParentAgent.Create(categorySet, rules, terminalSet,
+            return ParentAgent.Initialize(categorySet, rules, terminalSet,
                 rootCat, LogicalModel.CreateEmpty());
         }
     }
